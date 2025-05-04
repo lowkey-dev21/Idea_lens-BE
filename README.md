@@ -74,13 +74,13 @@ src/
 
 ### Authentication System
 
-* Secure **JWT-based** authentication
+* Secure **Session-Token-based** authentication
 * **Workspace-based access control** for teams
 * **Multi-user invitations** and **Role-based permissions**
 
 ```mermaid
 flowchart LR
-    User --> Login[Login/Register] --> JWT[Generate JWT] --> SessionStore --> Client
+    User --> Login[Login/Register] --> Session Token[Generate Session Token] --> SessionStore --> Client
     User --> Workspace --> Permissions
 ```
 
@@ -196,7 +196,7 @@ graph TD
     SK["SvelteKit"] --> NJ["Node.js"]
     NJ --> PG["PostgreSQL"]
     PG --> PR["Prisma"]
-    SK --> AU["Auth (Lucia + JWT)"]
+    SK --> AU["Auth (Lucia + Session Token)"]
     SK --> AIS["AI Services"]
     AIS --> MI["Mistral"]
     AIS --> GE["Gemini"]
