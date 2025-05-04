@@ -193,18 +193,18 @@ sequenceDiagram
 
 ```mermaid
 graph TD
-    SvelteKit --> Node.js
-    Node.js --> PostgreSQL
-    PostgreSQL --> Prisma
-    SvelteKit --> Auth_Lucia_JWT[Auth (Lucia + JWT)]
-    SvelteKit --> AIServices["AI Services"]
-    AIServices --> Mistral
-    AIServices --> Gemini
-    AIServices --> Perplexity
-    SvelteKit --> DevOps
-    DevOps --> Docker
-    DevOps --> Coolify
-    SvelteKit --> Styling[TailwindCSS]
+    SK["SvelteKit"] --> NJ["Node.js"]
+    NJ --> PG["PostgreSQL"]
+    PG --> PR["Prisma"]
+    SK --> AU["Auth (Lucia + JWT)"]
+    SK --> AIS["AI Services"]
+    AIS --> MI["Mistral"]
+    AIS --> GE["Gemini"]
+    AIS --> PE["Perplexity"]
+    SK --> DO["DevOps"]
+    DO --> DK["Docker"]
+    DO --> CF["Coolify"]
+    SK --> TW["TailwindCSS"]
 ```
 
 ---
@@ -223,7 +223,7 @@ graph TD
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/lowkey-dev21/Idea_lens-BE.git
+git clone https://github.com/your-org/idealens-backend.git
 cd idealens-backend
 
 # 2. Install dependencies
