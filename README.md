@@ -1,7 +1,5 @@
 # IdeaLens Backend
 
-<div align="center">
-
 ```
  ___  ______  _____       _      _____  _   _   _____
 |_ _||  __  \|  ___|     / \    |  ___|| \ | | / ____|
@@ -13,8 +11,6 @@
 
 **AI-Powered Software Development Assistant**
 *Transform Your Development Workflow with AI-Powered Insights*
-
-</div>
 
 ---
 
@@ -74,13 +70,13 @@ src/
 
 ### Authentication System
 
-* Secure **Session-Token-based** authentication
+* Secure **session token-based** authentication
 * **Workspace-based access control** for teams
 * **Multi-user invitations** and **Role-based permissions**
 
 ```mermaid
 flowchart LR
-    User --> Login[Login/Register] --> Session Token[Generate Session Token] --> SessionStore --> Client
+    User --> Login[Login/Register] --> SessionToken[Generate Session Token] --> SessionStore --> Client
     User --> Workspace --> Permissions
 ```
 
@@ -196,7 +192,7 @@ graph TD
     SK["SvelteKit"] --> NJ["Node.js"]
     NJ --> PG["PostgreSQL"]
     PG --> PR["Prisma"]
-    SK --> AU["Auth (Lucia + Session Token)"]
+    SK --> AU["Auth (Lucia + Session Tokens)"]
     SK --> AIS["AI Services"]
     AIS --> MI["Mistral"]
     AIS --> GE["Gemini"]
