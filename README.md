@@ -24,14 +24,9 @@ It orchestrates authentication, workspace management, AI integrations, analytics
 ## 🏗️ System Architecture
 
 ```mermaid
-graph TD
-    Client[Client Application] --> API[API Layer]
-    API --> Auth[Authentication]
-    API --> Services[Services]
-    Services --> Orchestrators[Orchestrators]
-    Orchestrators --> Connectors[Connectors]
-    Connectors --> ExternalAPIs[External APIs]
-    Services --> Database[(Database)]
+flowchart LR
+    User --> Login["Login/Register"] --> ST["Generate Session Token"] --> SS["Session Store"] --> C["Client"]
+    User --> W["Workspace"] --> P["Permissions"]
 ```
 
 ---
