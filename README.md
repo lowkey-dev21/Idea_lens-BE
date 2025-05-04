@@ -196,15 +196,15 @@ graph TD
     SvelteKit --> Node.js
     Node.js --> PostgreSQL
     PostgreSQL --> Prisma
-    SvelteKit --> Auth(Lucia + JWT)
-    SvelteKit --> AI Services
-    AI Services --> Mistral
-    AI Services --> Gemini
-    AI Services --> Perplexity
+    SvelteKit --> Auth_Lucia_JWT[Auth (Lucia + JWT)]
+    SvelteKit --> AIServices["AI Services"]
+    AIServices --> Mistral
+    AIServices --> Gemini
+    AIServices --> Perplexity
     SvelteKit --> DevOps
     DevOps --> Docker
     DevOps --> Coolify
-    SvelteKit --> Styling(TailwindCSS)
+    SvelteKit --> Styling[TailwindCSS]
 ```
 
 ---
@@ -223,7 +223,7 @@ graph TD
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-org/idealens-backend.git
+git clone https://github.com/lowkey-dev21/Idea_lens-BE.git
 cd idealens-backend
 
 # 2. Install dependencies
