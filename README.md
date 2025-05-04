@@ -3,10 +3,10 @@
 <div align="center">
 
 ```
- ___  ______  _____       _      _____  _   _   _____ 
+ ___  ______  _____       _      _____  _   _   _____
 |_ _||  __  \|  ___|     / \    |  ___|| \ | | / ____|
  | | | |  | || |___     / _ \   | |___ |  \| || (___  
- | | | |  | ||  ___|   / ___ \  |  ___|| |\  | \___ \ 
+ | | | |  | ||  ___|   / ___ \  |  ___|| |\  | \___ \
  | | | |__| || |___   / /   \ \ | |___ | | | |  ___) |
 |___||______/|_____| /_/     \_\|_____||_| |_| |_____|
 ```
@@ -111,7 +111,15 @@ IdeaLens connects with powerful AI services to provide insights, ideas, and reco
 
 ```mermaid
 flowchart LR
-    Request --> Router --> {Mistral, Gemini, Perplexity} --> Results --> {Cache, Response}
+    Request --> Router
+    Router --> Mistral
+    Router --> Gemini
+    Router --> Perplexity
+    Mistral --> Results
+    Gemini --> Results
+    Perplexity --> Results
+    Results --> Cache
+    Results --> Response
 ```
 
 ---
