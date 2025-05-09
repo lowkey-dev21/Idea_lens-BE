@@ -27,16 +27,16 @@ IdeaLens employs a modular, service-oriented architecture designed for scalabili
 
 ```mermaid
 graph TD
-    subgraph Client_Tier [Client Application]
+    subgraph Client_Tier["Client Application"]
         WebApp[SvelteKit Frontend / Mobile Apps]
     end
 
-    subgraph API_Gateway_Routing [API Gateway & Routing - SvelteKit]
+    subgraph API_Gateway_Routing["API Gateway & Routing - SvelteKit"]
         SvelteKitRoutes["API Endpoints (`src/routes/api`)"]
         APIMiddleware["Middleware (`src/lib/server/middleware`) <br/> Auth, Permissions, Rate Limiting, Logging"]
     end
 
-    subgraph Core_Services_Logic [Core Services & Business Logic (`src/lib/server`)]
+    subgraph Core_Services_Logic["Core Services & Business Logic (`src/lib/server`)"]
         AuthUserMgmt["Auth & User Management (`auth/`, `user/`)"]
         WorkspaceProjectMgmt["Workspace & Project Management (`workspace/`, `projects/`)"]
         BillingMgmt["Billing & Payments (`billing/`)"]
@@ -44,17 +44,17 @@ graph TD
         NotificationMgmt["Notifications (`notifications/`)"]
     end
 
-    subgraph AI_Orchestration [AI Orchestration Layer (`src/lib/server/ai`)]
+    subgraph AI_Orchestration["AI Orchestration Layer (`src/lib/server/ai`)"]
         AIOrchestrators["Feature Orchestrators (`ai/orchestrators`)"]
         AIProviders["AI Provider Connectors (`ai/providers`)"]
     end
 
-    subgraph Async_Processing [Asynchronous Processing]
+    subgraph Async_Processing["Asynchronous Processing"]
         BullMQ["BullMQ Queues & Workers (`src/lib/server/queue`)"]
         RedisBroker["Redis (Queue Broker)"]
     end
 
-    subgraph Data_External_Services [Data Storage & External Services]
+    subgraph Data_External_Services["Data Storage & External Services"]
         PostgreSQL["PostgreSQL (Prisma ORM)"]
         RedisCache["Redis (Caching)"]
         Cloudinary["Cloudinary (File Storage)"]
@@ -63,25 +63,25 @@ graph TD
         ExternalIntegration_APIs["Integration APIs (GitHub, Jira, SlideSpeak, BrandFetch, DomainR)"]
     end
 
-    WebApp --> SvelteKitRoutes;
-    SvelteKitRoutes -- uses --> APIMiddleware;
-    APIMiddleware -- interacts with --> AuthUserMgmt;
-    SvelteKitRoutes -- delegates to --> Core_Services_Logic;
+    WebApp --> SvelteKitRoutes
+    SvelteKitRoutes -- uses --> APIMiddleware
+    APIMiddleware -- interacts with --> AuthUserMgmt
+    SvelteKitRoutes -- delegates to --> Core_Services_Logic
 
-    Core_Services_Logic -- uses --> AIOrchestration;
-    Core_Services_Logic -- interacts with --> PostgreSQL;
-    Core_Services_Logic -- uses --> RedisCache;
-    Core_Services_Logic -- interacts with --> Cloudinary;
-    Core_Services_Logic -- interacts with --> Flutterwave;
-    Core_Services_Logic -- enqueues tasks --> BullMQ;
+    Core_Services_Logic -- uses --> AIOrchestration
+    Core_Services_Logic -- interacts with --> PostgreSQL
+    Core_Services_Logic -- uses --> RedisCache
+    Core_Services_Logic -- interacts with --> Cloudinary
+    Core_Services_Logic -- interacts with --> Flutterwave
+    Core_Services_Logic -- enqueues tasks --> BullMQ
 
-    AIOrchestration -- uses --> AIProviders;
-    AIProviders -- call --> ExternalAI_APIs;
-    IntegrationMgmt -- interacts with --> ExternalIntegration_APIs;
+    AIOrchestration -- uses --> AIProviders
+    AIProviders -- call --> ExternalAI_APIs
+    IntegrationMgmt -- interacts with --> ExternalIntegration_APIs
 
-    BullMQ -- uses --> RedisBroker;
-    BullMQ -- processes tasks using --> Core_Services_Logic;
-    BullMQ -- processes tasks using --> AIOrchestration;
+    BullMQ -- uses --> RedisBroker
+    BullMQ -- processes tasks using --> Core_Services_Logic
+    BullMQ -- processes tasks using --> AIOrchestration
 ```
 
 ---
@@ -181,15 +181,15 @@ graph LR
 graph TD
     User --> CreateWorkspace[Create Workspace]
     CreateWorkspace -- "First project is free" --> W[Workspace]
-    W --> CreateProjectP1[Create Project P1 (Free)]
+    W --> CreateProjectP1[Create Project P1 Free]
     W --> InviteMembers[Invite Members w/ Roles]
     W --> ConfigureWorkspaceSettings[Workspace Settings]
     W --> WorkspaceBilling[Billing: Flutterwave]
     WorkspaceBilling -- "For subsequent projects/features" --> OneTimePaymentForP2[One-Time Payment for Project P2]
     WorkspaceBilling -- "For ongoing access" --> SubscriptionPlan[Subscription Plan]
     SubscriptionPlan --> ProjectAndFeatureLimits[Project & Feature Limits]
-    W --> CreateProjectP2[Create Project P2 (Paid/Subscribed)]
-    CreateProjectP2 --> ManageIdeas[Manage Ideas] --> UploadSupportingFiles[Upload Supporting Files (Cloudinary)]
+    W --> CreateProjectP2[Create Project P2 Paid/Subscribed]
+    CreateProjectP2 --> ManageIdeas[Manage Ideas] --> UploadSupportingFiles[Upload Supporting Files Cloudinary]
     CreateProjectP2 --> ManageTasks[Manage Tasks]
     CreateProjectP2 --> RunAIAnalyses[Run AI Analyses]
 ```
@@ -209,50 +209,49 @@ IdeaLens intelligently leverages a suite of AI models for diverse tasks, managed
 
 ```mermaid
 graph LR
-    subgraph UserRequest [User Action]
+    subgraph UserRequest["User Action"]
         Request["e.g., 'Validate Idea' on Project Page"]
     end
-    subgraph API_Layer [API Layer]
+    subgraph API_Layer["API Layer"]
         API["API Endpoint (`/api/projects/.../validation`)"]
     end
-    subgraph Service_Logic [Service Logic]
+    subgraph Service_Logic["Service Logic"]
         ProjectService["ProjectService (Checks Permissions, Billing)"]
     end
-    subgraph AI_Orchestration_Layer [AI Orchestration (`src/lib/server/ai`)]
-        Orchestrator["`idea-validation-orchestrator.js`"]
-        ProviderGemini["`gemini-service.js`"]
-        ProviderPerplexity["`perplexity-service.js`"]
-        ProviderBrave["`brave-search-service.js`"]
-        ProviderDomainR["`domain-r-service.js` (Called by Naming Orchestrator)"]
+    subgraph AI_Orchestration_Layer["AI Orchestration (`src/lib/server/ai`)"]
+        Orchestrator["idea-validation-orchestrator.js"]
+        ProviderGemini["gemini-service.js"]
+        ProviderPerplexity["perplexity-service.js"]
+        ProviderBrave["brave-search-service.js"]
+        ProviderDomainR["domain-r-service.js (Called by Naming Orchestrator)"]
     end
-    subgraph External_AI_Other_Services [External APIs]
+    subgraph External_AI_Other_Services["External APIs"]
         GeminiAPI[Gemini API]
         PerplexityAPI[Perplexity API]
         BraveAPI[Brave Search API]
         DomainRAPI[DomainR API]
     end
-    subgraph Async_Queue_Processing [Async Processing]
+    subgraph Async_Queue_Processing["Async Processing"]
         BullMQQueue["AI Task Queue (BullMQ)"]
         AIWorker["AI Task Worker"]
     end
-    subgraph DB_Storage_Layer [Data Storage]
+    subgraph DB_Storage_Layer["Data Storage"]
         AnalysisDB["Analysis Record (Database)"]
     end
 
-    Request --> API;
-    API --> ProjectService;
-    ProjectService --> Orchestrator;
-    Orchestrator -- Chooses Models/Services --> ProviderGemini;
-    Orchestrator -- Chooses Models/Services --> ProviderPerplexity;
-    Orchestrator -- Chooses Models/Services --> ProviderBrave;
-    ProviderGemini --> GeminiAPI;
-    ProviderPerplexity --> PerplexityAPI;
-    ProviderBrave --> BraveAPI;
-    %% Naming Orchestrator would call ProviderDomainR --> DomainRAPI
-    Orchestrator -- Long Task? --> BullMQQueue;
-    BullMQQueue --> AIWorker;
-    AIWorker -- Processes Job (calls AI Providers via Orchestrator logic or directly) --> AnalysisDB;
-    Orchestrator -- Short Task? --> AnalysisDB;
+    Request --> API
+    API --> ProjectService
+    ProjectService --> Orchestrator
+    Orchestrator -- Chooses Models/Services --> ProviderGemini
+    Orchestrator -- Chooses Models/Services --> ProviderPerplexity
+    Orchestrator -- Chooses Models/Services --> ProviderBrave
+    ProviderGemini --> GeminiAPI
+    ProviderPerplexity --> PerplexityAPI
+    ProviderBrave --> BraveAPI
+    Orchestrator -- Long Task? --> BullMQQueue
+    BullMQQueue --> AIWorker
+    AIWorker -- Processes Job --> AnalysisDB
+    Orchestrator -- Short Task? --> AnalysisDB
 ```
 
 ---
@@ -322,7 +321,7 @@ sequenceDiagram
     ClientApp->>SvelteKitAPI: HTTP Request (e.g., POST /api/projects)
     SvelteKitAPI->>AuthMiddleware: Process Request (via `hooks.server.js`)
     AuthMiddleware-->>SvelteKitAPI: User Authenticated (event.locals.user)
-    SvelteKitAPI->>PermissionMiddleware: Check Permissions (can be part of handler or separate middleware)
+    SvelteKitAPI->>PermissionMiddleware: Check Permissions
     PermissionMiddleware-->>SvelteKitAPI: Access Granted
     SvelteKitAPI->>HandlerFunction: Execute Handler(event)
     HandlerFunction->>CoreService: Call Service Method (e.g., createProject())
@@ -364,19 +363,19 @@ sequenceDiagram
 
 ```mermaid
 graph TD
-    subgraph Application_Layer [Application Layer]
+    subgraph Application_Layer["Application Layer"]
         SvelteKit["SvelteKit (API Endpoints, SSR if any)"]
         PrismaClient["Prisma Client (ORM)"]
         BullMQClient["BullMQ Client (Task Enqueuing)"]
         AuthLib["Authentication Logic"]
     end
-    subgraph Infrastructure_Services [Infrastructure & Backing Services]
+    subgraph Infrastructure_Services["Infrastructure & Backing Services"]
         NodeJS["Node.js Runtime"]
         PostgreSQL["PostgreSQL Database"]
         Redis["Redis (Cache & BullMQ Broker)"]
         BullMQWorkers["BullMQ Workers (Node.js Processes)"]
     end
-    subgraph External_APIs_Services [External APIs & Services]
+    subgraph External_APIs_Services["External APIs & Services"]
         CloudinaryAPI["Cloudinary API (Files)"]
         FlutterwaveAPI["Flutterwave API (Payments)"]
         PerplexityAPI["Perplexity Sonar API"]
@@ -389,32 +388,32 @@ graph TD
         JiraAPI["Jira API (Integrations)"]
         SlideSpeakAPI["SlideSpeak API (Pitch Decks)"]
     end
-    subgraph DevOps_Tooling [DevOps & Tooling]
+    subgraph DevOps_Tooling["DevOps & Tooling"]
         Docker["Docker (Containerization)"]
         Coolify["Coolify (Deployment PaaS - Example)"]
         Git["Git (Version Control)"]
         PackageManager["npm/pnpm/yarn (Package Management)"]
     end
 
-    SvelteKit --> NodeJS;
-    PrismaClient -- interacts with --> PostgreSQL;
-    BullMQClient -- enqueues to --> Redis;
-    BullMQWorkers -- consumes from --> Redis;
-    BullMQWorkers -- run on --> NodeJS;
-    AuthLib -- part of --> SvelteKit;
-    SvelteKit -- uses --> PrismaClient;
-    SvelteKit -- uses --> BullMQClient;
-    SvelteKit -- calls --> CloudinaryAPI;
-    SvelteKit -- calls --> FlutterwaveAPI;
-    SvelteKit -- calls --> PerplexityAPI;
-    SvelteKit -- calls --> GeminiAPI;
-    SvelteKit -- calls --> MistralAPI;
-    SvelteKit -- calls --> BraveSearchAPI;
-    SvelteKit -- calls --> DomainRAPI;
-    SvelteKit -- calls --> BrandFetchAPI;
-    SvelteKit -- calls --> GitHubAPI;
-    SvelteKit -- calls --> JiraAPI;
-    SvelteKit -- calls --> SlideSpeakAPI;
+    SvelteKit --> NodeJS
+    PrismaClient -- interacts with --> PostgreSQL
+    BullMQClient -- enqueues to --> Redis
+    BullMQWorkers -- consumes from --> Redis
+    BullMQWorkers -- run on --> NodeJS
+    AuthLib -- part of --> SvelteKit
+    SvelteKit -- uses --> PrismaClient
+    SvelteKit -- uses --> BullMQClient
+    SvelteKit -- calls --> CloudinaryAPI
+    SvelteKit -- calls --> FlutterwaveAPI
+    SvelteKit -- calls --> PerplexityAPI
+    SvelteKit -- calls --> GeminiAPI
+    SvelteKit -- calls --> MistralAPI
+    SvelteKit -- calls --> BraveSearchAPI
+    SvelteKit -- calls --> DomainRAPI
+    SvelteKit -- calls --> BrandFetchAPI
+    SvelteKit -- calls --> GitHubAPI
+    SvelteKit -- calls --> JiraAPI
+    SvelteKit -- calls --> SlideSpeakAPI
 ```
 
 ---
@@ -436,7 +435,7 @@ graph TD
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/your-username/Idea_lens-BE.git # Replace with actual repo URL
+    git clone https://github.com/lowkey-dev21/Idea_lens-BE.git # Replace with actual repo URL
     cd Idea_lens-BE
     ```
 
