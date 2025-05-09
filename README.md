@@ -1,24 +1,11 @@
-Okay, I've modified your provided README.md, aiming to:
-
-1.  **Integrate more detail and specifics** from our previous comprehensive discussion (like the detailed file structure, specific AI use cases, billing, BullMQ, Cloudinary, Flutterwave).
-2.  **Maintain the visual appeal and conciseness** of your new template.
-3.  **Ensure accuracy** with the refined directory structure you provided.
-4.  **Expand on key concepts** where your template was brief.
-5.  **Adjust Mermaid diagrams** to be more informative and aligned with the detailed architecture.
-
-Here's the revised README.md:
-
----
-
 # IdeaLens Backend
 
 ```
- ___  ______  _____       _      _____  _   _   _____
-|_ _||  __  \|  ___|     / \    |  ___|| \ | | / ____|
- | | | |  | || |___     / _ \   | |___ |  \| || (___
- | | | |  | ||  ___|   / ___ \  |  ___|| |\  | \___ \
- | | | |__| || |___   / /   \ \ | |___ | | | |  ___) |
-|___||______/|_____| /_/     \_\|_____||_| |_| |_____|
+___  ____  _____    _    _     _____  _   _  ____  
+|_ _||  _ \| ____|  / \  | |   | ____|| \ | |/ ___| 
+ | | | | | |  _|   / _ \ | |   |  _|  |  \| |\___ \ 
+ | | | |_| | |___ / ___ \| |___| |___ | |\  | ___) |
+|___||____/|_____/_/   \_\_____|_____||_| \_||____/
 ```
 
 **AI-Powered Software Development Assistant**
@@ -30,7 +17,7 @@ Here's the revised README.md:
 
 The **IdeaLens Backend** is the robust core powering our AI-driven Software Development Assistant. Built with **SvelteKit** for exceptional performance and developer experience, it orchestrates the entire development lifecycle. From validating raw ideas (documents, images, text) and conducting deep market research, to AI-assisted project management, progress tracking, and even generating pitch decks, IdeaLens integrates cutting-edge AI to redefine how software is envisioned and built.
 
-This backend manages authentication, multi-tenant workspaces, complex AI workflows, third-party integrations (GitHub, Jira, SlideSpeak), billing (via Flutterwave), asynchronous task processing (BullMQ), and secure file storage (Cloudinary).
+This backend manages authentication, multi-tenant workspaces, complex AI workflows, third-party integrations (GitHub, Jira, SlideSpeak, BrandFetch, DomainR), billing (via Flutterwave), asynchronous task processing (BullMQ), and secure file storage (Cloudinary).
 
 ---
 
@@ -73,7 +60,7 @@ graph TD
         Cloudinary["Cloudinary (File Storage)"]
         Flutterwave["Flutterwave (Payments)"]
         ExternalAI_APIs["AI APIs (Perplexity, Gemini, Mistral, Brave)"]
-        ExternalIntegration_APIs["Integration APIs (GitHub, Jira, SlideSpeak)"]
+        ExternalIntegration_APIs["Integration APIs (GitHub, Jira, SlideSpeak, BrandFetch, DomainR)"]
     end
 
     WebApp --> SvelteKitRoutes;
@@ -101,49 +88,63 @@ graph TD
 
 ## 📂 Directory Structure
 
-The backend is organized for clarity and separation of concerns within `src/lib/server/`:
+The backend is organized for clarity and separation of concerns:
 
 ```
-src/
-├── lib/
-│   ├── server/
-│   │   ├── ai/                 # AI orchestration and provider connections
-│   │   │   ├── orchestrators/  # High-level AI workflow logic (e.g., idea validation)
-│   │   │   └── providers/      # Specific AI API client services
-│   │   ├── auth/               # Authentication, authorization, session management
-│   │   ├── billing/            # Payment processing, plans, subscriptions (Flutterwave)
-│   │   ├── integrations/       # Logic for third-party tool integrations (GitHub, Jira)
-│   │   │   └── templates/      # Specific integration service logic
-│   │   ├── middleware/         # SvelteKit server hooks middleware
-│   │   ├── notifications/      # Email and in-app notification services
-│   │   ├── projects/           # Project, idea, task, file, analysis management
-│   │   ├── queue/              # BullMQ asynchronous task queues and workers
-│   │   │   ├── queues/
-│   │   │   └── workers/
-│   │   ├── services/           # Connectors for external services (Cloudinary, GitHub generic)
-│   │   ├── uploads/            # File upload handling service
-│   │   ├── user/               # User profile and settings management
-│   │   ├── workspace/          # Workspace creation, member management, settings
-│   │   └── utils/ (moved to src/lib/utils/server for server-specific)
-│   ├── shared/                 # Isomorphic code (constants, types)
-│   └── utils/                  # Utility functions
-│       ├── server/             # Server-specific utils (logger, prisma, redis, crypto)
-│       └── (shared utils like date, string, object)
-├── routes/
-│   ├── api/                    # SvelteKit API endpoint definitions
-│   │   ├── auth/
-│   │   ├── billing/
-│   │   ├── integrations/
-│   │   ├── notifications/
-│   │   ├── projects/           # Includes ideas, tasks, analyses endpoints
-│   │   ├── uploads/
-│   │   ├── user/
-│   │   ├── webhooks/           # Incoming webhooks (Flutterwave, GitHub)
-│   │   └── workspaces/
-├── hooks.server.js             # Server hooks (middleware pipeline)
-└── app.html                    # Root HTML template
+Idea_lens-BE/
+├── src/
+│   ├── lib/
+│   │   ├── server/
+│   │   │   ├── ai/                 # AI orchestration and provider connections
+│   │   │   │   ├── orchestrators/  # High-level AI workflow logic (e.g., idea validation)
+│   │   │   │   └── providers/      # Specific AI API client services (Perplexity, Gemini, etc.)
+│   │   │   ├── auth/               # Authentication, authorization, session management
+│   │   │   ├── billing/            # Payment processing, plans, subscriptions (Flutterwave)
+│   │   │   ├── integrations/       # Logic for third-party tool integrations (GitHub, Jira)
+│   │   │   │   └── templates/      # Specific integration service logic
+│   │   │   ├── middleware/         # SvelteKit server hooks middleware
+│   │   │   ├── notifications/      # Email and in-app notification services
+│   │   │   ├── projects/           # Project, idea, task, file, analysis management
+│   │   │   ├── queue/              # BullMQ asynchronous task queues and workers
+│   │   │   │   ├── queues/
+│   │   │   │   └── workers/
+│   │   │   ├── services/           # Connectors for external services (Cloudinary, GitHub generic, BrandFetch, DomainR)
+│   │   │   ├── uploads/            # File upload handling service
+│   │   │   ├── user/               # User profile and settings management
+│   │   │   └── workspace/          # Workspace creation, member management, settings
+│   │   ├── shared/                 # Isomorphic code (constants, types)
+│   │   └── utils/                  # Utility functions (date.js, string.js, object.js)
+│   │       └── server/             # Server-specific utils (logger, prisma, redis, crypto, bullmq-config)
+│   ├── routes/
+│   │   ├── api/                    # SvelteKit API endpoint definitions
+│   │   │   ├── auth/
+│   │   │   ├── billing/
+│   │   │   ├── integrations/
+│   │   │   ├── notifications/
+│   │   │   ├── projects/           # Includes ideas, tasks, analyses endpoints
+│   │   │   ├── uploads/
+│   │   │   ├── user/
+│   │   │   ├── webhooks/           # Incoming webhooks (Flutterwave, GitHub)
+│   │   │   └── workspaces/
+│   │   └── +page.svelte            # (Likely a simple landing or status page for root)
+│   ├── app.d.ts
+│   ├── app.html
+│   └── hooks.server.js             # Server hooks (middleware pipeline definition)
+├── static/                         # Static assets
+├── tests/                          # Unit and integration tests (to be added)
+├── prisma/
+│   ├── migrations/
+│   └── schema.prisma
+├── .env.example
+├── .env
+├── .gitignore
+├── package.json
+├── pnpm-lock.yaml (or yarn.lock / package-lock.json)
+├── tsconfig.json
+├── svelte.config.js
+└── README.md
 ```
-*(For the full detailed structure, please refer to the project's file tree.)*
+*(This provides a more detailed view of the expected root and src structure.)*
 
 ---
 
@@ -158,14 +159,14 @@ src/
 ```mermaid
 graph LR
     User --> LoginOptions{Login/Register Options}
-    LoginOptions -- Email/Pass --> AuthSvc1[AuthService: Credentials]
-    LoginOptions -- OAuth --> AuthSvc2[AuthService: OAuth Flow]
-    AuthSvc1 --> Session[Session Management]
-    AuthSvc2 --> AccountSvc[AccountService: Link/Create] --> Session
-    Session --> UserSession[User Session Active]
-    UserSession -- API Request --> Middleware[Auth Middleware]
-    Middleware -- Valid Session --> AccessCtrl[RBAC: Workspace/Project Permissions]
-    AccessCtrl -- Granted --> API_Resource[Access API Resource]
+    LoginOptions -- Email/Pass --> HandleCredentialsLogin[AuthService: Credentials]
+    LoginOptions -- OAuth --> HandleOAuthFlow[AuthService: OAuth Flow]
+    HandleCredentialsLogin --> SessionManagement[Session Management]
+    HandleOAuthFlow --> AccountLinkOrCreate[AccountService: Link/Create] --> SessionManagement
+    SessionManagement --> UserSessionActive[User Session Active]
+    UserSessionActive -- API Request --> AuthMiddlewareCheck[Auth Middleware]
+    AuthMiddlewareCheck -- Valid Session --> RBACCheck[RBAC: Workspace/Project Permissions]
+    RBACCheck -- Granted --> AccessAPIResource[Access API Resource]
 ```
 
 ---
@@ -180,17 +181,17 @@ graph LR
 graph TD
     User --> CreateWorkspace[Create Workspace]
     CreateWorkspace -- "First project is free" --> W[Workspace]
-    W --> CreateProject[Create Project P1 (Free)]
+    W --> CreateProjectP1[Create Project P1 (Free)]
     W --> InviteMembers[Invite Members w/ Roles]
-    W --> ConfigureSettings[Workspace Settings]
-    W --> Billing[Billing: Flutterwave]
-    Billing -- "For subsequent projects/features" --> OneTimePay[One-Time Payment for Project P2]
-    Billing -- "For ongoing access" --> Subscription[Subscription Plan]
-    Subscription --> ProjectLimits[Project & Feature Limits]
-    W --> ProjectP2[Create Project P2 (Paid/Subscribed)]
-    ProjectP2 --> Ideas[Manage Ideas] --> UploadFiles[Upload Supporting Files (Cloudinary)]
-    ProjectP2 --> Tasks[Manage Tasks]
-    ProjectP2 --> Analyses[Run AI Analyses]
+    W --> ConfigureWorkspaceSettings[Workspace Settings]
+    W --> WorkspaceBilling[Billing: Flutterwave]
+    WorkspaceBilling -- "For subsequent projects/features" --> OneTimePaymentForP2[One-Time Payment for Project P2]
+    WorkspaceBilling -- "For ongoing access" --> SubscriptionPlan[Subscription Plan]
+    SubscriptionPlan --> ProjectAndFeatureLimits[Project & Feature Limits]
+    W --> CreateProjectP2[Create Project P2 (Paid/Subscribed)]
+    CreateProjectP2 --> ManageIdeas[Manage Ideas] --> UploadSupportingFiles[Upload Supporting Files (Cloudinary)]
+    CreateProjectP2 --> ManageTasks[Manage Tasks]
+    CreateProjectP2 --> RunAIAnalyses[Run AI Analyses]
 ```
 
 ---
@@ -201,7 +202,10 @@ IdeaLens intelligently leverages a suite of AI models for diverse tasks, managed
 *   **Perplexity Sonar API**: Deep, sourced research; market facts; competitor solution details.
 *   **Google Gemini 1.5/2.5**: Comprehensive idea validation; SWOT analysis; complex document understanding; code review summaries; strategic advice.
 *   **Mistral AI Models**: Name generation; quick text summaries; brainstorming; task breakdown.
-*   **Brave Search API**: Real-time domain checks; emerging trend discovery; augmenting research with current web data.
+*   **Brave Search API**: Real-time web data; emerging trend discovery; augmenting research.
+*   **Other Services**:
+    *   **DomainR**: Domain name availability checks.
+    *   **BrandFetch**: Fetching company logos from URLs.
 
 ```mermaid
 graph LR
@@ -214,37 +218,40 @@ graph LR
     subgraph Service_Logic [Service Logic]
         ProjectService["ProjectService (Checks Permissions, Billing)"]
     end
-    subgraph AI_Orchestration [AI Orchestration (`src/lib/server/ai`)]
+    subgraph AI_Orchestration_Layer [AI Orchestration (`src/lib/server/ai`)]
         Orchestrator["`idea-validation-orchestrator.js`"]
         ProviderGemini["`gemini-service.js`"]
         ProviderPerplexity["`perplexity-service.js`"]
         ProviderBrave["`brave-search-service.js`"]
+        ProviderDomainR["`domain-r-service.js` (Called by Naming Orchestrator)"]
     end
-    subgraph External_AI [External AI APIs]
+    subgraph External_AI_Other_Services [External APIs]
         GeminiAPI[Gemini API]
         PerplexityAPI[Perplexity API]
         BraveAPI[Brave Search API]
+        DomainRAPI[DomainR API]
     end
-    subgraph Async_Queue [Async Processing]
+    subgraph Async_Queue_Processing [Async Processing]
         BullMQQueue["AI Task Queue (BullMQ)"]
         AIWorker["AI Task Worker"]
     end
-    subgraph DB_Storage [Data Storage]
+    subgraph DB_Storage_Layer [Data Storage]
         AnalysisDB["Analysis Record (Database)"]
     end
 
     Request --> API;
     API --> ProjectService;
     ProjectService --> Orchestrator;
-    Orchestrator -- Chooses Models --> ProviderGemini;
-    Orchestrator -- Chooses Models --> ProviderPerplexity;
-    Orchestrator -- Chooses Models --> ProviderBrave;
+    Orchestrator -- Chooses Models/Services --> ProviderGemini;
+    Orchestrator -- Chooses Models/Services --> ProviderPerplexity;
+    Orchestrator -- Chooses Models/Services --> ProviderBrave;
     ProviderGemini --> GeminiAPI;
     ProviderPerplexity --> PerplexityAPI;
     ProviderBrave --> BraveAPI;
+    %% Naming Orchestrator would call ProviderDomainR --> DomainRAPI
     Orchestrator -- Long Task? --> BullMQQueue;
     BullMQQueue --> AIWorker;
-    AIWorker -- Processes Job, calls Orchestrator --> AnalysisDB;
+    AIWorker -- Processes Job (calls AI Providers via Orchestrator logic or directly) --> AnalysisDB;
     Orchestrator -- Short Task? --> AnalysisDB;
 ```
 
@@ -276,11 +283,11 @@ mindmap
       Market & Competitor Intelligence
         Automated Market Research (Perplexity, Brave)
         Target Audience Identification
-        Competitor Analysis & Tracking
+        Competitor Analysis & Tracking (Logos via BrandFetch)
         AI-Generated SWOT Analysis
       Naming & Branding
         AI Name Generation (Mistral)
-        Domain Availability Check (Brave Search)
+        Domain Availability Check (DomainR)
       Project & Task Management
         AI-Assisted Task Breakdown
         Internal Task Board
@@ -305,7 +312,7 @@ sequenceDiagram
     participant SvelteKitAPI as SvelteKit API Endpoint
     participant AuthMiddleware as Authentication Middleware
     participant PermissionMiddleware as Permission Middleware
-    participant HandlerFunction as Resource Handler (from `*-routes.js`)
+    participant HandlerFunction as Resource Handler (e.g., in `+server.js`)
     participant CoreService as Core Service (e.g., ProjectService)
     participant AIOrchestrator as AI Orchestrator (if applicable)
     participant BullMQWorker as BullMQ Worker (if async)
@@ -313,9 +320,9 @@ sequenceDiagram
     participant ExternalService as External Service (AI, Cloudinary, etc.)
 
     ClientApp->>SvelteKitAPI: HTTP Request (e.g., POST /api/projects)
-    SvelteKitAPI->>AuthMiddleware: Process Request
+    SvelteKitAPI->>AuthMiddleware: Process Request (via `hooks.server.js`)
     AuthMiddleware-->>SvelteKitAPI: User Authenticated (event.locals.user)
-    SvelteKitAPI->>PermissionMiddleware: Check Permissions
+    SvelteKitAPI->>PermissionMiddleware: Check Permissions (can be part of handler or separate middleware)
     PermissionMiddleware-->>SvelteKitAPI: Access Granted
     SvelteKitAPI->>HandlerFunction: Execute Handler(event)
     HandlerFunction->>CoreService: Call Service Method (e.g., createProject())
@@ -325,7 +332,7 @@ sequenceDiagram
         CoreService-->>HandlerFunction: Result
     else Asynchronous AI/Integration Task
         CoreService->>AIOrchestrator: Initiate AI Task
-        AIOrchestrator-->>BullMQWorker: Enqueue Job
+        AIOrchestrator-->>BullMQWorker: Enqueue Job (via `ai-task-queue.js`)
         BullMQWorker-->>ExternalService: Call External API
         ExternalService-->>BullMQWorker: Response
         BullMQWorker-->>Database_Prisma: Store Results
@@ -340,24 +347,25 @@ sequenceDiagram
 ## 🛠️ Tech Stack
 
 *   **Backend Framework**: SvelteKit
-*   **Runtime**: Node.js (v18+)
+*   **Runtime**: Node.js (v18.x or v20.x recommended)
 *   **Database**: PostgreSQL
 *   **ORM**: Prisma
 *   **Authentication**: Custom (Lucia-inspired, session-based) + OAuth
 *   **AI APIs**: Perplexity Sonar, Google Gemini, Mistral AI, Brave Search
+*   **Supporting Services**: DomainR (Domain Check), BrandFetch (Logo Fetching)
 *   **File Storage**: Cloudinary
 *   **Payment Gateway**: Flutterwave
 *   **Asynchronous Tasks**: BullMQ with Redis
 *   **Caching**: Redis
-*   **Validation**: Zod
-*   **Logging**: Pino
+*   **Validation**: Zod (or similar, e.g., Valibot)
+*   **Logging**: Pino (or similar structured logger)
 *   **DevOps (Example)**: Docker, Coolify (or other PaaS/IaaS)
 *   **(Frontend)**: Svelte, TailwindCSS (assumed, but this is backend focused)
 
 ```mermaid
 graph TD
     subgraph Application_Layer [Application Layer]
-        SvelteKit["SvelteKit (API Endpoints, SSR)"]
+        SvelteKit["SvelteKit (API Endpoints, SSR if any)"]
         PrismaClient["Prisma Client (ORM)"]
         BullMQClient["BullMQ Client (Task Enqueuing)"]
         AuthLib["Authentication Logic"]
@@ -368,13 +376,15 @@ graph TD
         Redis["Redis (Cache & BullMQ Broker)"]
         BullMQWorkers["BullMQ Workers (Node.js Processes)"]
     end
-    subgraph External_APIs [External APIs & Services]
+    subgraph External_APIs_Services [External APIs & Services]
         CloudinaryAPI["Cloudinary API (Files)"]
         FlutterwaveAPI["Flutterwave API (Payments)"]
         PerplexityAPI["Perplexity Sonar API"]
         GeminiAPI["Google Gemini API"]
         MistralAPI["Mistral AI API"]
         BraveSearchAPI["Brave Search API"]
+        DomainRAPI["DomainR API"]
+        BrandFetchAPI["BrandFetch API"]
         GitHubAPI["GitHub API (Integrations)"]
         JiraAPI["Jira API (Integrations)"]
         SlideSpeakAPI["SlideSpeak API (Pitch Decks)"]
@@ -400,6 +410,8 @@ graph TD
     SvelteKit -- calls --> GeminiAPI;
     SvelteKit -- calls --> MistralAPI;
     SvelteKit -- calls --> BraveSearchAPI;
+    SvelteKit -- calls --> DomainRAPI;
+    SvelteKit -- calls --> BrandFetchAPI;
     SvelteKit -- calls --> GitHubAPI;
     SvelteKit -- calls --> JiraAPI;
     SvelteKit -- calls --> SlideSpeakAPI;
@@ -416,7 +428,7 @@ graph TD
 *   **PostgreSQL**: A running instance (local or remote).
 *   **Redis**: A running instance (local or remote) for caching and BullMQ.
 *   **Docker & Docker Compose**: Optional, for containerized local development.
-*   **API Keys**: For Cloudinary, Flutterwave, Perplexity, Gemini, Mistral, Brave Search, GitHub (OAuth App), etc.
+*   **API Keys**: For Cloudinary, Flutterwave, Perplexity, Gemini, Mistral, Brave Search, DomainR, BrandFetch, GitHub (OAuth App), SlideSpeak, etc.
 
 ---
 
@@ -424,13 +436,13 @@ graph TD
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/lowkey-dev21/Idea_lens-BE.git
-    cd idealens-backend
+    git clone https://github.com/your-username/Idea_lens-BE.git # Replace with actual repo URL
+    cd Idea_lens-BE
     ```
 
 2.  **Install Dependencies:**
     ```bash
-    npm install
+    pnpm install # Or npm install / yarn install
     ```
 
 3.  **Configure Environment Variables:**
@@ -445,33 +457,40 @@ graph TD
         *   `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
         *   `FLUTTERWAVE_PUBLIC_KEY`, `FLUTTERWAVE_SECRET_KEY`, `FLUTTERWAVE_ENCRYPTION_KEY`
         *   `PERPLEXITY_API_KEY`, `GEMINI_API_KEY`, `MISTRAL_API_KEY`
+        *   `BRAVE_SEARCH_API_KEY`
+        *   `DOMAINR_API_KEY` (if applicable)
+        *   `BRANDFETCH_API_KEY` (if applicable)
         *   `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (for OAuth)
+        *   `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` (for OAuth)
+        *   `SLIDESPEAK_API_KEY` (if applicable)
         *   `SESSION_SECRET` (a long, random string for session signing)
+        *   `BASE_URL` (e.g., `http://localhost:5173` for dev, `https://yourdomain.com` for prod)
 
 4.  **Initialize Database:**
     *   Ensure your PostgreSQL server is running and accessible via `DATABASE_URL`.
     *   Run Prisma migrations to create the database schema:
         ```bash
-        npm prisma migrate dev
+        pnpm prisma migrate dev # Or npx prisma migrate dev
         ```
     *   (Optional) Seed initial data if a seed script is provided:
         ```bash
-        npm prisma db seed
+        pnpm prisma db seed # Or npx prisma db seed
         ```
 
 5.  **Run Development Server:**
-    *   This starts the SvelteKit dev server and typically your BullMQ workers (if configured in `dev` script).
+    *   This starts the SvelteKit dev server and your BullMQ workers (ensure your `package.json` `dev` script handles both, e.g., using `concurrently`).
         ```bash
-        npm run dev
+        pnpm run dev
         ```
-    *   The API will usually be available at `http://localhost:5173` (or your configured port).
+    *   The API will usually be available at `http://localhost:5173` (or your configured SvelteKit port).
 
 ---
 
 
 ## 📜 License
 
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License**. See the `LICENSE` file for details.
+*(To be created: Create a LICENSE file with the MIT License text.)*
 
 ---
 
@@ -479,7 +498,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 We welcome contributions from the community! Whether it's bug reports, feature requests, documentation improvements, or code contributions, your help is appreciated.
 
-Please read our [CONTRIBUTING.md](CONTRIBUTING.md) (to be created) for guidelines on how to contribute, coding standards, and the pull request process.
+Please read our `CONTRIBUTING.md` (to be created) for guidelines on how to contribute, coding standards, and the pull request process.
 
 ---
 
@@ -488,5 +507,3 @@ Please read our [CONTRIBUTING.md](CONTRIBUTING.md) (to be created) for guideline
 *   **Star the Repo 🌟**: If you find IdeaLens interesting or useful!
 *   **Watch for Updates**: Follow the repository for new releases and developments.
 *   **(Future)**: Links to official documentation, community forum, or social media.
-
----
