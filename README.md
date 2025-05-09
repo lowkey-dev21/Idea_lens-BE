@@ -144,7 +144,6 @@ Idea_lens-BE/
 ├── svelte.config.js
 └── README.md
 ```
-*(This provides a more detailed view of the expected root and src structure.)*
 
 ---
 
@@ -179,6 +178,7 @@ graph LR
 
 ```mermaid
 graph TD
+    graph TD
     User --> CreateWorkspace[Create Workspace]
     CreateWorkspace -- "First project is free" --> W[Workspace]
     W --> CreateProjectP1[Create Project P1 Free]
