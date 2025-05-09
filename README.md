@@ -178,7 +178,6 @@ graph LR
 
 ```mermaid
 graph TD
-    graph TD
     User --> CreateWorkspace[Create Workspace]
     CreateWorkspace -- "First project is free" --> W[Workspace]
     W --> CreateProjectP1[Create Project P1 Free]
@@ -189,9 +188,11 @@ graph TD
     WorkspaceBilling -- "For ongoing access" --> SubscriptionPlan[Subscription Plan]
     SubscriptionPlan --> ProjectAndFeatureLimits[Project & Feature Limits]
     W --> CreateProjectP2[Create Project P2 Paid/Subscribed]
-    CreateProjectP2 --> ManageIdeas[Manage Ideas] --> UploadSupportingFiles[Upload Supporting Files Cloudinary]
+    CreateProjectP2 --> ManageIdeas[Manage Ideas]
+    ManageIdeas --> UploadSupportingFiles[Upload Supporting Files Cloudinary]
     CreateProjectP2 --> ManageTasks[Manage Tasks]
     CreateProjectP2 --> RunAIAnalyses[Run AI Analyses]
+
 ```
 
 ---
