@@ -146,13 +146,13 @@ exports.Prisma.OAuthAccountScalarFieldEnum = {
 
 exports.Prisma.SessionScalarFieldEnum = {
   id: 'id',
+  sessionToken: 'sessionToken',
   userId: 'userId',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   ipAddress: 'ipAddress',
-  userAgent: 'userAgent',
-  sessionToken: 'sessionToken'
+  userAgent: 'userAgent'
 };
 
 exports.Prisma.EmailVerificationTokenScalarFieldEnum = {
@@ -292,6 +292,7 @@ exports.Prisma.ProjectScalarFieldEnum = {
   description: 'description',
   workspaceId: 'workspaceId',
   createdByUserId: 'createdByUserId',
+  projectStatus: 'projectStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -322,10 +323,12 @@ exports.Prisma.ProjectFileScalarFieldEnum = {
   fileName: 'fileName',
   fileType: 'fileType',
   sizeBytes: 'sizeBytes',
+  status: 'status',
   storageProvider: 'storageProvider',
   providerFileId: 'providerFileId',
   url: 'url',
   description: 'description',
+  metadata: 'metadata',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -465,6 +468,26 @@ exports.Prisma.ProjectPipelineRunScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.DeliverableScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  title: 'title',
+  description: 'description',
+  content: 'content',
+  format: 'format',
+  type: 'type',
+  status: 'status',
+  version: 'version',
+  projectFileId: 'projectFileId',
+  externalUrl: 'externalUrl',
+  generatedByAnalysisId: 'generatedByAnalysisId',
+  generatedByPipelineRunId: 'generatedByPipelineRunId',
+  createdByUserId: 'createdByUserId',
+  lastUpdatedByUserId: 'lastUpdatedByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ProjectIntegrationScalarFieldEnum = {
   id: 'id',
   projectId: 'projectId',
@@ -483,6 +506,23 @@ exports.Prisma.ProjectIntegrationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.GitHubAIActionLogScalarFieldEnum = {
+  id: 'id',
+  projectIntegrationId: 'projectIntegrationId',
+  projectId: 'projectId',
+  analysisId: 'analysisId',
+  actionType: 'actionType',
+  githubEntityType: 'githubEntityType',
+  githubEntityId: 'githubEntityId',
+  githubEntityUrl: 'githubEntityUrl',
+  githubCommentId: 'githubCommentId',
+  content: 'content',
+  status: 'status',
+  errorMessage: 'errorMessage',
+  triggeredBy: 'triggeredBy',
+  performedAt: 'performedAt'
+};
+
 exports.Prisma.NotificationScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -494,6 +534,19 @@ exports.Prisma.NotificationScalarFieldEnum = {
   isEmailed: 'isEmailed',
   entityId: 'entityId',
   entityType: 'entityType',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserFeedbackScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  rating: 'rating',
+  comment: 'comment',
+  metadata: 'metadata',
+  isResolved: 'isResolved',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -598,6 +651,15 @@ exports.IdeaStatus = exports.$Enums.IdeaStatus = {
   ARCHIVED: 'ARCHIVED'
 };
 
+exports.FileStatus = exports.$Enums.FileStatus = {
+  UPLOADING: 'UPLOADING',
+  ACTIVE: 'ACTIVE',
+  ARCHIVED: 'ARCHIVED',
+  DELETION_PENDING: 'DELETION_PENDING',
+  DELETED: 'DELETED',
+  ERROR: 'ERROR'
+};
+
 exports.AnalysisType = exports.$Enums.AnalysisType = {
   IDEA_VALIDATION: 'IDEA_VALIDATION',
   IDEA_REFINEMENT: 'IDEA_REFINEMENT',
@@ -639,6 +701,16 @@ exports.TaskPriority = exports.$Enums.TaskPriority = {
   URGENT: 'URGENT'
 };
 
+exports.DeliverableStatus = exports.$Enums.DeliverableStatus = {
+  DRAFT: 'DRAFT',
+  QUEUED: 'QUEUED',
+  GENERATING: 'GENERATING',
+  UPDATING: 'UPDATING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  ARCHIVED: 'ARCHIVED'
+};
+
 exports.IntegrationProvider = exports.$Enums.IntegrationProvider = {
   GITHUB: 'GITHUB',
   JIRA: 'JIRA'
@@ -650,6 +722,28 @@ exports.IntegrationSyncStatus = exports.$Enums.IntegrationSyncStatus = {
   SUCCESS: 'SUCCESS',
   FAILED: 'FAILED',
   NEEDS_REAUTH: 'NEEDS_REAUTH'
+};
+
+exports.GitHubAIActionType = exports.$Enums.GitHubAIActionType = {
+  PR_REVIEW_COMMENT: 'PR_REVIEW_COMMENT',
+  PR_SUMMARY_COMMENT: 'PR_SUMMARY_COMMENT',
+  ISSUE_COMMENT: 'ISSUE_COMMENT',
+  ISSUE_AUTO_CLOSE: 'ISSUE_AUTO_CLOSE',
+  ISSUE_AUTO_TAG: 'ISSUE_AUTO_TAG',
+  PR_AUTO_TAG: 'PR_AUTO_TAG'
+};
+
+exports.GitHubEntityType = exports.$Enums.GitHubEntityType = {
+  PULL_REQUEST: 'PULL_REQUEST',
+  ISSUE: 'ISSUE',
+  COMMIT: 'COMMIT'
+};
+
+exports.ActionStatus = exports.$Enums.ActionStatus = {
+  PENDING: 'PENDING',
+  EXECUTED: 'EXECUTED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED'
 };
 
 exports.NotificationType = exports.$Enums.NotificationType = {
@@ -670,6 +764,9 @@ exports.NotificationType = exports.$Enums.NotificationType = {
   PIPELINE_RUN_STARTED: 'PIPELINE_RUN_STARTED',
   PIPELINE_RUN_COMPLETED: 'PIPELINE_RUN_COMPLETED',
   PIPELINE_RUN_FAILED: 'PIPELINE_RUN_FAILED',
+  DELIVERABLE_GENERATED: 'DELIVERABLE_GENERATED',
+  DELIVERABLE_UPDATED: 'DELIVERABLE_UPDATED',
+  DELIVERABLE_GENERATION_FAILED: 'DELIVERABLE_GENERATION_FAILED',
   TASK_CREATED: 'TASK_CREATED',
   TASK_ASSIGNED: 'TASK_ASSIGNED',
   TASK_STATUS_CHANGED: 'TASK_STATUS_CHANGED',
@@ -679,6 +776,8 @@ exports.NotificationType = exports.$Enums.NotificationType = {
   INTEGRATION_DISCONNECTED: 'INTEGRATION_DISCONNECTED',
   INTEGRATION_SYNC_COMPLETE: 'INTEGRATION_SYNC_COMPLETE',
   INTEGRATION_SYNC_FAILED: 'INTEGRATION_SYNC_FAILED',
+  GITHUB_AI_ACTION_SUCCESS: 'GITHUB_AI_ACTION_SUCCESS',
+  GITHUB_AI_ACTION_FAILED: 'GITHUB_AI_ACTION_FAILED',
   SUBSCRIPTION_STARTED: 'SUBSCRIPTION_STARTED',
   SUBSCRIPTION_CANCELED: 'SUBSCRIPTION_CANCELED',
   SUBSCRIPTION_ENDING_SOON: 'SUBSCRIPTION_ENDING_SOON',
@@ -686,6 +785,17 @@ exports.NotificationType = exports.$Enums.NotificationType = {
   PAYMENT_FAILED: 'PAYMENT_FAILED',
   INVOICE_READY: 'INVOICE_READY',
   GENERAL_ANNOUNCEMENT: 'GENERAL_ANNOUNCEMENT'
+};
+
+exports.FeedbackEntityType = exports.$Enums.FeedbackEntityType = {
+  ANALYSIS_RESULT: 'ANALYSIS_RESULT',
+  NAME_SUGGESTION: 'NAME_SUGGESTION',
+  TASK_SUGGESTION: 'TASK_SUGGESTION',
+  GITHUB_AI_ACTION: 'GITHUB_AI_ACTION',
+  DELIVERABLE: 'DELIVERABLE',
+  PITCH_DECK_CONTENT: 'PITCH_DECK_CONTENT',
+  PLATFORM_FEATURE: 'PLATFORM_FEATURE',
+  GENERAL: 'GENERAL'
 };
 
 exports.Prisma.ModelName = {
@@ -716,8 +826,11 @@ exports.Prisma.ModelName = {
   ProductivityMetric: 'ProductivityMetric',
   PipelineTemplate: 'PipelineTemplate',
   ProjectPipelineRun: 'ProjectPipelineRun',
+  Deliverable: 'Deliverable',
   ProjectIntegration: 'ProjectIntegration',
-  Notification: 'Notification'
+  GitHubAIActionLog: 'GitHubAIActionLog',
+  Notification: 'Notification',
+  UserFeedback: 'UserFeedback'
 };
 
 /**

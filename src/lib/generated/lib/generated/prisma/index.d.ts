@@ -149,15 +149,30 @@ export type PipelineTemplate = $Result.DefaultSelection<Prisma.$PipelineTemplate
  */
 export type ProjectPipelineRun = $Result.DefaultSelection<Prisma.$ProjectPipelineRunPayload>
 /**
+ * Model Deliverable
+ * 
+ */
+export type Deliverable = $Result.DefaultSelection<Prisma.$DeliverablePayload>
+/**
  * Model ProjectIntegration
  * 
  */
 export type ProjectIntegration = $Result.DefaultSelection<Prisma.$ProjectIntegrationPayload>
 /**
+ * Model GitHubAIActionLog
+ * 
+ */
+export type GitHubAIActionLog = $Result.DefaultSelection<Prisma.$GitHubAIActionLogPayload>
+/**
  * Model Notification
  * 
  */
 export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
+/**
+ * Model UserFeedback
+ * 
+ */
+export type UserFeedback = $Result.DefaultSelection<Prisma.$UserFeedbackPayload>
 
 /**
  * Enums
@@ -325,6 +340,9 @@ export const NotificationType: {
   PIPELINE_RUN_STARTED: 'PIPELINE_RUN_STARTED',
   PIPELINE_RUN_COMPLETED: 'PIPELINE_RUN_COMPLETED',
   PIPELINE_RUN_FAILED: 'PIPELINE_RUN_FAILED',
+  DELIVERABLE_GENERATED: 'DELIVERABLE_GENERATED',
+  DELIVERABLE_UPDATED: 'DELIVERABLE_UPDATED',
+  DELIVERABLE_GENERATION_FAILED: 'DELIVERABLE_GENERATION_FAILED',
   TASK_CREATED: 'TASK_CREATED',
   TASK_ASSIGNED: 'TASK_ASSIGNED',
   TASK_STATUS_CHANGED: 'TASK_STATUS_CHANGED',
@@ -334,6 +352,8 @@ export const NotificationType: {
   INTEGRATION_DISCONNECTED: 'INTEGRATION_DISCONNECTED',
   INTEGRATION_SYNC_COMPLETE: 'INTEGRATION_SYNC_COMPLETE',
   INTEGRATION_SYNC_FAILED: 'INTEGRATION_SYNC_FAILED',
+  GITHUB_AI_ACTION_SUCCESS: 'GITHUB_AI_ACTION_SUCCESS',
+  GITHUB_AI_ACTION_FAILED: 'GITHUB_AI_ACTION_FAILED',
   SUBSCRIPTION_STARTED: 'SUBSCRIPTION_STARTED',
   SUBSCRIPTION_CANCELED: 'SUBSCRIPTION_CANCELED',
   SUBSCRIPTION_ENDING_SOON: 'SUBSCRIPTION_ENDING_SOON',
@@ -380,6 +400,76 @@ export const InviteStatus: {
 };
 
 export type InviteStatus = (typeof InviteStatus)[keyof typeof InviteStatus]
+
+
+export const GitHubAIActionType: {
+  PR_REVIEW_COMMENT: 'PR_REVIEW_COMMENT',
+  PR_SUMMARY_COMMENT: 'PR_SUMMARY_COMMENT',
+  ISSUE_COMMENT: 'ISSUE_COMMENT',
+  ISSUE_AUTO_CLOSE: 'ISSUE_AUTO_CLOSE',
+  ISSUE_AUTO_TAG: 'ISSUE_AUTO_TAG',
+  PR_AUTO_TAG: 'PR_AUTO_TAG'
+};
+
+export type GitHubAIActionType = (typeof GitHubAIActionType)[keyof typeof GitHubAIActionType]
+
+
+export const GitHubEntityType: {
+  PULL_REQUEST: 'PULL_REQUEST',
+  ISSUE: 'ISSUE',
+  COMMIT: 'COMMIT'
+};
+
+export type GitHubEntityType = (typeof GitHubEntityType)[keyof typeof GitHubEntityType]
+
+
+export const ActionStatus: {
+  PENDING: 'PENDING',
+  EXECUTED: 'EXECUTED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED'
+};
+
+export type ActionStatus = (typeof ActionStatus)[keyof typeof ActionStatus]
+
+
+export const FeedbackEntityType: {
+  ANALYSIS_RESULT: 'ANALYSIS_RESULT',
+  NAME_SUGGESTION: 'NAME_SUGGESTION',
+  TASK_SUGGESTION: 'TASK_SUGGESTION',
+  GITHUB_AI_ACTION: 'GITHUB_AI_ACTION',
+  DELIVERABLE: 'DELIVERABLE',
+  PITCH_DECK_CONTENT: 'PITCH_DECK_CONTENT',
+  PLATFORM_FEATURE: 'PLATFORM_FEATURE',
+  GENERAL: 'GENERAL'
+};
+
+export type FeedbackEntityType = (typeof FeedbackEntityType)[keyof typeof FeedbackEntityType]
+
+
+export const FileStatus: {
+  UPLOADING: 'UPLOADING',
+  ACTIVE: 'ACTIVE',
+  ARCHIVED: 'ARCHIVED',
+  DELETION_PENDING: 'DELETION_PENDING',
+  DELETED: 'DELETED',
+  ERROR: 'ERROR'
+};
+
+export type FileStatus = (typeof FileStatus)[keyof typeof FileStatus]
+
+
+export const DeliverableStatus: {
+  DRAFT: 'DRAFT',
+  QUEUED: 'QUEUED',
+  GENERATING: 'GENERATING',
+  UPDATING: 'UPDATING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  ARCHIVED: 'ARCHIVED'
+};
+
+export type DeliverableStatus = (typeof DeliverableStatus)[keyof typeof DeliverableStatus]
 
 }
 
@@ -454,6 +544,30 @@ export const MemberInvitePolicy: typeof $Enums.MemberInvitePolicy
 export type InviteStatus = $Enums.InviteStatus
 
 export const InviteStatus: typeof $Enums.InviteStatus
+
+export type GitHubAIActionType = $Enums.GitHubAIActionType
+
+export const GitHubAIActionType: typeof $Enums.GitHubAIActionType
+
+export type GitHubEntityType = $Enums.GitHubEntityType
+
+export const GitHubEntityType: typeof $Enums.GitHubEntityType
+
+export type ActionStatus = $Enums.ActionStatus
+
+export const ActionStatus: typeof $Enums.ActionStatus
+
+export type FeedbackEntityType = $Enums.FeedbackEntityType
+
+export const FeedbackEntityType: typeof $Enums.FeedbackEntityType
+
+export type FileStatus = $Enums.FileStatus
+
+export const FileStatus: typeof $Enums.FileStatus
+
+export type DeliverableStatus = $Enums.DeliverableStatus
+
+export const DeliverableStatus: typeof $Enums.DeliverableStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -851,6 +965,16 @@ export class PrismaClient<
   get projectPipelineRun(): Prisma.ProjectPipelineRunDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.deliverable`: Exposes CRUD operations for the **Deliverable** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Deliverables
+    * const deliverables = await prisma.deliverable.findMany()
+    * ```
+    */
+  get deliverable(): Prisma.DeliverableDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.projectIntegration`: Exposes CRUD operations for the **ProjectIntegration** model.
     * Example usage:
     * ```ts
@@ -861,6 +985,16 @@ export class PrismaClient<
   get projectIntegration(): Prisma.ProjectIntegrationDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.gitHubAIActionLog`: Exposes CRUD operations for the **GitHubAIActionLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GitHubAIActionLogs
+    * const gitHubAIActionLogs = await prisma.gitHubAIActionLog.findMany()
+    * ```
+    */
+  get gitHubAIActionLog(): Prisma.GitHubAIActionLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.notification`: Exposes CRUD operations for the **Notification** model.
     * Example usage:
     * ```ts
@@ -869,6 +1003,16 @@ export class PrismaClient<
     * ```
     */
   get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.userFeedback`: Exposes CRUD operations for the **UserFeedback** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserFeedbacks
+    * const userFeedbacks = await prisma.userFeedback.findMany()
+    * ```
+    */
+  get userFeedback(): Prisma.UserFeedbackDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1336,8 +1480,11 @@ export namespace Prisma {
     ProductivityMetric: 'ProductivityMetric',
     PipelineTemplate: 'PipelineTemplate',
     ProjectPipelineRun: 'ProjectPipelineRun',
+    Deliverable: 'Deliverable',
     ProjectIntegration: 'ProjectIntegration',
-    Notification: 'Notification'
+    GitHubAIActionLog: 'GitHubAIActionLog',
+    Notification: 'Notification',
+    UserFeedback: 'UserFeedback'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1356,7 +1503,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "passwordResetToken" | "apiKey" | "userSettings" | "workspace" | "workspaceMember" | "workspaceInvite" | "workspaceSettings" | "plan" | "subscription" | "order" | "project" | "projectMember" | "idea" | "projectFile" | "ideaProjectFile" | "analysis" | "analysisAttachment" | "competitor" | "nameSuggestion" | "task" | "productivityMetric" | "pipelineTemplate" | "projectPipelineRun" | "projectIntegration" | "notification"
+      modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "passwordResetToken" | "apiKey" | "userSettings" | "workspace" | "workspaceMember" | "workspaceInvite" | "workspaceSettings" | "plan" | "subscription" | "order" | "project" | "projectMember" | "idea" | "projectFile" | "ideaProjectFile" | "analysis" | "analysisAttachment" | "competitor" | "nameSuggestion" | "task" | "productivityMetric" | "pipelineTemplate" | "projectPipelineRun" | "deliverable" | "projectIntegration" | "gitHubAIActionLog" | "notification" | "userFeedback"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3358,6 +3505,80 @@ export namespace Prisma {
           }
         }
       }
+      Deliverable: {
+        payload: Prisma.$DeliverablePayload<ExtArgs>
+        fields: Prisma.DeliverableFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DeliverableFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliverablePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DeliverableFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliverablePayload>
+          }
+          findFirst: {
+            args: Prisma.DeliverableFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliverablePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DeliverableFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliverablePayload>
+          }
+          findMany: {
+            args: Prisma.DeliverableFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliverablePayload>[]
+          }
+          create: {
+            args: Prisma.DeliverableCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliverablePayload>
+          }
+          createMany: {
+            args: Prisma.DeliverableCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DeliverableCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliverablePayload>[]
+          }
+          delete: {
+            args: Prisma.DeliverableDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliverablePayload>
+          }
+          update: {
+            args: Prisma.DeliverableUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliverablePayload>
+          }
+          deleteMany: {
+            args: Prisma.DeliverableDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DeliverableUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DeliverableUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliverablePayload>[]
+          }
+          upsert: {
+            args: Prisma.DeliverableUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliverablePayload>
+          }
+          aggregate: {
+            args: Prisma.DeliverableAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDeliverable>
+          }
+          groupBy: {
+            args: Prisma.DeliverableGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DeliverableGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DeliverableCountArgs<ExtArgs>
+            result: $Utils.Optional<DeliverableCountAggregateOutputType> | number
+          }
+        }
+      }
       ProjectIntegration: {
         payload: Prisma.$ProjectIntegrationPayload<ExtArgs>
         fields: Prisma.ProjectIntegrationFieldRefs
@@ -3432,6 +3653,80 @@ export namespace Prisma {
           }
         }
       }
+      GitHubAIActionLog: {
+        payload: Prisma.$GitHubAIActionLogPayload<ExtArgs>
+        fields: Prisma.GitHubAIActionLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GitHubAIActionLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GitHubAIActionLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GitHubAIActionLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GitHubAIActionLogPayload>
+          }
+          findFirst: {
+            args: Prisma.GitHubAIActionLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GitHubAIActionLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GitHubAIActionLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GitHubAIActionLogPayload>
+          }
+          findMany: {
+            args: Prisma.GitHubAIActionLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GitHubAIActionLogPayload>[]
+          }
+          create: {
+            args: Prisma.GitHubAIActionLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GitHubAIActionLogPayload>
+          }
+          createMany: {
+            args: Prisma.GitHubAIActionLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GitHubAIActionLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GitHubAIActionLogPayload>[]
+          }
+          delete: {
+            args: Prisma.GitHubAIActionLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GitHubAIActionLogPayload>
+          }
+          update: {
+            args: Prisma.GitHubAIActionLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GitHubAIActionLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.GitHubAIActionLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GitHubAIActionLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GitHubAIActionLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GitHubAIActionLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.GitHubAIActionLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GitHubAIActionLogPayload>
+          }
+          aggregate: {
+            args: Prisma.GitHubAIActionLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGitHubAIActionLog>
+          }
+          groupBy: {
+            args: Prisma.GitHubAIActionLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GitHubAIActionLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GitHubAIActionLogCountArgs<ExtArgs>
+            result: $Utils.Optional<GitHubAIActionLogCountAggregateOutputType> | number
+          }
+        }
+      }
       Notification: {
         payload: Prisma.$NotificationPayload<ExtArgs>
         fields: Prisma.NotificationFieldRefs
@@ -3503,6 +3798,80 @@ export namespace Prisma {
           count: {
             args: Prisma.NotificationCountArgs<ExtArgs>
             result: $Utils.Optional<NotificationCountAggregateOutputType> | number
+          }
+        }
+      }
+      UserFeedback: {
+        payload: Prisma.$UserFeedbackPayload<ExtArgs>
+        fields: Prisma.UserFeedbackFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserFeedbackFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFeedbackPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserFeedbackFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFeedbackPayload>
+          }
+          findFirst: {
+            args: Prisma.UserFeedbackFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFeedbackPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserFeedbackFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFeedbackPayload>
+          }
+          findMany: {
+            args: Prisma.UserFeedbackFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFeedbackPayload>[]
+          }
+          create: {
+            args: Prisma.UserFeedbackCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFeedbackPayload>
+          }
+          createMany: {
+            args: Prisma.UserFeedbackCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserFeedbackCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFeedbackPayload>[]
+          }
+          delete: {
+            args: Prisma.UserFeedbackDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFeedbackPayload>
+          }
+          update: {
+            args: Prisma.UserFeedbackUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFeedbackPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserFeedbackDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserFeedbackUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserFeedbackUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFeedbackPayload>[]
+          }
+          upsert: {
+            args: Prisma.UserFeedbackUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserFeedbackPayload>
+          }
+          aggregate: {
+            args: Prisma.UserFeedbackAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserFeedback>
+          }
+          groupBy: {
+            args: Prisma.UserFeedbackGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserFeedbackGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserFeedbackCountArgs<ExtArgs>
+            result: $Utils.Optional<UserFeedbackCountAggregateOutputType> | number
           }
         }
       }
@@ -3617,8 +3986,11 @@ export namespace Prisma {
     productivityMetric?: ProductivityMetricOmit
     pipelineTemplate?: PipelineTemplateOmit
     projectPipelineRun?: ProjectPipelineRunOmit
+    deliverable?: DeliverableOmit
     projectIntegration?: ProjectIntegrationOmit
+    gitHubAIActionLog?: GitHubAIActionLogOmit
     notification?: NotificationOmit
+    userFeedback?: UserFeedbackOmit
   }
 
   /* Types for Logging */
@@ -3730,6 +4102,9 @@ export namespace Prisma {
     initiatedOrders: number
     workspaceInvitesSent: number
     initiatedPipelineRuns: number
+    feedbackEntries: number
+    createdDeliverables: number
+    lastUpdatedDeliverables: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3750,6 +4125,9 @@ export namespace Prisma {
     initiatedOrders?: boolean | UserCountOutputTypeCountInitiatedOrdersArgs
     workspaceInvitesSent?: boolean | UserCountOutputTypeCountWorkspaceInvitesSentArgs
     initiatedPipelineRuns?: boolean | UserCountOutputTypeCountInitiatedPipelineRunsArgs
+    feedbackEntries?: boolean | UserCountOutputTypeCountFeedbackEntriesArgs
+    createdDeliverables?: boolean | UserCountOutputTypeCountCreatedDeliverablesArgs
+    lastUpdatedDeliverables?: boolean | UserCountOutputTypeCountLastUpdatedDeliverablesArgs
   }
 
   // Custom InputTypes
@@ -3882,6 +4260,27 @@ export namespace Prisma {
     where?: ProjectPipelineRunWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFeedbackEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserFeedbackWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedDeliverablesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliverableWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLastUpdatedDeliverablesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliverableWhereInput
+  }
+
 
   /**
    * Count Type WorkspaceCountOutputType
@@ -4003,6 +4402,8 @@ export namespace Prisma {
     integrations: number
     pipelineRuns: number
     productivityMetrics: number
+    githubAIActionLogs: number
+    deliverables: number
   }
 
   export type ProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4014,6 +4415,8 @@ export namespace Prisma {
     integrations?: boolean | ProjectCountOutputTypeCountIntegrationsArgs
     pipelineRuns?: boolean | ProjectCountOutputTypeCountPipelineRunsArgs
     productivityMetrics?: boolean | ProjectCountOutputTypeCountProductivityMetricsArgs
+    githubAIActionLogs?: boolean | ProjectCountOutputTypeCountGithubAIActionLogsArgs
+    deliverables?: boolean | ProjectCountOutputTypeCountDeliverablesArgs
   }
 
   // Custom InputTypes
@@ -4081,6 +4484,20 @@ export namespace Prisma {
    */
   export type ProjectCountOutputTypeCountProductivityMetricsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProductivityMetricWhereInput
+  }
+
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeCountGithubAIActionLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GitHubAIActionLogWhereInput
+  }
+
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeCountDeliverablesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliverableWhereInput
   }
 
 
@@ -4172,12 +4589,16 @@ export namespace Prisma {
     attachments: number
     competitors: number
     nameSuggestions: number
+    githubAIActionLogs: number
+    generatedDeliverables: number
   }
 
   export type AnalysisCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     attachments?: boolean | AnalysisCountOutputTypeCountAttachmentsArgs
     competitors?: boolean | AnalysisCountOutputTypeCountCompetitorsArgs
     nameSuggestions?: boolean | AnalysisCountOutputTypeCountNameSuggestionsArgs
+    githubAIActionLogs?: boolean | AnalysisCountOutputTypeCountGithubAIActionLogsArgs
+    generatedDeliverables?: boolean | AnalysisCountOutputTypeCountGeneratedDeliverablesArgs
   }
 
   // Custom InputTypes
@@ -4210,6 +4631,20 @@ export namespace Prisma {
    */
   export type AnalysisCountOutputTypeCountNameSuggestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: NameSuggestionWhereInput
+  }
+
+  /**
+   * AnalysisCountOutputType without action
+   */
+  export type AnalysisCountOutputTypeCountGithubAIActionLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GitHubAIActionLogWhereInput
+  }
+
+  /**
+   * AnalysisCountOutputType without action
+   */
+  export type AnalysisCountOutputTypeCountGeneratedDeliverablesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliverableWhereInput
   }
 
 
@@ -4281,10 +4716,12 @@ export namespace Prisma {
 
   export type ProjectPipelineRunCountOutputType = {
     analyses: number
+    generatedDeliverables: number
   }
 
   export type ProjectPipelineRunCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     analyses?: boolean | ProjectPipelineRunCountOutputTypeCountAnalysesArgs
+    generatedDeliverables?: boolean | ProjectPipelineRunCountOutputTypeCountGeneratedDeliverablesArgs
   }
 
   // Custom InputTypes
@@ -4303,6 +4740,44 @@ export namespace Prisma {
    */
   export type ProjectPipelineRunCountOutputTypeCountAnalysesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AnalysisWhereInput
+  }
+
+  /**
+   * ProjectPipelineRunCountOutputType without action
+   */
+  export type ProjectPipelineRunCountOutputTypeCountGeneratedDeliverablesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliverableWhereInput
+  }
+
+
+  /**
+   * Count Type ProjectIntegrationCountOutputType
+   */
+
+  export type ProjectIntegrationCountOutputType = {
+    githubAIActionLogs: number
+  }
+
+  export type ProjectIntegrationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    githubAIActionLogs?: boolean | ProjectIntegrationCountOutputTypeCountGithubAIActionLogsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ProjectIntegrationCountOutputType without action
+   */
+  export type ProjectIntegrationCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectIntegrationCountOutputType
+     */
+    select?: ProjectIntegrationCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProjectIntegrationCountOutputType without action
+   */
+  export type ProjectIntegrationCountOutputTypeCountGithubAIActionLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GitHubAIActionLogWhereInput
   }
 
 
@@ -4524,6 +4999,9 @@ export namespace Prisma {
     initiatedOrders?: boolean | User$initiatedOrdersArgs<ExtArgs>
     workspaceInvitesSent?: boolean | User$workspaceInvitesSentArgs<ExtArgs>
     initiatedPipelineRuns?: boolean | User$initiatedPipelineRunsArgs<ExtArgs>
+    feedbackEntries?: boolean | User$feedbackEntriesArgs<ExtArgs>
+    createdDeliverables?: boolean | User$createdDeliverablesArgs<ExtArgs>
+    lastUpdatedDeliverables?: boolean | User$lastUpdatedDeliverablesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4583,6 +5061,9 @@ export namespace Prisma {
     initiatedOrders?: boolean | User$initiatedOrdersArgs<ExtArgs>
     workspaceInvitesSent?: boolean | User$workspaceInvitesSentArgs<ExtArgs>
     initiatedPipelineRuns?: boolean | User$initiatedPipelineRunsArgs<ExtArgs>
+    feedbackEntries?: boolean | User$feedbackEntriesArgs<ExtArgs>
+    createdDeliverables?: boolean | User$createdDeliverablesArgs<ExtArgs>
+    lastUpdatedDeliverables?: boolean | User$lastUpdatedDeliverablesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4609,6 +5090,9 @@ export namespace Prisma {
       initiatedOrders: Prisma.$OrderPayload<ExtArgs>[]
       workspaceInvitesSent: Prisma.$WorkspaceInvitePayload<ExtArgs>[]
       initiatedPipelineRuns: Prisma.$ProjectPipelineRunPayload<ExtArgs>[]
+      feedbackEntries: Prisma.$UserFeedbackPayload<ExtArgs>[]
+      createdDeliverables: Prisma.$DeliverablePayload<ExtArgs>[]
+      lastUpdatedDeliverables: Prisma.$DeliverablePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5032,6 +5516,9 @@ export namespace Prisma {
     initiatedOrders<T extends User$initiatedOrdersArgs<ExtArgs> = {}>(args?: Subset<T, User$initiatedOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     workspaceInvitesSent<T extends User$workspaceInvitesSentArgs<ExtArgs> = {}>(args?: Subset<T, User$workspaceInvitesSentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkspaceInvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     initiatedPipelineRuns<T extends User$initiatedPipelineRunsArgs<ExtArgs> = {}>(args?: Subset<T, User$initiatedPipelineRunsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPipelineRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    feedbackEntries<T extends User$feedbackEntriesArgs<ExtArgs> = {}>(args?: Subset<T, User$feedbackEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserFeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdDeliverables<T extends User$createdDeliverablesArgs<ExtArgs> = {}>(args?: Subset<T, User$createdDeliverablesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    lastUpdatedDeliverables<T extends User$lastUpdatedDeliverablesArgs<ExtArgs> = {}>(args?: Subset<T, User$lastUpdatedDeliverablesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5882,6 +6369,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ProjectPipelineRunScalarFieldEnum | ProjectPipelineRunScalarFieldEnum[]
+  }
+
+  /**
+   * User.feedbackEntries
+   */
+  export type User$feedbackEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFeedback
+     */
+    select?: UserFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFeedback
+     */
+    omit?: UserFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFeedbackInclude<ExtArgs> | null
+    where?: UserFeedbackWhereInput
+    orderBy?: UserFeedbackOrderByWithRelationInput | UserFeedbackOrderByWithRelationInput[]
+    cursor?: UserFeedbackWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserFeedbackScalarFieldEnum | UserFeedbackScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdDeliverables
+   */
+  export type User$createdDeliverablesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    where?: DeliverableWhereInput
+    orderBy?: DeliverableOrderByWithRelationInput | DeliverableOrderByWithRelationInput[]
+    cursor?: DeliverableWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliverableScalarFieldEnum | DeliverableScalarFieldEnum[]
+  }
+
+  /**
+   * User.lastUpdatedDeliverables
+   */
+  export type User$lastUpdatedDeliverablesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    where?: DeliverableWhereInput
+    orderBy?: DeliverableOrderByWithRelationInput | DeliverableOrderByWithRelationInput[]
+    cursor?: DeliverableWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliverableScalarFieldEnum | DeliverableScalarFieldEnum[]
   }
 
   /**
@@ -7025,70 +7584,70 @@ export namespace Prisma {
 
   export type SessionMinAggregateOutputType = {
     id: string | null
+    sessionToken: string | null
     userId: string | null
     expiresAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
     ipAddress: string | null
     userAgent: string | null
-    sessionToken: string | null
   }
 
   export type SessionMaxAggregateOutputType = {
     id: string | null
+    sessionToken: string | null
     userId: string | null
     expiresAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
     ipAddress: string | null
     userAgent: string | null
-    sessionToken: string | null
   }
 
   export type SessionCountAggregateOutputType = {
     id: number
+    sessionToken: number
     userId: number
     expiresAt: number
     createdAt: number
     updatedAt: number
     ipAddress: number
     userAgent: number
-    sessionToken: number
     _all: number
   }
 
 
   export type SessionMinAggregateInputType = {
     id?: true
+    sessionToken?: true
     userId?: true
     expiresAt?: true
     createdAt?: true
     updatedAt?: true
     ipAddress?: true
     userAgent?: true
-    sessionToken?: true
   }
 
   export type SessionMaxAggregateInputType = {
     id?: true
+    sessionToken?: true
     userId?: true
     expiresAt?: true
     createdAt?: true
     updatedAt?: true
     ipAddress?: true
     userAgent?: true
-    sessionToken?: true
   }
 
   export type SessionCountAggregateInputType = {
     id?: true
+    sessionToken?: true
     userId?: true
     expiresAt?: true
     createdAt?: true
     updatedAt?: true
     ipAddress?: true
     userAgent?: true
-    sessionToken?: true
     _all?: true
   }
 
@@ -7166,13 +7725,13 @@ export namespace Prisma {
 
   export type SessionGroupByOutputType = {
     id: string
+    sessionToken: string
     userId: string
     expiresAt: Date
     createdAt: Date
     updatedAt: Date
     ipAddress: string | null
     userAgent: string | null
-    sessionToken: string
     _count: SessionCountAggregateOutputType | null
     _min: SessionMinAggregateOutputType | null
     _max: SessionMaxAggregateOutputType | null
@@ -7194,52 +7753,52 @@ export namespace Prisma {
 
   export type SessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    sessionToken?: boolean
     userId?: boolean
     expiresAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     ipAddress?: boolean
     userAgent?: boolean
-    sessionToken?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
   export type SessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    sessionToken?: boolean
     userId?: boolean
     expiresAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     ipAddress?: boolean
     userAgent?: boolean
-    sessionToken?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
   export type SessionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    sessionToken?: boolean
     userId?: boolean
     expiresAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     ipAddress?: boolean
     userAgent?: boolean
-    sessionToken?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
   export type SessionSelectScalar = {
     id?: boolean
+    sessionToken?: boolean
     userId?: boolean
     expiresAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     ipAddress?: boolean
     userAgent?: boolean
-    sessionToken?: boolean
   }
 
-  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "expiresAt" | "createdAt" | "updatedAt" | "ipAddress" | "userAgent" | "sessionToken", ExtArgs["result"]["session"]>
+  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionToken" | "userId" | "expiresAt" | "createdAt" | "updatedAt" | "ipAddress" | "userAgent", ExtArgs["result"]["session"]>
   export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -7257,13 +7816,13 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      sessionToken: string
       userId: string
       expiresAt: Date
       createdAt: Date
       updatedAt: Date
       ipAddress: string | null
       userAgent: string | null
-      sessionToken: string
     }, ExtArgs["result"]["session"]>
     composites: {}
   }
@@ -7689,13 +8248,13 @@ export namespace Prisma {
    */
   interface SessionFieldRefs {
     readonly id: FieldRef<"Session", 'String'>
+    readonly sessionToken: FieldRef<"Session", 'String'>
     readonly userId: FieldRef<"Session", 'String'>
     readonly expiresAt: FieldRef<"Session", 'DateTime'>
     readonly createdAt: FieldRef<"Session", 'DateTime'>
     readonly updatedAt: FieldRef<"Session", 'DateTime'>
     readonly ipAddress: FieldRef<"Session", 'String'>
     readonly userAgent: FieldRef<"Session", 'String'>
-    readonly sessionToken: FieldRef<"Session", 'String'>
   }
     
 
@@ -20682,6 +21241,7 @@ export namespace Prisma {
     description: string | null
     workspaceId: string | null
     createdByUserId: string | null
+    projectStatus: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -20692,6 +21252,7 @@ export namespace Prisma {
     description: string | null
     workspaceId: string | null
     createdByUserId: string | null
+    projectStatus: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -20702,6 +21263,7 @@ export namespace Prisma {
     description: number
     workspaceId: number
     createdByUserId: number
+    projectStatus: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -20714,6 +21276,7 @@ export namespace Prisma {
     description?: true
     workspaceId?: true
     createdByUserId?: true
+    projectStatus?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -20724,6 +21287,7 @@ export namespace Prisma {
     description?: true
     workspaceId?: true
     createdByUserId?: true
+    projectStatus?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -20734,6 +21298,7 @@ export namespace Prisma {
     description?: true
     workspaceId?: true
     createdByUserId?: true
+    projectStatus?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -20817,6 +21382,7 @@ export namespace Prisma {
     description: string | null
     workspaceId: string
     createdByUserId: string
+    projectStatus: string | null
     createdAt: Date
     updatedAt: Date
     _count: ProjectCountAggregateOutputType | null
@@ -20844,6 +21410,7 @@ export namespace Prisma {
     description?: boolean
     workspaceId?: boolean
     createdByUserId?: boolean
+    projectStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
@@ -20856,6 +21423,8 @@ export namespace Prisma {
     integrations?: boolean | Project$integrationsArgs<ExtArgs>
     pipelineRuns?: boolean | Project$pipelineRunsArgs<ExtArgs>
     productivityMetrics?: boolean | Project$productivityMetricsArgs<ExtArgs>
+    githubAIActionLogs?: boolean | Project$githubAIActionLogsArgs<ExtArgs>
+    deliverables?: boolean | Project$deliverablesArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
@@ -20865,6 +21434,7 @@ export namespace Prisma {
     description?: boolean
     workspaceId?: boolean
     createdByUserId?: boolean
+    projectStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
@@ -20877,6 +21447,7 @@ export namespace Prisma {
     description?: boolean
     workspaceId?: boolean
     createdByUserId?: boolean
+    projectStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
@@ -20889,11 +21460,12 @@ export namespace Prisma {
     description?: boolean
     workspaceId?: boolean
     createdByUserId?: boolean
+    projectStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "workspaceId" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "workspaceId" | "createdByUserId" | "projectStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
     createdByUser?: boolean | UserDefaultArgs<ExtArgs>
@@ -20905,6 +21477,8 @@ export namespace Prisma {
     integrations?: boolean | Project$integrationsArgs<ExtArgs>
     pipelineRuns?: boolean | Project$pipelineRunsArgs<ExtArgs>
     productivityMetrics?: boolean | Project$productivityMetricsArgs<ExtArgs>
+    githubAIActionLogs?: boolean | Project$githubAIActionLogsArgs<ExtArgs>
+    deliverables?: boolean | Project$deliverablesArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20929,6 +21503,8 @@ export namespace Prisma {
       integrations: Prisma.$ProjectIntegrationPayload<ExtArgs>[]
       pipelineRuns: Prisma.$ProjectPipelineRunPayload<ExtArgs>[]
       productivityMetrics: Prisma.$ProductivityMetricPayload<ExtArgs>[]
+      githubAIActionLogs: Prisma.$GitHubAIActionLogPayload<ExtArgs>[]
+      deliverables: Prisma.$DeliverablePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -20936,6 +21512,7 @@ export namespace Prisma {
       description: string | null
       workspaceId: string
       createdByUserId: string
+      projectStatus: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["project"]>
@@ -21342,6 +21919,8 @@ export namespace Prisma {
     integrations<T extends Project$integrationsArgs<ExtArgs> = {}>(args?: Subset<T, Project$integrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectIntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pipelineRuns<T extends Project$pipelineRunsArgs<ExtArgs> = {}>(args?: Subset<T, Project$pipelineRunsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPipelineRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     productivityMetrics<T extends Project$productivityMetricsArgs<ExtArgs> = {}>(args?: Subset<T, Project$productivityMetricsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductivityMetricPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    githubAIActionLogs<T extends Project$githubAIActionLogsArgs<ExtArgs> = {}>(args?: Subset<T, Project$githubAIActionLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    deliverables<T extends Project$deliverablesArgs<ExtArgs> = {}>(args?: Subset<T, Project$deliverablesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21376,6 +21955,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Project", 'String'>
     readonly workspaceId: FieldRef<"Project", 'String'>
     readonly createdByUserId: FieldRef<"Project", 'String'>
+    readonly projectStatus: FieldRef<"Project", 'String'>
     readonly createdAt: FieldRef<"Project", 'DateTime'>
     readonly updatedAt: FieldRef<"Project", 'DateTime'>
   }
@@ -21963,6 +22543,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ProductivityMetricScalarFieldEnum | ProductivityMetricScalarFieldEnum[]
+  }
+
+  /**
+   * Project.githubAIActionLogs
+   */
+  export type Project$githubAIActionLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogInclude<ExtArgs> | null
+    where?: GitHubAIActionLogWhereInput
+    orderBy?: GitHubAIActionLogOrderByWithRelationInput | GitHubAIActionLogOrderByWithRelationInput[]
+    cursor?: GitHubAIActionLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GitHubAIActionLogScalarFieldEnum | GitHubAIActionLogScalarFieldEnum[]
+  }
+
+  /**
+   * Project.deliverables
+   */
+  export type Project$deliverablesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    where?: DeliverableWhereInput
+    orderBy?: DeliverableOrderByWithRelationInput | DeliverableOrderByWithRelationInput[]
+    cursor?: DeliverableWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliverableScalarFieldEnum | DeliverableScalarFieldEnum[]
   }
 
   /**
@@ -24228,6 +24856,7 @@ export namespace Prisma {
     fileName: string | null
     fileType: string | null
     sizeBytes: number | null
+    status: $Enums.FileStatus | null
     storageProvider: string | null
     providerFileId: string | null
     url: string | null
@@ -24243,6 +24872,7 @@ export namespace Prisma {
     fileName: string | null
     fileType: string | null
     sizeBytes: number | null
+    status: $Enums.FileStatus | null
     storageProvider: string | null
     providerFileId: string | null
     url: string | null
@@ -24258,10 +24888,12 @@ export namespace Prisma {
     fileName: number
     fileType: number
     sizeBytes: number
+    status: number
     storageProvider: number
     providerFileId: number
     url: number
     description: number
+    metadata: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -24283,6 +24915,7 @@ export namespace Prisma {
     fileName?: true
     fileType?: true
     sizeBytes?: true
+    status?: true
     storageProvider?: true
     providerFileId?: true
     url?: true
@@ -24298,6 +24931,7 @@ export namespace Prisma {
     fileName?: true
     fileType?: true
     sizeBytes?: true
+    status?: true
     storageProvider?: true
     providerFileId?: true
     url?: true
@@ -24313,10 +24947,12 @@ export namespace Prisma {
     fileName?: true
     fileType?: true
     sizeBytes?: true
+    status?: true
     storageProvider?: true
     providerFileId?: true
     url?: true
     description?: true
+    metadata?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -24415,10 +25051,12 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status: $Enums.FileStatus
     storageProvider: string
     providerFileId: string
     url: string
     description: string | null
+    metadata: JsonValue | null
     createdAt: Date
     updatedAt: Date
     _count: ProjectFileCountAggregateOutputType | null
@@ -24449,16 +25087,19 @@ export namespace Prisma {
     fileName?: boolean
     fileType?: boolean
     sizeBytes?: boolean
+    status?: boolean
     storageProvider?: boolean
     providerFileId?: boolean
     url?: boolean
     description?: boolean
+    metadata?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     uploader?: boolean | UserDefaultArgs<ExtArgs>
     ideaLinks?: boolean | ProjectFile$ideaLinksArgs<ExtArgs>
     analysisAttachments?: boolean | ProjectFile$analysisAttachmentsArgs<ExtArgs>
+    deliverableLink?: boolean | ProjectFile$deliverableLinkArgs<ExtArgs>
     _count?: boolean | ProjectFileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["projectFile"]>
 
@@ -24469,10 +25110,12 @@ export namespace Prisma {
     fileName?: boolean
     fileType?: boolean
     sizeBytes?: boolean
+    status?: boolean
     storageProvider?: boolean
     providerFileId?: boolean
     url?: boolean
     description?: boolean
+    metadata?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
@@ -24486,10 +25129,12 @@ export namespace Prisma {
     fileName?: boolean
     fileType?: boolean
     sizeBytes?: boolean
+    status?: boolean
     storageProvider?: boolean
     providerFileId?: boolean
     url?: boolean
     description?: boolean
+    metadata?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
@@ -24503,20 +25148,23 @@ export namespace Prisma {
     fileName?: boolean
     fileType?: boolean
     sizeBytes?: boolean
+    status?: boolean
     storageProvider?: boolean
     providerFileId?: boolean
     url?: boolean
     description?: boolean
+    metadata?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProjectFileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "uploaderUserId" | "fileName" | "fileType" | "sizeBytes" | "storageProvider" | "providerFileId" | "url" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["projectFile"]>
+  export type ProjectFileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "uploaderUserId" | "fileName" | "fileType" | "sizeBytes" | "status" | "storageProvider" | "providerFileId" | "url" | "description" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["projectFile"]>
   export type ProjectFileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     uploader?: boolean | UserDefaultArgs<ExtArgs>
     ideaLinks?: boolean | ProjectFile$ideaLinksArgs<ExtArgs>
     analysisAttachments?: boolean | ProjectFile$analysisAttachmentsArgs<ExtArgs>
+    deliverableLink?: boolean | ProjectFile$deliverableLinkArgs<ExtArgs>
     _count?: boolean | ProjectFileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectFileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -24535,6 +25183,7 @@ export namespace Prisma {
       uploader: Prisma.$UserPayload<ExtArgs>
       ideaLinks: Prisma.$IdeaProjectFilePayload<ExtArgs>[]
       analysisAttachments: Prisma.$AnalysisAttachmentPayload<ExtArgs>[]
+      deliverableLink: Prisma.$DeliverablePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -24543,10 +25192,12 @@ export namespace Prisma {
       fileName: string
       fileType: string
       sizeBytes: number
+      status: $Enums.FileStatus
       storageProvider: string
       providerFileId: string
       url: string
       description: string | null
+      metadata: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["projectFile"]>
@@ -24947,6 +25598,7 @@ export namespace Prisma {
     uploader<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     ideaLinks<T extends ProjectFile$ideaLinksArgs<ExtArgs> = {}>(args?: Subset<T, ProjectFile$ideaLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IdeaProjectFilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     analysisAttachments<T extends ProjectFile$analysisAttachmentsArgs<ExtArgs> = {}>(args?: Subset<T, ProjectFile$analysisAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalysisAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    deliverableLink<T extends ProjectFile$deliverableLinkArgs<ExtArgs> = {}>(args?: Subset<T, ProjectFile$deliverableLinkArgs<ExtArgs>>): Prisma__DeliverableClient<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -24982,10 +25634,12 @@ export namespace Prisma {
     readonly fileName: FieldRef<"ProjectFile", 'String'>
     readonly fileType: FieldRef<"ProjectFile", 'String'>
     readonly sizeBytes: FieldRef<"ProjectFile", 'Int'>
+    readonly status: FieldRef<"ProjectFile", 'FileStatus'>
     readonly storageProvider: FieldRef<"ProjectFile", 'String'>
     readonly providerFileId: FieldRef<"ProjectFile", 'String'>
     readonly url: FieldRef<"ProjectFile", 'String'>
     readonly description: FieldRef<"ProjectFile", 'String'>
+    readonly metadata: FieldRef<"ProjectFile", 'Json'>
     readonly createdAt: FieldRef<"ProjectFile", 'DateTime'>
     readonly updatedAt: FieldRef<"ProjectFile", 'DateTime'>
   }
@@ -25429,6 +26083,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AnalysisAttachmentScalarFieldEnum | AnalysisAttachmentScalarFieldEnum[]
+  }
+
+  /**
+   * ProjectFile.deliverableLink
+   */
+  export type ProjectFile$deliverableLinkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    where?: DeliverableWhereInput
   }
 
   /**
@@ -26861,6 +27534,8 @@ export namespace Prisma {
     competitors?: boolean | Analysis$competitorsArgs<ExtArgs>
     nameSuggestions?: boolean | Analysis$nameSuggestionsArgs<ExtArgs>
     pipelineRun?: boolean | Analysis$pipelineRunArgs<ExtArgs>
+    githubAIActionLogs?: boolean | Analysis$githubAIActionLogsArgs<ExtArgs>
+    generatedDeliverables?: boolean | Analysis$generatedDeliverablesArgs<ExtArgs>
     _count?: boolean | AnalysisCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["analysis"]>
 
@@ -26956,6 +27631,8 @@ export namespace Prisma {
     competitors?: boolean | Analysis$competitorsArgs<ExtArgs>
     nameSuggestions?: boolean | Analysis$nameSuggestionsArgs<ExtArgs>
     pipelineRun?: boolean | Analysis$pipelineRunArgs<ExtArgs>
+    githubAIActionLogs?: boolean | Analysis$githubAIActionLogsArgs<ExtArgs>
+    generatedDeliverables?: boolean | Analysis$generatedDeliverablesArgs<ExtArgs>
     _count?: boolean | AnalysisCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AnalysisIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -26981,6 +27658,8 @@ export namespace Prisma {
       competitors: Prisma.$CompetitorPayload<ExtArgs>[]
       nameSuggestions: Prisma.$NameSuggestionPayload<ExtArgs>[]
       pipelineRun: Prisma.$ProjectPipelineRunPayload<ExtArgs> | null
+      githubAIActionLogs: Prisma.$GitHubAIActionLogPayload<ExtArgs>[]
+      generatedDeliverables: Prisma.$DeliverablePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -27406,6 +28085,8 @@ export namespace Prisma {
     competitors<T extends Analysis$competitorsArgs<ExtArgs> = {}>(args?: Subset<T, Analysis$competitorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompetitorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     nameSuggestions<T extends Analysis$nameSuggestionsArgs<ExtArgs> = {}>(args?: Subset<T, Analysis$nameSuggestionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NameSuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pipelineRun<T extends Analysis$pipelineRunArgs<ExtArgs> = {}>(args?: Subset<T, Analysis$pipelineRunArgs<ExtArgs>>): Prisma__ProjectPipelineRunClient<$Result.GetResult<Prisma.$ProjectPipelineRunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    githubAIActionLogs<T extends Analysis$githubAIActionLogsArgs<ExtArgs> = {}>(args?: Subset<T, Analysis$githubAIActionLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    generatedDeliverables<T extends Analysis$generatedDeliverablesArgs<ExtArgs> = {}>(args?: Subset<T, Analysis$generatedDeliverablesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -27960,6 +28641,54 @@ export namespace Prisma {
      */
     include?: ProjectPipelineRunInclude<ExtArgs> | null
     where?: ProjectPipelineRunWhereInput
+  }
+
+  /**
+   * Analysis.githubAIActionLogs
+   */
+  export type Analysis$githubAIActionLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogInclude<ExtArgs> | null
+    where?: GitHubAIActionLogWhereInput
+    orderBy?: GitHubAIActionLogOrderByWithRelationInput | GitHubAIActionLogOrderByWithRelationInput[]
+    cursor?: GitHubAIActionLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GitHubAIActionLogScalarFieldEnum | GitHubAIActionLogScalarFieldEnum[]
+  }
+
+  /**
+   * Analysis.generatedDeliverables
+   */
+  export type Analysis$generatedDeliverablesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    where?: DeliverableWhereInput
+    orderBy?: DeliverableOrderByWithRelationInput | DeliverableOrderByWithRelationInput[]
+    cursor?: DeliverableWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliverableScalarFieldEnum | DeliverableScalarFieldEnum[]
   }
 
   /**
@@ -35246,6 +35975,7 @@ export namespace Prisma {
     pipelineTemplate?: boolean | PipelineTemplateDefaultArgs<ExtArgs>
     initiatedByUser?: boolean | UserDefaultArgs<ExtArgs>
     analyses?: boolean | ProjectPipelineRun$analysesArgs<ExtArgs>
+    generatedDeliverables?: boolean | ProjectPipelineRun$generatedDeliverablesArgs<ExtArgs>
     _count?: boolean | ProjectPipelineRunCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["projectPipelineRun"]>
 
@@ -35303,6 +36033,7 @@ export namespace Prisma {
     pipelineTemplate?: boolean | PipelineTemplateDefaultArgs<ExtArgs>
     initiatedByUser?: boolean | UserDefaultArgs<ExtArgs>
     analyses?: boolean | ProjectPipelineRun$analysesArgs<ExtArgs>
+    generatedDeliverables?: boolean | ProjectPipelineRun$generatedDeliverablesArgs<ExtArgs>
     _count?: boolean | ProjectPipelineRunCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectPipelineRunIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -35323,6 +36054,7 @@ export namespace Prisma {
       pipelineTemplate: Prisma.$PipelineTemplatePayload<ExtArgs>
       initiatedByUser: Prisma.$UserPayload<ExtArgs>
       analyses: Prisma.$AnalysisPayload<ExtArgs>[]
+      generatedDeliverables: Prisma.$DeliverablePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -35734,6 +36466,7 @@ export namespace Prisma {
     pipelineTemplate<T extends PipelineTemplateDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PipelineTemplateDefaultArgs<ExtArgs>>): Prisma__PipelineTemplateClient<$Result.GetResult<Prisma.$PipelineTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     initiatedByUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     analyses<T extends ProjectPipelineRun$analysesArgs<ExtArgs> = {}>(args?: Subset<T, ProjectPipelineRun$analysesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnalysisPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    generatedDeliverables<T extends ProjectPipelineRun$generatedDeliverablesArgs<ExtArgs> = {}>(args?: Subset<T, ProjectPipelineRun$generatedDeliverablesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -36194,6 +36927,30 @@ export namespace Prisma {
   }
 
   /**
+   * ProjectPipelineRun.generatedDeliverables
+   */
+  export type ProjectPipelineRun$generatedDeliverablesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    where?: DeliverableWhereInput
+    orderBy?: DeliverableOrderByWithRelationInput | DeliverableOrderByWithRelationInput[]
+    cursor?: DeliverableWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliverableScalarFieldEnum | DeliverableScalarFieldEnum[]
+  }
+
+  /**
    * ProjectPipelineRun without action
    */
   export type ProjectPipelineRunDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -36209,6 +36966,1370 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ProjectPipelineRunInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Deliverable
+   */
+
+  export type AggregateDeliverable = {
+    _count: DeliverableCountAggregateOutputType | null
+    _avg: DeliverableAvgAggregateOutputType | null
+    _sum: DeliverableSumAggregateOutputType | null
+    _min: DeliverableMinAggregateOutputType | null
+    _max: DeliverableMaxAggregateOutputType | null
+  }
+
+  export type DeliverableAvgAggregateOutputType = {
+    version: number | null
+  }
+
+  export type DeliverableSumAggregateOutputType = {
+    version: number | null
+  }
+
+  export type DeliverableMinAggregateOutputType = {
+    id: string | null
+    projectId: string | null
+    title: string | null
+    description: string | null
+    content: string | null
+    format: string | null
+    type: string | null
+    status: $Enums.DeliverableStatus | null
+    version: number | null
+    projectFileId: string | null
+    externalUrl: string | null
+    generatedByAnalysisId: string | null
+    generatedByPipelineRunId: string | null
+    createdByUserId: string | null
+    lastUpdatedByUserId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DeliverableMaxAggregateOutputType = {
+    id: string | null
+    projectId: string | null
+    title: string | null
+    description: string | null
+    content: string | null
+    format: string | null
+    type: string | null
+    status: $Enums.DeliverableStatus | null
+    version: number | null
+    projectFileId: string | null
+    externalUrl: string | null
+    generatedByAnalysisId: string | null
+    generatedByPipelineRunId: string | null
+    createdByUserId: string | null
+    lastUpdatedByUserId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DeliverableCountAggregateOutputType = {
+    id: number
+    projectId: number
+    title: number
+    description: number
+    content: number
+    format: number
+    type: number
+    status: number
+    version: number
+    projectFileId: number
+    externalUrl: number
+    generatedByAnalysisId: number
+    generatedByPipelineRunId: number
+    createdByUserId: number
+    lastUpdatedByUserId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DeliverableAvgAggregateInputType = {
+    version?: true
+  }
+
+  export type DeliverableSumAggregateInputType = {
+    version?: true
+  }
+
+  export type DeliverableMinAggregateInputType = {
+    id?: true
+    projectId?: true
+    title?: true
+    description?: true
+    content?: true
+    format?: true
+    type?: true
+    status?: true
+    version?: true
+    projectFileId?: true
+    externalUrl?: true
+    generatedByAnalysisId?: true
+    generatedByPipelineRunId?: true
+    createdByUserId?: true
+    lastUpdatedByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DeliverableMaxAggregateInputType = {
+    id?: true
+    projectId?: true
+    title?: true
+    description?: true
+    content?: true
+    format?: true
+    type?: true
+    status?: true
+    version?: true
+    projectFileId?: true
+    externalUrl?: true
+    generatedByAnalysisId?: true
+    generatedByPipelineRunId?: true
+    createdByUserId?: true
+    lastUpdatedByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DeliverableCountAggregateInputType = {
+    id?: true
+    projectId?: true
+    title?: true
+    description?: true
+    content?: true
+    format?: true
+    type?: true
+    status?: true
+    version?: true
+    projectFileId?: true
+    externalUrl?: true
+    generatedByAnalysisId?: true
+    generatedByPipelineRunId?: true
+    createdByUserId?: true
+    lastUpdatedByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DeliverableAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Deliverable to aggregate.
+     */
+    where?: DeliverableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deliverables to fetch.
+     */
+    orderBy?: DeliverableOrderByWithRelationInput | DeliverableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DeliverableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deliverables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deliverables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Deliverables
+    **/
+    _count?: true | DeliverableCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DeliverableAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DeliverableSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DeliverableMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DeliverableMaxAggregateInputType
+  }
+
+  export type GetDeliverableAggregateType<T extends DeliverableAggregateArgs> = {
+        [P in keyof T & keyof AggregateDeliverable]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDeliverable[P]>
+      : GetScalarType<T[P], AggregateDeliverable[P]>
+  }
+
+
+
+
+  export type DeliverableGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliverableWhereInput
+    orderBy?: DeliverableOrderByWithAggregationInput | DeliverableOrderByWithAggregationInput[]
+    by: DeliverableScalarFieldEnum[] | DeliverableScalarFieldEnum
+    having?: DeliverableScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DeliverableCountAggregateInputType | true
+    _avg?: DeliverableAvgAggregateInputType
+    _sum?: DeliverableSumAggregateInputType
+    _min?: DeliverableMinAggregateInputType
+    _max?: DeliverableMaxAggregateInputType
+  }
+
+  export type DeliverableGroupByOutputType = {
+    id: string
+    projectId: string
+    title: string
+    description: string | null
+    content: string | null
+    format: string
+    type: string
+    status: $Enums.DeliverableStatus
+    version: number
+    projectFileId: string | null
+    externalUrl: string | null
+    generatedByAnalysisId: string | null
+    generatedByPipelineRunId: string | null
+    createdByUserId: string
+    lastUpdatedByUserId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: DeliverableCountAggregateOutputType | null
+    _avg: DeliverableAvgAggregateOutputType | null
+    _sum: DeliverableSumAggregateOutputType | null
+    _min: DeliverableMinAggregateOutputType | null
+    _max: DeliverableMaxAggregateOutputType | null
+  }
+
+  type GetDeliverableGroupByPayload<T extends DeliverableGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DeliverableGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DeliverableGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DeliverableGroupByOutputType[P]>
+            : GetScalarType<T[P], DeliverableGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DeliverableSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    title?: boolean
+    description?: boolean
+    content?: boolean
+    format?: boolean
+    type?: boolean
+    status?: boolean
+    version?: boolean
+    projectFileId?: boolean
+    externalUrl?: boolean
+    generatedByAnalysisId?: boolean
+    generatedByPipelineRunId?: boolean
+    createdByUserId?: boolean
+    lastUpdatedByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    linkedProjectFile?: boolean | Deliverable$linkedProjectFileArgs<ExtArgs>
+    generatedByAnalysis?: boolean | Deliverable$generatedByAnalysisArgs<ExtArgs>
+    generatedByPipelineRun?: boolean | Deliverable$generatedByPipelineRunArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    lastUpdater?: boolean | Deliverable$lastUpdaterArgs<ExtArgs>
+  }, ExtArgs["result"]["deliverable"]>
+
+  export type DeliverableSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    title?: boolean
+    description?: boolean
+    content?: boolean
+    format?: boolean
+    type?: boolean
+    status?: boolean
+    version?: boolean
+    projectFileId?: boolean
+    externalUrl?: boolean
+    generatedByAnalysisId?: boolean
+    generatedByPipelineRunId?: boolean
+    createdByUserId?: boolean
+    lastUpdatedByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    linkedProjectFile?: boolean | Deliverable$linkedProjectFileArgs<ExtArgs>
+    generatedByAnalysis?: boolean | Deliverable$generatedByAnalysisArgs<ExtArgs>
+    generatedByPipelineRun?: boolean | Deliverable$generatedByPipelineRunArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    lastUpdater?: boolean | Deliverable$lastUpdaterArgs<ExtArgs>
+  }, ExtArgs["result"]["deliverable"]>
+
+  export type DeliverableSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    title?: boolean
+    description?: boolean
+    content?: boolean
+    format?: boolean
+    type?: boolean
+    status?: boolean
+    version?: boolean
+    projectFileId?: boolean
+    externalUrl?: boolean
+    generatedByAnalysisId?: boolean
+    generatedByPipelineRunId?: boolean
+    createdByUserId?: boolean
+    lastUpdatedByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    linkedProjectFile?: boolean | Deliverable$linkedProjectFileArgs<ExtArgs>
+    generatedByAnalysis?: boolean | Deliverable$generatedByAnalysisArgs<ExtArgs>
+    generatedByPipelineRun?: boolean | Deliverable$generatedByPipelineRunArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    lastUpdater?: boolean | Deliverable$lastUpdaterArgs<ExtArgs>
+  }, ExtArgs["result"]["deliverable"]>
+
+  export type DeliverableSelectScalar = {
+    id?: boolean
+    projectId?: boolean
+    title?: boolean
+    description?: boolean
+    content?: boolean
+    format?: boolean
+    type?: boolean
+    status?: boolean
+    version?: boolean
+    projectFileId?: boolean
+    externalUrl?: boolean
+    generatedByAnalysisId?: boolean
+    generatedByPipelineRunId?: boolean
+    createdByUserId?: boolean
+    lastUpdatedByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DeliverableOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "title" | "description" | "content" | "format" | "type" | "status" | "version" | "projectFileId" | "externalUrl" | "generatedByAnalysisId" | "generatedByPipelineRunId" | "createdByUserId" | "lastUpdatedByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["deliverable"]>
+  export type DeliverableInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    linkedProjectFile?: boolean | Deliverable$linkedProjectFileArgs<ExtArgs>
+    generatedByAnalysis?: boolean | Deliverable$generatedByAnalysisArgs<ExtArgs>
+    generatedByPipelineRun?: boolean | Deliverable$generatedByPipelineRunArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    lastUpdater?: boolean | Deliverable$lastUpdaterArgs<ExtArgs>
+  }
+  export type DeliverableIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    linkedProjectFile?: boolean | Deliverable$linkedProjectFileArgs<ExtArgs>
+    generatedByAnalysis?: boolean | Deliverable$generatedByAnalysisArgs<ExtArgs>
+    generatedByPipelineRun?: boolean | Deliverable$generatedByPipelineRunArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    lastUpdater?: boolean | Deliverable$lastUpdaterArgs<ExtArgs>
+  }
+  export type DeliverableIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    linkedProjectFile?: boolean | Deliverable$linkedProjectFileArgs<ExtArgs>
+    generatedByAnalysis?: boolean | Deliverable$generatedByAnalysisArgs<ExtArgs>
+    generatedByPipelineRun?: boolean | Deliverable$generatedByPipelineRunArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+    lastUpdater?: boolean | Deliverable$lastUpdaterArgs<ExtArgs>
+  }
+
+  export type $DeliverablePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Deliverable"
+    objects: {
+      project: Prisma.$ProjectPayload<ExtArgs>
+      linkedProjectFile: Prisma.$ProjectFilePayload<ExtArgs> | null
+      generatedByAnalysis: Prisma.$AnalysisPayload<ExtArgs> | null
+      generatedByPipelineRun: Prisma.$ProjectPipelineRunPayload<ExtArgs> | null
+      creator: Prisma.$UserPayload<ExtArgs>
+      lastUpdater: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      projectId: string
+      title: string
+      description: string | null
+      content: string | null
+      format: string
+      type: string
+      status: $Enums.DeliverableStatus
+      version: number
+      projectFileId: string | null
+      externalUrl: string | null
+      generatedByAnalysisId: string | null
+      generatedByPipelineRunId: string | null
+      createdByUserId: string
+      lastUpdatedByUserId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["deliverable"]>
+    composites: {}
+  }
+
+  type DeliverableGetPayload<S extends boolean | null | undefined | DeliverableDefaultArgs> = $Result.GetResult<Prisma.$DeliverablePayload, S>
+
+  type DeliverableCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DeliverableFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DeliverableCountAggregateInputType | true
+    }
+
+  export interface DeliverableDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Deliverable'], meta: { name: 'Deliverable' } }
+    /**
+     * Find zero or one Deliverable that matches the filter.
+     * @param {DeliverableFindUniqueArgs} args - Arguments to find a Deliverable
+     * @example
+     * // Get one Deliverable
+     * const deliverable = await prisma.deliverable.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DeliverableFindUniqueArgs>(args: SelectSubset<T, DeliverableFindUniqueArgs<ExtArgs>>): Prisma__DeliverableClient<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Deliverable that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DeliverableFindUniqueOrThrowArgs} args - Arguments to find a Deliverable
+     * @example
+     * // Get one Deliverable
+     * const deliverable = await prisma.deliverable.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DeliverableFindUniqueOrThrowArgs>(args: SelectSubset<T, DeliverableFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DeliverableClient<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Deliverable that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliverableFindFirstArgs} args - Arguments to find a Deliverable
+     * @example
+     * // Get one Deliverable
+     * const deliverable = await prisma.deliverable.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DeliverableFindFirstArgs>(args?: SelectSubset<T, DeliverableFindFirstArgs<ExtArgs>>): Prisma__DeliverableClient<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Deliverable that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliverableFindFirstOrThrowArgs} args - Arguments to find a Deliverable
+     * @example
+     * // Get one Deliverable
+     * const deliverable = await prisma.deliverable.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DeliverableFindFirstOrThrowArgs>(args?: SelectSubset<T, DeliverableFindFirstOrThrowArgs<ExtArgs>>): Prisma__DeliverableClient<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Deliverables that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliverableFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Deliverables
+     * const deliverables = await prisma.deliverable.findMany()
+     * 
+     * // Get first 10 Deliverables
+     * const deliverables = await prisma.deliverable.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const deliverableWithIdOnly = await prisma.deliverable.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DeliverableFindManyArgs>(args?: SelectSubset<T, DeliverableFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Deliverable.
+     * @param {DeliverableCreateArgs} args - Arguments to create a Deliverable.
+     * @example
+     * // Create one Deliverable
+     * const Deliverable = await prisma.deliverable.create({
+     *   data: {
+     *     // ... data to create a Deliverable
+     *   }
+     * })
+     * 
+     */
+    create<T extends DeliverableCreateArgs>(args: SelectSubset<T, DeliverableCreateArgs<ExtArgs>>): Prisma__DeliverableClient<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Deliverables.
+     * @param {DeliverableCreateManyArgs} args - Arguments to create many Deliverables.
+     * @example
+     * // Create many Deliverables
+     * const deliverable = await prisma.deliverable.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DeliverableCreateManyArgs>(args?: SelectSubset<T, DeliverableCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Deliverables and returns the data saved in the database.
+     * @param {DeliverableCreateManyAndReturnArgs} args - Arguments to create many Deliverables.
+     * @example
+     * // Create many Deliverables
+     * const deliverable = await prisma.deliverable.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Deliverables and only return the `id`
+     * const deliverableWithIdOnly = await prisma.deliverable.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DeliverableCreateManyAndReturnArgs>(args?: SelectSubset<T, DeliverableCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Deliverable.
+     * @param {DeliverableDeleteArgs} args - Arguments to delete one Deliverable.
+     * @example
+     * // Delete one Deliverable
+     * const Deliverable = await prisma.deliverable.delete({
+     *   where: {
+     *     // ... filter to delete one Deliverable
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DeliverableDeleteArgs>(args: SelectSubset<T, DeliverableDeleteArgs<ExtArgs>>): Prisma__DeliverableClient<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Deliverable.
+     * @param {DeliverableUpdateArgs} args - Arguments to update one Deliverable.
+     * @example
+     * // Update one Deliverable
+     * const deliverable = await prisma.deliverable.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DeliverableUpdateArgs>(args: SelectSubset<T, DeliverableUpdateArgs<ExtArgs>>): Prisma__DeliverableClient<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Deliverables.
+     * @param {DeliverableDeleteManyArgs} args - Arguments to filter Deliverables to delete.
+     * @example
+     * // Delete a few Deliverables
+     * const { count } = await prisma.deliverable.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DeliverableDeleteManyArgs>(args?: SelectSubset<T, DeliverableDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Deliverables.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliverableUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Deliverables
+     * const deliverable = await prisma.deliverable.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DeliverableUpdateManyArgs>(args: SelectSubset<T, DeliverableUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Deliverables and returns the data updated in the database.
+     * @param {DeliverableUpdateManyAndReturnArgs} args - Arguments to update many Deliverables.
+     * @example
+     * // Update many Deliverables
+     * const deliverable = await prisma.deliverable.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Deliverables and only return the `id`
+     * const deliverableWithIdOnly = await prisma.deliverable.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DeliverableUpdateManyAndReturnArgs>(args: SelectSubset<T, DeliverableUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Deliverable.
+     * @param {DeliverableUpsertArgs} args - Arguments to update or create a Deliverable.
+     * @example
+     * // Update or create a Deliverable
+     * const deliverable = await prisma.deliverable.upsert({
+     *   create: {
+     *     // ... data to create a Deliverable
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Deliverable we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DeliverableUpsertArgs>(args: SelectSubset<T, DeliverableUpsertArgs<ExtArgs>>): Prisma__DeliverableClient<$Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Deliverables.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliverableCountArgs} args - Arguments to filter Deliverables to count.
+     * @example
+     * // Count the number of Deliverables
+     * const count = await prisma.deliverable.count({
+     *   where: {
+     *     // ... the filter for the Deliverables we want to count
+     *   }
+     * })
+    **/
+    count<T extends DeliverableCountArgs>(
+      args?: Subset<T, DeliverableCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DeliverableCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Deliverable.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliverableAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DeliverableAggregateArgs>(args: Subset<T, DeliverableAggregateArgs>): Prisma.PrismaPromise<GetDeliverableAggregateType<T>>
+
+    /**
+     * Group by Deliverable.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliverableGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DeliverableGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DeliverableGroupByArgs['orderBy'] }
+        : { orderBy?: DeliverableGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DeliverableGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDeliverableGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Deliverable model
+   */
+  readonly fields: DeliverableFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Deliverable.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DeliverableClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    linkedProjectFile<T extends Deliverable$linkedProjectFileArgs<ExtArgs> = {}>(args?: Subset<T, Deliverable$linkedProjectFileArgs<ExtArgs>>): Prisma__ProjectFileClient<$Result.GetResult<Prisma.$ProjectFilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    generatedByAnalysis<T extends Deliverable$generatedByAnalysisArgs<ExtArgs> = {}>(args?: Subset<T, Deliverable$generatedByAnalysisArgs<ExtArgs>>): Prisma__AnalysisClient<$Result.GetResult<Prisma.$AnalysisPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    generatedByPipelineRun<T extends Deliverable$generatedByPipelineRunArgs<ExtArgs> = {}>(args?: Subset<T, Deliverable$generatedByPipelineRunArgs<ExtArgs>>): Prisma__ProjectPipelineRunClient<$Result.GetResult<Prisma.$ProjectPipelineRunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    lastUpdater<T extends Deliverable$lastUpdaterArgs<ExtArgs> = {}>(args?: Subset<T, Deliverable$lastUpdaterArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Deliverable model
+   */
+  interface DeliverableFieldRefs {
+    readonly id: FieldRef<"Deliverable", 'String'>
+    readonly projectId: FieldRef<"Deliverable", 'String'>
+    readonly title: FieldRef<"Deliverable", 'String'>
+    readonly description: FieldRef<"Deliverable", 'String'>
+    readonly content: FieldRef<"Deliverable", 'String'>
+    readonly format: FieldRef<"Deliverable", 'String'>
+    readonly type: FieldRef<"Deliverable", 'String'>
+    readonly status: FieldRef<"Deliverable", 'DeliverableStatus'>
+    readonly version: FieldRef<"Deliverable", 'Int'>
+    readonly projectFileId: FieldRef<"Deliverable", 'String'>
+    readonly externalUrl: FieldRef<"Deliverable", 'String'>
+    readonly generatedByAnalysisId: FieldRef<"Deliverable", 'String'>
+    readonly generatedByPipelineRunId: FieldRef<"Deliverable", 'String'>
+    readonly createdByUserId: FieldRef<"Deliverable", 'String'>
+    readonly lastUpdatedByUserId: FieldRef<"Deliverable", 'String'>
+    readonly createdAt: FieldRef<"Deliverable", 'DateTime'>
+    readonly updatedAt: FieldRef<"Deliverable", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Deliverable findUnique
+   */
+  export type DeliverableFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    /**
+     * Filter, which Deliverable to fetch.
+     */
+    where: DeliverableWhereUniqueInput
+  }
+
+  /**
+   * Deliverable findUniqueOrThrow
+   */
+  export type DeliverableFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    /**
+     * Filter, which Deliverable to fetch.
+     */
+    where: DeliverableWhereUniqueInput
+  }
+
+  /**
+   * Deliverable findFirst
+   */
+  export type DeliverableFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    /**
+     * Filter, which Deliverable to fetch.
+     */
+    where?: DeliverableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deliverables to fetch.
+     */
+    orderBy?: DeliverableOrderByWithRelationInput | DeliverableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Deliverables.
+     */
+    cursor?: DeliverableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deliverables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deliverables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Deliverables.
+     */
+    distinct?: DeliverableScalarFieldEnum | DeliverableScalarFieldEnum[]
+  }
+
+  /**
+   * Deliverable findFirstOrThrow
+   */
+  export type DeliverableFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    /**
+     * Filter, which Deliverable to fetch.
+     */
+    where?: DeliverableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deliverables to fetch.
+     */
+    orderBy?: DeliverableOrderByWithRelationInput | DeliverableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Deliverables.
+     */
+    cursor?: DeliverableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deliverables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deliverables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Deliverables.
+     */
+    distinct?: DeliverableScalarFieldEnum | DeliverableScalarFieldEnum[]
+  }
+
+  /**
+   * Deliverable findMany
+   */
+  export type DeliverableFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    /**
+     * Filter, which Deliverables to fetch.
+     */
+    where?: DeliverableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deliverables to fetch.
+     */
+    orderBy?: DeliverableOrderByWithRelationInput | DeliverableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Deliverables.
+     */
+    cursor?: DeliverableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deliverables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deliverables.
+     */
+    skip?: number
+    distinct?: DeliverableScalarFieldEnum | DeliverableScalarFieldEnum[]
+  }
+
+  /**
+   * Deliverable create
+   */
+  export type DeliverableCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Deliverable.
+     */
+    data: XOR<DeliverableCreateInput, DeliverableUncheckedCreateInput>
+  }
+
+  /**
+   * Deliverable createMany
+   */
+  export type DeliverableCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Deliverables.
+     */
+    data: DeliverableCreateManyInput | DeliverableCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Deliverable createManyAndReturn
+   */
+  export type DeliverableCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * The data used to create many Deliverables.
+     */
+    data: DeliverableCreateManyInput | DeliverableCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Deliverable update
+   */
+  export type DeliverableUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Deliverable.
+     */
+    data: XOR<DeliverableUpdateInput, DeliverableUncheckedUpdateInput>
+    /**
+     * Choose, which Deliverable to update.
+     */
+    where: DeliverableWhereUniqueInput
+  }
+
+  /**
+   * Deliverable updateMany
+   */
+  export type DeliverableUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Deliverables.
+     */
+    data: XOR<DeliverableUpdateManyMutationInput, DeliverableUncheckedUpdateManyInput>
+    /**
+     * Filter which Deliverables to update
+     */
+    where?: DeliverableWhereInput
+    /**
+     * Limit how many Deliverables to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Deliverable updateManyAndReturn
+   */
+  export type DeliverableUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * The data used to update Deliverables.
+     */
+    data: XOR<DeliverableUpdateManyMutationInput, DeliverableUncheckedUpdateManyInput>
+    /**
+     * Filter which Deliverables to update
+     */
+    where?: DeliverableWhereInput
+    /**
+     * Limit how many Deliverables to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Deliverable upsert
+   */
+  export type DeliverableUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Deliverable to update in case it exists.
+     */
+    where: DeliverableWhereUniqueInput
+    /**
+     * In case the Deliverable found by the `where` argument doesn't exist, create a new Deliverable with this data.
+     */
+    create: XOR<DeliverableCreateInput, DeliverableUncheckedCreateInput>
+    /**
+     * In case the Deliverable was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DeliverableUpdateInput, DeliverableUncheckedUpdateInput>
+  }
+
+  /**
+   * Deliverable delete
+   */
+  export type DeliverableDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
+    /**
+     * Filter which Deliverable to delete.
+     */
+    where: DeliverableWhereUniqueInput
+  }
+
+  /**
+   * Deliverable deleteMany
+   */
+  export type DeliverableDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Deliverables to delete
+     */
+    where?: DeliverableWhereInput
+    /**
+     * Limit how many Deliverables to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Deliverable.linkedProjectFile
+   */
+  export type Deliverable$linkedProjectFileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectFile
+     */
+    select?: ProjectFileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectFile
+     */
+    omit?: ProjectFileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectFileInclude<ExtArgs> | null
+    where?: ProjectFileWhereInput
+  }
+
+  /**
+   * Deliverable.generatedByAnalysis
+   */
+  export type Deliverable$generatedByAnalysisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Analysis
+     */
+    select?: AnalysisSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Analysis
+     */
+    omit?: AnalysisOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalysisInclude<ExtArgs> | null
+    where?: AnalysisWhereInput
+  }
+
+  /**
+   * Deliverable.generatedByPipelineRun
+   */
+  export type Deliverable$generatedByPipelineRunArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectPipelineRun
+     */
+    select?: ProjectPipelineRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectPipelineRun
+     */
+    omit?: ProjectPipelineRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectPipelineRunInclude<ExtArgs> | null
+    where?: ProjectPipelineRunWhereInput
+  }
+
+  /**
+   * Deliverable.lastUpdater
+   */
+  export type Deliverable$lastUpdaterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Deliverable without action
+   */
+  export type DeliverableDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deliverable
+     */
+    select?: DeliverableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deliverable
+     */
+    omit?: DeliverableOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliverableInclude<ExtArgs> | null
   }
 
 
@@ -36453,6 +38574,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectDefaultArgs<ExtArgs>
+    githubAIActionLogs?: boolean | ProjectIntegration$githubAIActionLogsArgs<ExtArgs>
+    _count?: boolean | ProjectIntegrationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["projectIntegration"]>
 
   export type ProjectIntegrationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -36514,6 +38637,8 @@ export namespace Prisma {
   export type ProjectIntegrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "provider" | "externalAccountId" | "accessToken" | "refreshToken" | "tokenExpiresAt" | "settings" | "isEnabled" | "lastSyncAt" | "syncStatus" | "syncErrorMessage" | "addedByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["projectIntegration"]>
   export type ProjectIntegrationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
+    githubAIActionLogs?: boolean | ProjectIntegration$githubAIActionLogsArgs<ExtArgs>
+    _count?: boolean | ProjectIntegrationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectIntegrationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
@@ -36526,6 +38651,7 @@ export namespace Prisma {
     name: "ProjectIntegration"
     objects: {
       project: Prisma.$ProjectPayload<ExtArgs>
+      githubAIActionLogs: Prisma.$GitHubAIActionLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -36938,6 +39064,7 @@ export namespace Prisma {
   export interface Prisma__ProjectIntegrationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    githubAIActionLogs<T extends ProjectIntegration$githubAIActionLogsArgs<ExtArgs> = {}>(args?: Subset<T, ProjectIntegration$githubAIActionLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -37378,6 +39505,30 @@ export namespace Prisma {
   }
 
   /**
+   * ProjectIntegration.githubAIActionLogs
+   */
+  export type ProjectIntegration$githubAIActionLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogInclude<ExtArgs> | null
+    where?: GitHubAIActionLogWhereInput
+    orderBy?: GitHubAIActionLogOrderByWithRelationInput | GitHubAIActionLogOrderByWithRelationInput[]
+    cursor?: GitHubAIActionLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GitHubAIActionLogScalarFieldEnum | GitHubAIActionLogScalarFieldEnum[]
+  }
+
+  /**
    * ProjectIntegration without action
    */
   export type ProjectIntegrationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -37393,6 +39544,1212 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ProjectIntegrationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model GitHubAIActionLog
+   */
+
+  export type AggregateGitHubAIActionLog = {
+    _count: GitHubAIActionLogCountAggregateOutputType | null
+    _min: GitHubAIActionLogMinAggregateOutputType | null
+    _max: GitHubAIActionLogMaxAggregateOutputType | null
+  }
+
+  export type GitHubAIActionLogMinAggregateOutputType = {
+    id: string | null
+    projectIntegrationId: string | null
+    projectId: string | null
+    analysisId: string | null
+    actionType: $Enums.GitHubAIActionType | null
+    githubEntityType: $Enums.GitHubEntityType | null
+    githubEntityId: string | null
+    githubEntityUrl: string | null
+    githubCommentId: string | null
+    status: $Enums.ActionStatus | null
+    errorMessage: string | null
+    triggeredBy: string | null
+    performedAt: Date | null
+  }
+
+  export type GitHubAIActionLogMaxAggregateOutputType = {
+    id: string | null
+    projectIntegrationId: string | null
+    projectId: string | null
+    analysisId: string | null
+    actionType: $Enums.GitHubAIActionType | null
+    githubEntityType: $Enums.GitHubEntityType | null
+    githubEntityId: string | null
+    githubEntityUrl: string | null
+    githubCommentId: string | null
+    status: $Enums.ActionStatus | null
+    errorMessage: string | null
+    triggeredBy: string | null
+    performedAt: Date | null
+  }
+
+  export type GitHubAIActionLogCountAggregateOutputType = {
+    id: number
+    projectIntegrationId: number
+    projectId: number
+    analysisId: number
+    actionType: number
+    githubEntityType: number
+    githubEntityId: number
+    githubEntityUrl: number
+    githubCommentId: number
+    content: number
+    status: number
+    errorMessage: number
+    triggeredBy: number
+    performedAt: number
+    _all: number
+  }
+
+
+  export type GitHubAIActionLogMinAggregateInputType = {
+    id?: true
+    projectIntegrationId?: true
+    projectId?: true
+    analysisId?: true
+    actionType?: true
+    githubEntityType?: true
+    githubEntityId?: true
+    githubEntityUrl?: true
+    githubCommentId?: true
+    status?: true
+    errorMessage?: true
+    triggeredBy?: true
+    performedAt?: true
+  }
+
+  export type GitHubAIActionLogMaxAggregateInputType = {
+    id?: true
+    projectIntegrationId?: true
+    projectId?: true
+    analysisId?: true
+    actionType?: true
+    githubEntityType?: true
+    githubEntityId?: true
+    githubEntityUrl?: true
+    githubCommentId?: true
+    status?: true
+    errorMessage?: true
+    triggeredBy?: true
+    performedAt?: true
+  }
+
+  export type GitHubAIActionLogCountAggregateInputType = {
+    id?: true
+    projectIntegrationId?: true
+    projectId?: true
+    analysisId?: true
+    actionType?: true
+    githubEntityType?: true
+    githubEntityId?: true
+    githubEntityUrl?: true
+    githubCommentId?: true
+    content?: true
+    status?: true
+    errorMessage?: true
+    triggeredBy?: true
+    performedAt?: true
+    _all?: true
+  }
+
+  export type GitHubAIActionLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GitHubAIActionLog to aggregate.
+     */
+    where?: GitHubAIActionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GitHubAIActionLogs to fetch.
+     */
+    orderBy?: GitHubAIActionLogOrderByWithRelationInput | GitHubAIActionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GitHubAIActionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GitHubAIActionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GitHubAIActionLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GitHubAIActionLogs
+    **/
+    _count?: true | GitHubAIActionLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GitHubAIActionLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GitHubAIActionLogMaxAggregateInputType
+  }
+
+  export type GetGitHubAIActionLogAggregateType<T extends GitHubAIActionLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateGitHubAIActionLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGitHubAIActionLog[P]>
+      : GetScalarType<T[P], AggregateGitHubAIActionLog[P]>
+  }
+
+
+
+
+  export type GitHubAIActionLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GitHubAIActionLogWhereInput
+    orderBy?: GitHubAIActionLogOrderByWithAggregationInput | GitHubAIActionLogOrderByWithAggregationInput[]
+    by: GitHubAIActionLogScalarFieldEnum[] | GitHubAIActionLogScalarFieldEnum
+    having?: GitHubAIActionLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GitHubAIActionLogCountAggregateInputType | true
+    _min?: GitHubAIActionLogMinAggregateInputType
+    _max?: GitHubAIActionLogMaxAggregateInputType
+  }
+
+  export type GitHubAIActionLogGroupByOutputType = {
+    id: string
+    projectIntegrationId: string
+    projectId: string
+    analysisId: string | null
+    actionType: $Enums.GitHubAIActionType
+    githubEntityType: $Enums.GitHubEntityType
+    githubEntityId: string
+    githubEntityUrl: string | null
+    githubCommentId: string | null
+    content: JsonValue | null
+    status: $Enums.ActionStatus
+    errorMessage: string | null
+    triggeredBy: string | null
+    performedAt: Date
+    _count: GitHubAIActionLogCountAggregateOutputType | null
+    _min: GitHubAIActionLogMinAggregateOutputType | null
+    _max: GitHubAIActionLogMaxAggregateOutputType | null
+  }
+
+  type GetGitHubAIActionLogGroupByPayload<T extends GitHubAIActionLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GitHubAIActionLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GitHubAIActionLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GitHubAIActionLogGroupByOutputType[P]>
+            : GetScalarType<T[P], GitHubAIActionLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GitHubAIActionLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectIntegrationId?: boolean
+    projectId?: boolean
+    analysisId?: boolean
+    actionType?: boolean
+    githubEntityType?: boolean
+    githubEntityId?: boolean
+    githubEntityUrl?: boolean
+    githubCommentId?: boolean
+    content?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    triggeredBy?: boolean
+    performedAt?: boolean
+    projectIntegration?: boolean | ProjectIntegrationDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    analysis?: boolean | GitHubAIActionLog$analysisArgs<ExtArgs>
+  }, ExtArgs["result"]["gitHubAIActionLog"]>
+
+  export type GitHubAIActionLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectIntegrationId?: boolean
+    projectId?: boolean
+    analysisId?: boolean
+    actionType?: boolean
+    githubEntityType?: boolean
+    githubEntityId?: boolean
+    githubEntityUrl?: boolean
+    githubCommentId?: boolean
+    content?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    triggeredBy?: boolean
+    performedAt?: boolean
+    projectIntegration?: boolean | ProjectIntegrationDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    analysis?: boolean | GitHubAIActionLog$analysisArgs<ExtArgs>
+  }, ExtArgs["result"]["gitHubAIActionLog"]>
+
+  export type GitHubAIActionLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectIntegrationId?: boolean
+    projectId?: boolean
+    analysisId?: boolean
+    actionType?: boolean
+    githubEntityType?: boolean
+    githubEntityId?: boolean
+    githubEntityUrl?: boolean
+    githubCommentId?: boolean
+    content?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    triggeredBy?: boolean
+    performedAt?: boolean
+    projectIntegration?: boolean | ProjectIntegrationDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    analysis?: boolean | GitHubAIActionLog$analysisArgs<ExtArgs>
+  }, ExtArgs["result"]["gitHubAIActionLog"]>
+
+  export type GitHubAIActionLogSelectScalar = {
+    id?: boolean
+    projectIntegrationId?: boolean
+    projectId?: boolean
+    analysisId?: boolean
+    actionType?: boolean
+    githubEntityType?: boolean
+    githubEntityId?: boolean
+    githubEntityUrl?: boolean
+    githubCommentId?: boolean
+    content?: boolean
+    status?: boolean
+    errorMessage?: boolean
+    triggeredBy?: boolean
+    performedAt?: boolean
+  }
+
+  export type GitHubAIActionLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectIntegrationId" | "projectId" | "analysisId" | "actionType" | "githubEntityType" | "githubEntityId" | "githubEntityUrl" | "githubCommentId" | "content" | "status" | "errorMessage" | "triggeredBy" | "performedAt", ExtArgs["result"]["gitHubAIActionLog"]>
+  export type GitHubAIActionLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    projectIntegration?: boolean | ProjectIntegrationDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    analysis?: boolean | GitHubAIActionLog$analysisArgs<ExtArgs>
+  }
+  export type GitHubAIActionLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    projectIntegration?: boolean | ProjectIntegrationDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    analysis?: boolean | GitHubAIActionLog$analysisArgs<ExtArgs>
+  }
+  export type GitHubAIActionLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    projectIntegration?: boolean | ProjectIntegrationDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    analysis?: boolean | GitHubAIActionLog$analysisArgs<ExtArgs>
+  }
+
+  export type $GitHubAIActionLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GitHubAIActionLog"
+    objects: {
+      projectIntegration: Prisma.$ProjectIntegrationPayload<ExtArgs>
+      project: Prisma.$ProjectPayload<ExtArgs>
+      analysis: Prisma.$AnalysisPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      projectIntegrationId: string
+      projectId: string
+      analysisId: string | null
+      actionType: $Enums.GitHubAIActionType
+      githubEntityType: $Enums.GitHubEntityType
+      githubEntityId: string
+      githubEntityUrl: string | null
+      githubCommentId: string | null
+      content: Prisma.JsonValue | null
+      status: $Enums.ActionStatus
+      errorMessage: string | null
+      triggeredBy: string | null
+      performedAt: Date
+    }, ExtArgs["result"]["gitHubAIActionLog"]>
+    composites: {}
+  }
+
+  type GitHubAIActionLogGetPayload<S extends boolean | null | undefined | GitHubAIActionLogDefaultArgs> = $Result.GetResult<Prisma.$GitHubAIActionLogPayload, S>
+
+  type GitHubAIActionLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GitHubAIActionLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GitHubAIActionLogCountAggregateInputType | true
+    }
+
+  export interface GitHubAIActionLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GitHubAIActionLog'], meta: { name: 'GitHubAIActionLog' } }
+    /**
+     * Find zero or one GitHubAIActionLog that matches the filter.
+     * @param {GitHubAIActionLogFindUniqueArgs} args - Arguments to find a GitHubAIActionLog
+     * @example
+     * // Get one GitHubAIActionLog
+     * const gitHubAIActionLog = await prisma.gitHubAIActionLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GitHubAIActionLogFindUniqueArgs>(args: SelectSubset<T, GitHubAIActionLogFindUniqueArgs<ExtArgs>>): Prisma__GitHubAIActionLogClient<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GitHubAIActionLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GitHubAIActionLogFindUniqueOrThrowArgs} args - Arguments to find a GitHubAIActionLog
+     * @example
+     * // Get one GitHubAIActionLog
+     * const gitHubAIActionLog = await prisma.gitHubAIActionLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GitHubAIActionLogFindUniqueOrThrowArgs>(args: SelectSubset<T, GitHubAIActionLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GitHubAIActionLogClient<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GitHubAIActionLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GitHubAIActionLogFindFirstArgs} args - Arguments to find a GitHubAIActionLog
+     * @example
+     * // Get one GitHubAIActionLog
+     * const gitHubAIActionLog = await prisma.gitHubAIActionLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GitHubAIActionLogFindFirstArgs>(args?: SelectSubset<T, GitHubAIActionLogFindFirstArgs<ExtArgs>>): Prisma__GitHubAIActionLogClient<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GitHubAIActionLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GitHubAIActionLogFindFirstOrThrowArgs} args - Arguments to find a GitHubAIActionLog
+     * @example
+     * // Get one GitHubAIActionLog
+     * const gitHubAIActionLog = await prisma.gitHubAIActionLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GitHubAIActionLogFindFirstOrThrowArgs>(args?: SelectSubset<T, GitHubAIActionLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__GitHubAIActionLogClient<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GitHubAIActionLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GitHubAIActionLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GitHubAIActionLogs
+     * const gitHubAIActionLogs = await prisma.gitHubAIActionLog.findMany()
+     * 
+     * // Get first 10 GitHubAIActionLogs
+     * const gitHubAIActionLogs = await prisma.gitHubAIActionLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const gitHubAIActionLogWithIdOnly = await prisma.gitHubAIActionLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GitHubAIActionLogFindManyArgs>(args?: SelectSubset<T, GitHubAIActionLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GitHubAIActionLog.
+     * @param {GitHubAIActionLogCreateArgs} args - Arguments to create a GitHubAIActionLog.
+     * @example
+     * // Create one GitHubAIActionLog
+     * const GitHubAIActionLog = await prisma.gitHubAIActionLog.create({
+     *   data: {
+     *     // ... data to create a GitHubAIActionLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends GitHubAIActionLogCreateArgs>(args: SelectSubset<T, GitHubAIActionLogCreateArgs<ExtArgs>>): Prisma__GitHubAIActionLogClient<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GitHubAIActionLogs.
+     * @param {GitHubAIActionLogCreateManyArgs} args - Arguments to create many GitHubAIActionLogs.
+     * @example
+     * // Create many GitHubAIActionLogs
+     * const gitHubAIActionLog = await prisma.gitHubAIActionLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GitHubAIActionLogCreateManyArgs>(args?: SelectSubset<T, GitHubAIActionLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GitHubAIActionLogs and returns the data saved in the database.
+     * @param {GitHubAIActionLogCreateManyAndReturnArgs} args - Arguments to create many GitHubAIActionLogs.
+     * @example
+     * // Create many GitHubAIActionLogs
+     * const gitHubAIActionLog = await prisma.gitHubAIActionLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GitHubAIActionLogs and only return the `id`
+     * const gitHubAIActionLogWithIdOnly = await prisma.gitHubAIActionLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GitHubAIActionLogCreateManyAndReturnArgs>(args?: SelectSubset<T, GitHubAIActionLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GitHubAIActionLog.
+     * @param {GitHubAIActionLogDeleteArgs} args - Arguments to delete one GitHubAIActionLog.
+     * @example
+     * // Delete one GitHubAIActionLog
+     * const GitHubAIActionLog = await prisma.gitHubAIActionLog.delete({
+     *   where: {
+     *     // ... filter to delete one GitHubAIActionLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GitHubAIActionLogDeleteArgs>(args: SelectSubset<T, GitHubAIActionLogDeleteArgs<ExtArgs>>): Prisma__GitHubAIActionLogClient<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GitHubAIActionLog.
+     * @param {GitHubAIActionLogUpdateArgs} args - Arguments to update one GitHubAIActionLog.
+     * @example
+     * // Update one GitHubAIActionLog
+     * const gitHubAIActionLog = await prisma.gitHubAIActionLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GitHubAIActionLogUpdateArgs>(args: SelectSubset<T, GitHubAIActionLogUpdateArgs<ExtArgs>>): Prisma__GitHubAIActionLogClient<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GitHubAIActionLogs.
+     * @param {GitHubAIActionLogDeleteManyArgs} args - Arguments to filter GitHubAIActionLogs to delete.
+     * @example
+     * // Delete a few GitHubAIActionLogs
+     * const { count } = await prisma.gitHubAIActionLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GitHubAIActionLogDeleteManyArgs>(args?: SelectSubset<T, GitHubAIActionLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GitHubAIActionLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GitHubAIActionLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GitHubAIActionLogs
+     * const gitHubAIActionLog = await prisma.gitHubAIActionLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GitHubAIActionLogUpdateManyArgs>(args: SelectSubset<T, GitHubAIActionLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GitHubAIActionLogs and returns the data updated in the database.
+     * @param {GitHubAIActionLogUpdateManyAndReturnArgs} args - Arguments to update many GitHubAIActionLogs.
+     * @example
+     * // Update many GitHubAIActionLogs
+     * const gitHubAIActionLog = await prisma.gitHubAIActionLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GitHubAIActionLogs and only return the `id`
+     * const gitHubAIActionLogWithIdOnly = await prisma.gitHubAIActionLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GitHubAIActionLogUpdateManyAndReturnArgs>(args: SelectSubset<T, GitHubAIActionLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GitHubAIActionLog.
+     * @param {GitHubAIActionLogUpsertArgs} args - Arguments to update or create a GitHubAIActionLog.
+     * @example
+     * // Update or create a GitHubAIActionLog
+     * const gitHubAIActionLog = await prisma.gitHubAIActionLog.upsert({
+     *   create: {
+     *     // ... data to create a GitHubAIActionLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GitHubAIActionLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GitHubAIActionLogUpsertArgs>(args: SelectSubset<T, GitHubAIActionLogUpsertArgs<ExtArgs>>): Prisma__GitHubAIActionLogClient<$Result.GetResult<Prisma.$GitHubAIActionLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GitHubAIActionLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GitHubAIActionLogCountArgs} args - Arguments to filter GitHubAIActionLogs to count.
+     * @example
+     * // Count the number of GitHubAIActionLogs
+     * const count = await prisma.gitHubAIActionLog.count({
+     *   where: {
+     *     // ... the filter for the GitHubAIActionLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends GitHubAIActionLogCountArgs>(
+      args?: Subset<T, GitHubAIActionLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GitHubAIActionLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GitHubAIActionLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GitHubAIActionLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GitHubAIActionLogAggregateArgs>(args: Subset<T, GitHubAIActionLogAggregateArgs>): Prisma.PrismaPromise<GetGitHubAIActionLogAggregateType<T>>
+
+    /**
+     * Group by GitHubAIActionLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GitHubAIActionLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GitHubAIActionLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GitHubAIActionLogGroupByArgs['orderBy'] }
+        : { orderBy?: GitHubAIActionLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GitHubAIActionLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGitHubAIActionLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GitHubAIActionLog model
+   */
+  readonly fields: GitHubAIActionLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GitHubAIActionLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GitHubAIActionLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    projectIntegration<T extends ProjectIntegrationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectIntegrationDefaultArgs<ExtArgs>>): Prisma__ProjectIntegrationClient<$Result.GetResult<Prisma.$ProjectIntegrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    analysis<T extends GitHubAIActionLog$analysisArgs<ExtArgs> = {}>(args?: Subset<T, GitHubAIActionLog$analysisArgs<ExtArgs>>): Prisma__AnalysisClient<$Result.GetResult<Prisma.$AnalysisPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GitHubAIActionLog model
+   */
+  interface GitHubAIActionLogFieldRefs {
+    readonly id: FieldRef<"GitHubAIActionLog", 'String'>
+    readonly projectIntegrationId: FieldRef<"GitHubAIActionLog", 'String'>
+    readonly projectId: FieldRef<"GitHubAIActionLog", 'String'>
+    readonly analysisId: FieldRef<"GitHubAIActionLog", 'String'>
+    readonly actionType: FieldRef<"GitHubAIActionLog", 'GitHubAIActionType'>
+    readonly githubEntityType: FieldRef<"GitHubAIActionLog", 'GitHubEntityType'>
+    readonly githubEntityId: FieldRef<"GitHubAIActionLog", 'String'>
+    readonly githubEntityUrl: FieldRef<"GitHubAIActionLog", 'String'>
+    readonly githubCommentId: FieldRef<"GitHubAIActionLog", 'String'>
+    readonly content: FieldRef<"GitHubAIActionLog", 'Json'>
+    readonly status: FieldRef<"GitHubAIActionLog", 'ActionStatus'>
+    readonly errorMessage: FieldRef<"GitHubAIActionLog", 'String'>
+    readonly triggeredBy: FieldRef<"GitHubAIActionLog", 'String'>
+    readonly performedAt: FieldRef<"GitHubAIActionLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GitHubAIActionLog findUnique
+   */
+  export type GitHubAIActionLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogInclude<ExtArgs> | null
+    /**
+     * Filter, which GitHubAIActionLog to fetch.
+     */
+    where: GitHubAIActionLogWhereUniqueInput
+  }
+
+  /**
+   * GitHubAIActionLog findUniqueOrThrow
+   */
+  export type GitHubAIActionLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogInclude<ExtArgs> | null
+    /**
+     * Filter, which GitHubAIActionLog to fetch.
+     */
+    where: GitHubAIActionLogWhereUniqueInput
+  }
+
+  /**
+   * GitHubAIActionLog findFirst
+   */
+  export type GitHubAIActionLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogInclude<ExtArgs> | null
+    /**
+     * Filter, which GitHubAIActionLog to fetch.
+     */
+    where?: GitHubAIActionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GitHubAIActionLogs to fetch.
+     */
+    orderBy?: GitHubAIActionLogOrderByWithRelationInput | GitHubAIActionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GitHubAIActionLogs.
+     */
+    cursor?: GitHubAIActionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GitHubAIActionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GitHubAIActionLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GitHubAIActionLogs.
+     */
+    distinct?: GitHubAIActionLogScalarFieldEnum | GitHubAIActionLogScalarFieldEnum[]
+  }
+
+  /**
+   * GitHubAIActionLog findFirstOrThrow
+   */
+  export type GitHubAIActionLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogInclude<ExtArgs> | null
+    /**
+     * Filter, which GitHubAIActionLog to fetch.
+     */
+    where?: GitHubAIActionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GitHubAIActionLogs to fetch.
+     */
+    orderBy?: GitHubAIActionLogOrderByWithRelationInput | GitHubAIActionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GitHubAIActionLogs.
+     */
+    cursor?: GitHubAIActionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GitHubAIActionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GitHubAIActionLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GitHubAIActionLogs.
+     */
+    distinct?: GitHubAIActionLogScalarFieldEnum | GitHubAIActionLogScalarFieldEnum[]
+  }
+
+  /**
+   * GitHubAIActionLog findMany
+   */
+  export type GitHubAIActionLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogInclude<ExtArgs> | null
+    /**
+     * Filter, which GitHubAIActionLogs to fetch.
+     */
+    where?: GitHubAIActionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GitHubAIActionLogs to fetch.
+     */
+    orderBy?: GitHubAIActionLogOrderByWithRelationInput | GitHubAIActionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GitHubAIActionLogs.
+     */
+    cursor?: GitHubAIActionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GitHubAIActionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GitHubAIActionLogs.
+     */
+    skip?: number
+    distinct?: GitHubAIActionLogScalarFieldEnum | GitHubAIActionLogScalarFieldEnum[]
+  }
+
+  /**
+   * GitHubAIActionLog create
+   */
+  export type GitHubAIActionLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GitHubAIActionLog.
+     */
+    data: XOR<GitHubAIActionLogCreateInput, GitHubAIActionLogUncheckedCreateInput>
+  }
+
+  /**
+   * GitHubAIActionLog createMany
+   */
+  export type GitHubAIActionLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GitHubAIActionLogs.
+     */
+    data: GitHubAIActionLogCreateManyInput | GitHubAIActionLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GitHubAIActionLog createManyAndReturn
+   */
+  export type GitHubAIActionLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many GitHubAIActionLogs.
+     */
+    data: GitHubAIActionLogCreateManyInput | GitHubAIActionLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GitHubAIActionLog update
+   */
+  export type GitHubAIActionLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GitHubAIActionLog.
+     */
+    data: XOR<GitHubAIActionLogUpdateInput, GitHubAIActionLogUncheckedUpdateInput>
+    /**
+     * Choose, which GitHubAIActionLog to update.
+     */
+    where: GitHubAIActionLogWhereUniqueInput
+  }
+
+  /**
+   * GitHubAIActionLog updateMany
+   */
+  export type GitHubAIActionLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GitHubAIActionLogs.
+     */
+    data: XOR<GitHubAIActionLogUpdateManyMutationInput, GitHubAIActionLogUncheckedUpdateManyInput>
+    /**
+     * Filter which GitHubAIActionLogs to update
+     */
+    where?: GitHubAIActionLogWhereInput
+    /**
+     * Limit how many GitHubAIActionLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GitHubAIActionLog updateManyAndReturn
+   */
+  export type GitHubAIActionLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * The data used to update GitHubAIActionLogs.
+     */
+    data: XOR<GitHubAIActionLogUpdateManyMutationInput, GitHubAIActionLogUncheckedUpdateManyInput>
+    /**
+     * Filter which GitHubAIActionLogs to update
+     */
+    where?: GitHubAIActionLogWhereInput
+    /**
+     * Limit how many GitHubAIActionLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GitHubAIActionLog upsert
+   */
+  export type GitHubAIActionLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GitHubAIActionLog to update in case it exists.
+     */
+    where: GitHubAIActionLogWhereUniqueInput
+    /**
+     * In case the GitHubAIActionLog found by the `where` argument doesn't exist, create a new GitHubAIActionLog with this data.
+     */
+    create: XOR<GitHubAIActionLogCreateInput, GitHubAIActionLogUncheckedCreateInput>
+    /**
+     * In case the GitHubAIActionLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GitHubAIActionLogUpdateInput, GitHubAIActionLogUncheckedUpdateInput>
+  }
+
+  /**
+   * GitHubAIActionLog delete
+   */
+  export type GitHubAIActionLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogInclude<ExtArgs> | null
+    /**
+     * Filter which GitHubAIActionLog to delete.
+     */
+    where: GitHubAIActionLogWhereUniqueInput
+  }
+
+  /**
+   * GitHubAIActionLog deleteMany
+   */
+  export type GitHubAIActionLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GitHubAIActionLogs to delete
+     */
+    where?: GitHubAIActionLogWhereInput
+    /**
+     * Limit how many GitHubAIActionLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GitHubAIActionLog.analysis
+   */
+  export type GitHubAIActionLog$analysisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Analysis
+     */
+    select?: AnalysisSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Analysis
+     */
+    omit?: AnalysisOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnalysisInclude<ExtArgs> | null
+    where?: AnalysisWhereInput
+  }
+
+  /**
+   * GitHubAIActionLog without action
+   */
+  export type GitHubAIActionLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GitHubAIActionLog
+     */
+    select?: GitHubAIActionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GitHubAIActionLog
+     */
+    omit?: GitHubAIActionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GitHubAIActionLogInclude<ExtArgs> | null
   }
 
 
@@ -38546,6 +41903,1159 @@ export namespace Prisma {
 
 
   /**
+   * Model UserFeedback
+   */
+
+  export type AggregateUserFeedback = {
+    _count: UserFeedbackCountAggregateOutputType | null
+    _avg: UserFeedbackAvgAggregateOutputType | null
+    _sum: UserFeedbackSumAggregateOutputType | null
+    _min: UserFeedbackMinAggregateOutputType | null
+    _max: UserFeedbackMaxAggregateOutputType | null
+  }
+
+  export type UserFeedbackAvgAggregateOutputType = {
+    rating: number | null
+  }
+
+  export type UserFeedbackSumAggregateOutputType = {
+    rating: number | null
+  }
+
+  export type UserFeedbackMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    entityType: $Enums.FeedbackEntityType | null
+    entityId: string | null
+    rating: number | null
+    comment: string | null
+    isResolved: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UserFeedbackMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    entityType: $Enums.FeedbackEntityType | null
+    entityId: string | null
+    rating: number | null
+    comment: string | null
+    isResolved: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UserFeedbackCountAggregateOutputType = {
+    id: number
+    userId: number
+    entityType: number
+    entityId: number
+    rating: number
+    comment: number
+    metadata: number
+    isResolved: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type UserFeedbackAvgAggregateInputType = {
+    rating?: true
+  }
+
+  export type UserFeedbackSumAggregateInputType = {
+    rating?: true
+  }
+
+  export type UserFeedbackMinAggregateInputType = {
+    id?: true
+    userId?: true
+    entityType?: true
+    entityId?: true
+    rating?: true
+    comment?: true
+    isResolved?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UserFeedbackMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    entityType?: true
+    entityId?: true
+    rating?: true
+    comment?: true
+    isResolved?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UserFeedbackCountAggregateInputType = {
+    id?: true
+    userId?: true
+    entityType?: true
+    entityId?: true
+    rating?: true
+    comment?: true
+    metadata?: true
+    isResolved?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type UserFeedbackAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserFeedback to aggregate.
+     */
+    where?: UserFeedbackWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserFeedbacks to fetch.
+     */
+    orderBy?: UserFeedbackOrderByWithRelationInput | UserFeedbackOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserFeedbackWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserFeedbacks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserFeedbacks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserFeedbacks
+    **/
+    _count?: true | UserFeedbackCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UserFeedbackAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserFeedbackSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserFeedbackMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserFeedbackMaxAggregateInputType
+  }
+
+  export type GetUserFeedbackAggregateType<T extends UserFeedbackAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserFeedback]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserFeedback[P]>
+      : GetScalarType<T[P], AggregateUserFeedback[P]>
+  }
+
+
+
+
+  export type UserFeedbackGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserFeedbackWhereInput
+    orderBy?: UserFeedbackOrderByWithAggregationInput | UserFeedbackOrderByWithAggregationInput[]
+    by: UserFeedbackScalarFieldEnum[] | UserFeedbackScalarFieldEnum
+    having?: UserFeedbackScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserFeedbackCountAggregateInputType | true
+    _avg?: UserFeedbackAvgAggregateInputType
+    _sum?: UserFeedbackSumAggregateInputType
+    _min?: UserFeedbackMinAggregateInputType
+    _max?: UserFeedbackMaxAggregateInputType
+  }
+
+  export type UserFeedbackGroupByOutputType = {
+    id: string
+    userId: string
+    entityType: $Enums.FeedbackEntityType
+    entityId: string | null
+    rating: number | null
+    comment: string | null
+    metadata: JsonValue | null
+    isResolved: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: UserFeedbackCountAggregateOutputType | null
+    _avg: UserFeedbackAvgAggregateOutputType | null
+    _sum: UserFeedbackSumAggregateOutputType | null
+    _min: UserFeedbackMinAggregateOutputType | null
+    _max: UserFeedbackMaxAggregateOutputType | null
+  }
+
+  type GetUserFeedbackGroupByPayload<T extends UserFeedbackGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserFeedbackGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserFeedbackGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserFeedbackGroupByOutputType[P]>
+            : GetScalarType<T[P], UserFeedbackGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserFeedbackSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    entityType?: boolean
+    entityId?: boolean
+    rating?: boolean
+    comment?: boolean
+    metadata?: boolean
+    isResolved?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userFeedback"]>
+
+  export type UserFeedbackSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    entityType?: boolean
+    entityId?: boolean
+    rating?: boolean
+    comment?: boolean
+    metadata?: boolean
+    isResolved?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userFeedback"]>
+
+  export type UserFeedbackSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    entityType?: boolean
+    entityId?: boolean
+    rating?: boolean
+    comment?: boolean
+    metadata?: boolean
+    isResolved?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userFeedback"]>
+
+  export type UserFeedbackSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    entityType?: boolean
+    entityId?: boolean
+    rating?: boolean
+    comment?: boolean
+    metadata?: boolean
+    isResolved?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type UserFeedbackOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "entityType" | "entityId" | "rating" | "comment" | "metadata" | "isResolved" | "createdAt" | "updatedAt", ExtArgs["result"]["userFeedback"]>
+  export type UserFeedbackInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type UserFeedbackIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type UserFeedbackIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $UserFeedbackPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserFeedback"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      entityType: $Enums.FeedbackEntityType
+      entityId: string | null
+      rating: number | null
+      comment: string | null
+      metadata: Prisma.JsonValue | null
+      isResolved: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["userFeedback"]>
+    composites: {}
+  }
+
+  type UserFeedbackGetPayload<S extends boolean | null | undefined | UserFeedbackDefaultArgs> = $Result.GetResult<Prisma.$UserFeedbackPayload, S>
+
+  type UserFeedbackCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserFeedbackFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserFeedbackCountAggregateInputType | true
+    }
+
+  export interface UserFeedbackDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserFeedback'], meta: { name: 'UserFeedback' } }
+    /**
+     * Find zero or one UserFeedback that matches the filter.
+     * @param {UserFeedbackFindUniqueArgs} args - Arguments to find a UserFeedback
+     * @example
+     * // Get one UserFeedback
+     * const userFeedback = await prisma.userFeedback.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserFeedbackFindUniqueArgs>(args: SelectSubset<T, UserFeedbackFindUniqueArgs<ExtArgs>>): Prisma__UserFeedbackClient<$Result.GetResult<Prisma.$UserFeedbackPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UserFeedback that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserFeedbackFindUniqueOrThrowArgs} args - Arguments to find a UserFeedback
+     * @example
+     * // Get one UserFeedback
+     * const userFeedback = await prisma.userFeedback.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserFeedbackFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFeedbackFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserFeedbackClient<$Result.GetResult<Prisma.$UserFeedbackPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserFeedback that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFeedbackFindFirstArgs} args - Arguments to find a UserFeedback
+     * @example
+     * // Get one UserFeedback
+     * const userFeedback = await prisma.userFeedback.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserFeedbackFindFirstArgs>(args?: SelectSubset<T, UserFeedbackFindFirstArgs<ExtArgs>>): Prisma__UserFeedbackClient<$Result.GetResult<Prisma.$UserFeedbackPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserFeedback that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFeedbackFindFirstOrThrowArgs} args - Arguments to find a UserFeedback
+     * @example
+     * // Get one UserFeedback
+     * const userFeedback = await prisma.userFeedback.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserFeedbackFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFeedbackFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserFeedbackClient<$Result.GetResult<Prisma.$UserFeedbackPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UserFeedbacks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFeedbackFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserFeedbacks
+     * const userFeedbacks = await prisma.userFeedback.findMany()
+     * 
+     * // Get first 10 UserFeedbacks
+     * const userFeedbacks = await prisma.userFeedback.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userFeedbackWithIdOnly = await prisma.userFeedback.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserFeedbackFindManyArgs>(args?: SelectSubset<T, UserFeedbackFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserFeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UserFeedback.
+     * @param {UserFeedbackCreateArgs} args - Arguments to create a UserFeedback.
+     * @example
+     * // Create one UserFeedback
+     * const UserFeedback = await prisma.userFeedback.create({
+     *   data: {
+     *     // ... data to create a UserFeedback
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserFeedbackCreateArgs>(args: SelectSubset<T, UserFeedbackCreateArgs<ExtArgs>>): Prisma__UserFeedbackClient<$Result.GetResult<Prisma.$UserFeedbackPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UserFeedbacks.
+     * @param {UserFeedbackCreateManyArgs} args - Arguments to create many UserFeedbacks.
+     * @example
+     * // Create many UserFeedbacks
+     * const userFeedback = await prisma.userFeedback.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserFeedbackCreateManyArgs>(args?: SelectSubset<T, UserFeedbackCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserFeedbacks and returns the data saved in the database.
+     * @param {UserFeedbackCreateManyAndReturnArgs} args - Arguments to create many UserFeedbacks.
+     * @example
+     * // Create many UserFeedbacks
+     * const userFeedback = await prisma.userFeedback.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserFeedbacks and only return the `id`
+     * const userFeedbackWithIdOnly = await prisma.userFeedback.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserFeedbackCreateManyAndReturnArgs>(args?: SelectSubset<T, UserFeedbackCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserFeedbackPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UserFeedback.
+     * @param {UserFeedbackDeleteArgs} args - Arguments to delete one UserFeedback.
+     * @example
+     * // Delete one UserFeedback
+     * const UserFeedback = await prisma.userFeedback.delete({
+     *   where: {
+     *     // ... filter to delete one UserFeedback
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserFeedbackDeleteArgs>(args: SelectSubset<T, UserFeedbackDeleteArgs<ExtArgs>>): Prisma__UserFeedbackClient<$Result.GetResult<Prisma.$UserFeedbackPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UserFeedback.
+     * @param {UserFeedbackUpdateArgs} args - Arguments to update one UserFeedback.
+     * @example
+     * // Update one UserFeedback
+     * const userFeedback = await prisma.userFeedback.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserFeedbackUpdateArgs>(args: SelectSubset<T, UserFeedbackUpdateArgs<ExtArgs>>): Prisma__UserFeedbackClient<$Result.GetResult<Prisma.$UserFeedbackPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UserFeedbacks.
+     * @param {UserFeedbackDeleteManyArgs} args - Arguments to filter UserFeedbacks to delete.
+     * @example
+     * // Delete a few UserFeedbacks
+     * const { count } = await prisma.userFeedback.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserFeedbackDeleteManyArgs>(args?: SelectSubset<T, UserFeedbackDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserFeedbacks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFeedbackUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserFeedbacks
+     * const userFeedback = await prisma.userFeedback.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserFeedbackUpdateManyArgs>(args: SelectSubset<T, UserFeedbackUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserFeedbacks and returns the data updated in the database.
+     * @param {UserFeedbackUpdateManyAndReturnArgs} args - Arguments to update many UserFeedbacks.
+     * @example
+     * // Update many UserFeedbacks
+     * const userFeedback = await prisma.userFeedback.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UserFeedbacks and only return the `id`
+     * const userFeedbackWithIdOnly = await prisma.userFeedback.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserFeedbackUpdateManyAndReturnArgs>(args: SelectSubset<T, UserFeedbackUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserFeedbackPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UserFeedback.
+     * @param {UserFeedbackUpsertArgs} args - Arguments to update or create a UserFeedback.
+     * @example
+     * // Update or create a UserFeedback
+     * const userFeedback = await prisma.userFeedback.upsert({
+     *   create: {
+     *     // ... data to create a UserFeedback
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserFeedback we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserFeedbackUpsertArgs>(args: SelectSubset<T, UserFeedbackUpsertArgs<ExtArgs>>): Prisma__UserFeedbackClient<$Result.GetResult<Prisma.$UserFeedbackPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UserFeedbacks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFeedbackCountArgs} args - Arguments to filter UserFeedbacks to count.
+     * @example
+     * // Count the number of UserFeedbacks
+     * const count = await prisma.userFeedback.count({
+     *   where: {
+     *     // ... the filter for the UserFeedbacks we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserFeedbackCountArgs>(
+      args?: Subset<T, UserFeedbackCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserFeedbackCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserFeedback.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFeedbackAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserFeedbackAggregateArgs>(args: Subset<T, UserFeedbackAggregateArgs>): Prisma.PrismaPromise<GetUserFeedbackAggregateType<T>>
+
+    /**
+     * Group by UserFeedback.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFeedbackGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserFeedbackGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserFeedbackGroupByArgs['orderBy'] }
+        : { orderBy?: UserFeedbackGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserFeedbackGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserFeedbackGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserFeedback model
+   */
+  readonly fields: UserFeedbackFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserFeedback.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserFeedbackClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserFeedback model
+   */
+  interface UserFeedbackFieldRefs {
+    readonly id: FieldRef<"UserFeedback", 'String'>
+    readonly userId: FieldRef<"UserFeedback", 'String'>
+    readonly entityType: FieldRef<"UserFeedback", 'FeedbackEntityType'>
+    readonly entityId: FieldRef<"UserFeedback", 'String'>
+    readonly rating: FieldRef<"UserFeedback", 'Int'>
+    readonly comment: FieldRef<"UserFeedback", 'String'>
+    readonly metadata: FieldRef<"UserFeedback", 'Json'>
+    readonly isResolved: FieldRef<"UserFeedback", 'Boolean'>
+    readonly createdAt: FieldRef<"UserFeedback", 'DateTime'>
+    readonly updatedAt: FieldRef<"UserFeedback", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserFeedback findUnique
+   */
+  export type UserFeedbackFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFeedback
+     */
+    select?: UserFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFeedback
+     */
+    omit?: UserFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFeedbackInclude<ExtArgs> | null
+    /**
+     * Filter, which UserFeedback to fetch.
+     */
+    where: UserFeedbackWhereUniqueInput
+  }
+
+  /**
+   * UserFeedback findUniqueOrThrow
+   */
+  export type UserFeedbackFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFeedback
+     */
+    select?: UserFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFeedback
+     */
+    omit?: UserFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFeedbackInclude<ExtArgs> | null
+    /**
+     * Filter, which UserFeedback to fetch.
+     */
+    where: UserFeedbackWhereUniqueInput
+  }
+
+  /**
+   * UserFeedback findFirst
+   */
+  export type UserFeedbackFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFeedback
+     */
+    select?: UserFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFeedback
+     */
+    omit?: UserFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFeedbackInclude<ExtArgs> | null
+    /**
+     * Filter, which UserFeedback to fetch.
+     */
+    where?: UserFeedbackWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserFeedbacks to fetch.
+     */
+    orderBy?: UserFeedbackOrderByWithRelationInput | UserFeedbackOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserFeedbacks.
+     */
+    cursor?: UserFeedbackWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserFeedbacks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserFeedbacks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserFeedbacks.
+     */
+    distinct?: UserFeedbackScalarFieldEnum | UserFeedbackScalarFieldEnum[]
+  }
+
+  /**
+   * UserFeedback findFirstOrThrow
+   */
+  export type UserFeedbackFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFeedback
+     */
+    select?: UserFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFeedback
+     */
+    omit?: UserFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFeedbackInclude<ExtArgs> | null
+    /**
+     * Filter, which UserFeedback to fetch.
+     */
+    where?: UserFeedbackWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserFeedbacks to fetch.
+     */
+    orderBy?: UserFeedbackOrderByWithRelationInput | UserFeedbackOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserFeedbacks.
+     */
+    cursor?: UserFeedbackWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserFeedbacks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserFeedbacks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserFeedbacks.
+     */
+    distinct?: UserFeedbackScalarFieldEnum | UserFeedbackScalarFieldEnum[]
+  }
+
+  /**
+   * UserFeedback findMany
+   */
+  export type UserFeedbackFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFeedback
+     */
+    select?: UserFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFeedback
+     */
+    omit?: UserFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFeedbackInclude<ExtArgs> | null
+    /**
+     * Filter, which UserFeedbacks to fetch.
+     */
+    where?: UserFeedbackWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserFeedbacks to fetch.
+     */
+    orderBy?: UserFeedbackOrderByWithRelationInput | UserFeedbackOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserFeedbacks.
+     */
+    cursor?: UserFeedbackWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserFeedbacks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserFeedbacks.
+     */
+    skip?: number
+    distinct?: UserFeedbackScalarFieldEnum | UserFeedbackScalarFieldEnum[]
+  }
+
+  /**
+   * UserFeedback create
+   */
+  export type UserFeedbackCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFeedback
+     */
+    select?: UserFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFeedback
+     */
+    omit?: UserFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFeedbackInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserFeedback.
+     */
+    data: XOR<UserFeedbackCreateInput, UserFeedbackUncheckedCreateInput>
+  }
+
+  /**
+   * UserFeedback createMany
+   */
+  export type UserFeedbackCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserFeedbacks.
+     */
+    data: UserFeedbackCreateManyInput | UserFeedbackCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserFeedback createManyAndReturn
+   */
+  export type UserFeedbackCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFeedback
+     */
+    select?: UserFeedbackSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFeedback
+     */
+    omit?: UserFeedbackOmit<ExtArgs> | null
+    /**
+     * The data used to create many UserFeedbacks.
+     */
+    data: UserFeedbackCreateManyInput | UserFeedbackCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFeedbackIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserFeedback update
+   */
+  export type UserFeedbackUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFeedback
+     */
+    select?: UserFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFeedback
+     */
+    omit?: UserFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFeedbackInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserFeedback.
+     */
+    data: XOR<UserFeedbackUpdateInput, UserFeedbackUncheckedUpdateInput>
+    /**
+     * Choose, which UserFeedback to update.
+     */
+    where: UserFeedbackWhereUniqueInput
+  }
+
+  /**
+   * UserFeedback updateMany
+   */
+  export type UserFeedbackUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserFeedbacks.
+     */
+    data: XOR<UserFeedbackUpdateManyMutationInput, UserFeedbackUncheckedUpdateManyInput>
+    /**
+     * Filter which UserFeedbacks to update
+     */
+    where?: UserFeedbackWhereInput
+    /**
+     * Limit how many UserFeedbacks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserFeedback updateManyAndReturn
+   */
+  export type UserFeedbackUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFeedback
+     */
+    select?: UserFeedbackSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFeedback
+     */
+    omit?: UserFeedbackOmit<ExtArgs> | null
+    /**
+     * The data used to update UserFeedbacks.
+     */
+    data: XOR<UserFeedbackUpdateManyMutationInput, UserFeedbackUncheckedUpdateManyInput>
+    /**
+     * Filter which UserFeedbacks to update
+     */
+    where?: UserFeedbackWhereInput
+    /**
+     * Limit how many UserFeedbacks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFeedbackIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserFeedback upsert
+   */
+  export type UserFeedbackUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFeedback
+     */
+    select?: UserFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFeedback
+     */
+    omit?: UserFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFeedbackInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserFeedback to update in case it exists.
+     */
+    where: UserFeedbackWhereUniqueInput
+    /**
+     * In case the UserFeedback found by the `where` argument doesn't exist, create a new UserFeedback with this data.
+     */
+    create: XOR<UserFeedbackCreateInput, UserFeedbackUncheckedCreateInput>
+    /**
+     * In case the UserFeedback was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserFeedbackUpdateInput, UserFeedbackUncheckedUpdateInput>
+  }
+
+  /**
+   * UserFeedback delete
+   */
+  export type UserFeedbackDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFeedback
+     */
+    select?: UserFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFeedback
+     */
+    omit?: UserFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFeedbackInclude<ExtArgs> | null
+    /**
+     * Filter which UserFeedback to delete.
+     */
+    where: UserFeedbackWhereUniqueInput
+  }
+
+  /**
+   * UserFeedback deleteMany
+   */
+  export type UserFeedbackDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserFeedbacks to delete
+     */
+    where?: UserFeedbackWhereInput
+    /**
+     * Limit how many UserFeedbacks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserFeedback without action
+   */
+  export type UserFeedbackDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserFeedback
+     */
+    select?: UserFeedbackSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserFeedback
+     */
+    omit?: UserFeedbackOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserFeedbackInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -38591,13 +43101,13 @@ export namespace Prisma {
 
   export const SessionScalarFieldEnum: {
     id: 'id',
+    sessionToken: 'sessionToken',
     userId: 'userId',
     expiresAt: 'expiresAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     ipAddress: 'ipAddress',
-    userAgent: 'userAgent',
-    sessionToken: 'sessionToken'
+    userAgent: 'userAgent'
   };
 
   export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
@@ -38773,6 +43283,7 @@ export namespace Prisma {
     description: 'description',
     workspaceId: 'workspaceId',
     createdByUserId: 'createdByUserId',
+    projectStatus: 'projectStatus',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -38812,10 +43323,12 @@ export namespace Prisma {
     fileName: 'fileName',
     fileType: 'fileType',
     sizeBytes: 'sizeBytes',
+    status: 'status',
     storageProvider: 'storageProvider',
     providerFileId: 'providerFileId',
     url: 'url',
     description: 'description',
+    metadata: 'metadata',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -38985,6 +43498,29 @@ export namespace Prisma {
   export type ProjectPipelineRunScalarFieldEnum = (typeof ProjectPipelineRunScalarFieldEnum)[keyof typeof ProjectPipelineRunScalarFieldEnum]
 
 
+  export const DeliverableScalarFieldEnum: {
+    id: 'id',
+    projectId: 'projectId',
+    title: 'title',
+    description: 'description',
+    content: 'content',
+    format: 'format',
+    type: 'type',
+    status: 'status',
+    version: 'version',
+    projectFileId: 'projectFileId',
+    externalUrl: 'externalUrl',
+    generatedByAnalysisId: 'generatedByAnalysisId',
+    generatedByPipelineRunId: 'generatedByPipelineRunId',
+    createdByUserId: 'createdByUserId',
+    lastUpdatedByUserId: 'lastUpdatedByUserId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DeliverableScalarFieldEnum = (typeof DeliverableScalarFieldEnum)[keyof typeof DeliverableScalarFieldEnum]
+
+
   export const ProjectIntegrationScalarFieldEnum: {
     id: 'id',
     projectId: 'projectId',
@@ -39006,6 +43542,26 @@ export namespace Prisma {
   export type ProjectIntegrationScalarFieldEnum = (typeof ProjectIntegrationScalarFieldEnum)[keyof typeof ProjectIntegrationScalarFieldEnum]
 
 
+  export const GitHubAIActionLogScalarFieldEnum: {
+    id: 'id',
+    projectIntegrationId: 'projectIntegrationId',
+    projectId: 'projectId',
+    analysisId: 'analysisId',
+    actionType: 'actionType',
+    githubEntityType: 'githubEntityType',
+    githubEntityId: 'githubEntityId',
+    githubEntityUrl: 'githubEntityUrl',
+    githubCommentId: 'githubCommentId',
+    content: 'content',
+    status: 'status',
+    errorMessage: 'errorMessage',
+    triggeredBy: 'triggeredBy',
+    performedAt: 'performedAt'
+  };
+
+  export type GitHubAIActionLogScalarFieldEnum = (typeof GitHubAIActionLogScalarFieldEnum)[keyof typeof GitHubAIActionLogScalarFieldEnum]
+
+
   export const NotificationScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
@@ -39022,6 +43578,22 @@ export namespace Prisma {
   };
 
   export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+  export const UserFeedbackScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    entityType: 'entityType',
+    entityId: 'entityId',
+    rating: 'rating',
+    comment: 'comment',
+    metadata: 'metadata',
+    isResolved: 'isResolved',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type UserFeedbackScalarFieldEnum = (typeof UserFeedbackScalarFieldEnum)[keyof typeof UserFeedbackScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -39302,6 +43874,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'FileStatus'
+   */
+  export type EnumFileStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FileStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'FileStatus[]'
+   */
+  export type ListEnumFileStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FileStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'AnalysisType'
    */
   export type EnumAnalysisTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnalysisType'>
@@ -39358,6 +43944,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DeliverableStatus'
+   */
+  export type EnumDeliverableStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliverableStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DeliverableStatus[]'
+   */
+  export type ListEnumDeliverableStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliverableStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'IntegrationProvider'
    */
   export type EnumIntegrationProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IntegrationProvider'>
@@ -39386,6 +43986,48 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'GitHubAIActionType'
+   */
+  export type EnumGitHubAIActionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GitHubAIActionType'>
+    
+
+
+  /**
+   * Reference to a field of type 'GitHubAIActionType[]'
+   */
+  export type ListEnumGitHubAIActionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GitHubAIActionType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'GitHubEntityType'
+   */
+  export type EnumGitHubEntityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GitHubEntityType'>
+    
+
+
+  /**
+   * Reference to a field of type 'GitHubEntityType[]'
+   */
+  export type ListEnumGitHubEntityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GitHubEntityType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ActionStatus'
+   */
+  export type EnumActionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ActionStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ActionStatus[]'
+   */
+  export type ListEnumActionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ActionStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'NotificationType'
    */
   export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType'>
@@ -39396,6 +44038,20 @@ export namespace Prisma {
    * Reference to a field of type 'NotificationType[]'
    */
   export type ListEnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'FeedbackEntityType'
+   */
+  export type EnumFeedbackEntityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeedbackEntityType'>
+    
+
+
+  /**
+   * Reference to a field of type 'FeedbackEntityType[]'
+   */
+  export type ListEnumFeedbackEntityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeedbackEntityType[]'>
     
   /**
    * Deep Input Types
@@ -39433,6 +44089,9 @@ export namespace Prisma {
     initiatedOrders?: OrderListRelationFilter
     workspaceInvitesSent?: WorkspaceInviteListRelationFilter
     initiatedPipelineRuns?: ProjectPipelineRunListRelationFilter
+    feedbackEntries?: UserFeedbackListRelationFilter
+    createdDeliverables?: DeliverableListRelationFilter
+    lastUpdatedDeliverables?: DeliverableListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -39463,6 +44122,9 @@ export namespace Prisma {
     initiatedOrders?: OrderOrderByRelationAggregateInput
     workspaceInvitesSent?: WorkspaceInviteOrderByRelationAggregateInput
     initiatedPipelineRuns?: ProjectPipelineRunOrderByRelationAggregateInput
+    feedbackEntries?: UserFeedbackOrderByRelationAggregateInput
+    createdDeliverables?: DeliverableOrderByRelationAggregateInput
+    lastUpdatedDeliverables?: DeliverableOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -39496,6 +44158,9 @@ export namespace Prisma {
     initiatedOrders?: OrderListRelationFilter
     workspaceInvitesSent?: WorkspaceInviteListRelationFilter
     initiatedPipelineRuns?: ProjectPipelineRunListRelationFilter
+    feedbackEntries?: UserFeedbackListRelationFilter
+    createdDeliverables?: DeliverableListRelationFilter
+    lastUpdatedDeliverables?: DeliverableListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -39609,25 +44274,25 @@ export namespace Prisma {
     OR?: SessionWhereInput[]
     NOT?: SessionWhereInput | SessionWhereInput[]
     id?: StringFilter<"Session"> | string
+    sessionToken?: StringFilter<"Session"> | string
     userId?: StringFilter<"Session"> | string
     expiresAt?: DateTimeFilter<"Session"> | Date | string
     createdAt?: DateTimeFilter<"Session"> | Date | string
     updatedAt?: DateTimeFilter<"Session"> | Date | string
     ipAddress?: StringNullableFilter<"Session"> | string | null
     userAgent?: StringNullableFilter<"Session"> | string | null
-    sessionToken?: StringFilter<"Session"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type SessionOrderByWithRelationInput = {
     id?: SortOrder
+    sessionToken?: SortOrder
     userId?: SortOrder
     expiresAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     ipAddress?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
-    sessionToken?: SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -39648,13 +44313,13 @@ export namespace Prisma {
 
   export type SessionOrderByWithAggregationInput = {
     id?: SortOrder
+    sessionToken?: SortOrder
     userId?: SortOrder
     expiresAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     ipAddress?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
-    sessionToken?: SortOrder
     _count?: SessionCountOrderByAggregateInput
     _max?: SessionMaxOrderByAggregateInput
     _min?: SessionMinOrderByAggregateInput
@@ -39665,13 +44330,13 @@ export namespace Prisma {
     OR?: SessionScalarWhereWithAggregatesInput[]
     NOT?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Session"> | string
+    sessionToken?: StringWithAggregatesFilter<"Session"> | string
     userId?: StringWithAggregatesFilter<"Session"> | string
     expiresAt?: DateTimeWithAggregatesFilter<"Session"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Session"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Session"> | Date | string
     ipAddress?: StringNullableWithAggregatesFilter<"Session"> | string | null
     userAgent?: StringNullableWithAggregatesFilter<"Session"> | string | null
-    sessionToken?: StringWithAggregatesFilter<"Session"> | string
   }
 
   export type EmailVerificationTokenWhereInput = {
@@ -40547,6 +45212,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Project"> | string | null
     workspaceId?: StringFilter<"Project"> | string
     createdByUserId?: StringFilter<"Project"> | string
+    projectStatus?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
@@ -40559,6 +45225,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationListRelationFilter
     pipelineRuns?: ProjectPipelineRunListRelationFilter
     productivityMetrics?: ProductivityMetricListRelationFilter
+    githubAIActionLogs?: GitHubAIActionLogListRelationFilter
+    deliverables?: DeliverableListRelationFilter
   }
 
   export type ProjectOrderByWithRelationInput = {
@@ -40567,6 +45235,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     workspaceId?: SortOrder
     createdByUserId?: SortOrder
+    projectStatus?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     workspace?: WorkspaceOrderByWithRelationInput
@@ -40579,6 +45248,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationOrderByRelationAggregateInput
     pipelineRuns?: ProjectPipelineRunOrderByRelationAggregateInput
     productivityMetrics?: ProductivityMetricOrderByRelationAggregateInput
+    githubAIActionLogs?: GitHubAIActionLogOrderByRelationAggregateInput
+    deliverables?: DeliverableOrderByRelationAggregateInput
   }
 
   export type ProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -40590,6 +45261,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Project"> | string | null
     workspaceId?: StringFilter<"Project"> | string
     createdByUserId?: StringFilter<"Project"> | string
+    projectStatus?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
@@ -40602,6 +45274,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationListRelationFilter
     pipelineRuns?: ProjectPipelineRunListRelationFilter
     productivityMetrics?: ProductivityMetricListRelationFilter
+    githubAIActionLogs?: GitHubAIActionLogListRelationFilter
+    deliverables?: DeliverableListRelationFilter
   }, "id">
 
   export type ProjectOrderByWithAggregationInput = {
@@ -40610,6 +45284,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     workspaceId?: SortOrder
     createdByUserId?: SortOrder
+    projectStatus?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ProjectCountOrderByAggregateInput
@@ -40626,6 +45301,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Project"> | string | null
     workspaceId?: StringWithAggregatesFilter<"Project"> | string
     createdByUserId?: StringWithAggregatesFilter<"Project"> | string
+    projectStatus?: StringNullableWithAggregatesFilter<"Project"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
   }
@@ -40775,16 +45451,19 @@ export namespace Prisma {
     fileName?: StringFilter<"ProjectFile"> | string
     fileType?: StringFilter<"ProjectFile"> | string
     sizeBytes?: IntFilter<"ProjectFile"> | number
+    status?: EnumFileStatusFilter<"ProjectFile"> | $Enums.FileStatus
     storageProvider?: StringFilter<"ProjectFile"> | string
     providerFileId?: StringFilter<"ProjectFile"> | string
     url?: StringFilter<"ProjectFile"> | string
     description?: StringNullableFilter<"ProjectFile"> | string | null
+    metadata?: JsonNullableFilter<"ProjectFile">
     createdAt?: DateTimeFilter<"ProjectFile"> | Date | string
     updatedAt?: DateTimeFilter<"ProjectFile"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
     uploader?: XOR<UserScalarRelationFilter, UserWhereInput>
     ideaLinks?: IdeaProjectFileListRelationFilter
     analysisAttachments?: AnalysisAttachmentListRelationFilter
+    deliverableLink?: XOR<DeliverableNullableScalarRelationFilter, DeliverableWhereInput> | null
   }
 
   export type ProjectFileOrderByWithRelationInput = {
@@ -40794,16 +45473,19 @@ export namespace Prisma {
     fileName?: SortOrder
     fileType?: SortOrder
     sizeBytes?: SortOrder
+    status?: SortOrder
     storageProvider?: SortOrder
     providerFileId?: SortOrder
     url?: SortOrder
     description?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     project?: ProjectOrderByWithRelationInput
     uploader?: UserOrderByWithRelationInput
     ideaLinks?: IdeaProjectFileOrderByRelationAggregateInput
     analysisAttachments?: AnalysisAttachmentOrderByRelationAggregateInput
+    deliverableLink?: DeliverableOrderByWithRelationInput
   }
 
   export type ProjectFileWhereUniqueInput = Prisma.AtLeast<{
@@ -40817,15 +45499,18 @@ export namespace Prisma {
     fileName?: StringFilter<"ProjectFile"> | string
     fileType?: StringFilter<"ProjectFile"> | string
     sizeBytes?: IntFilter<"ProjectFile"> | number
+    status?: EnumFileStatusFilter<"ProjectFile"> | $Enums.FileStatus
     storageProvider?: StringFilter<"ProjectFile"> | string
     providerFileId?: StringFilter<"ProjectFile"> | string
     description?: StringNullableFilter<"ProjectFile"> | string | null
+    metadata?: JsonNullableFilter<"ProjectFile">
     createdAt?: DateTimeFilter<"ProjectFile"> | Date | string
     updatedAt?: DateTimeFilter<"ProjectFile"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
     uploader?: XOR<UserScalarRelationFilter, UserWhereInput>
     ideaLinks?: IdeaProjectFileListRelationFilter
     analysisAttachments?: AnalysisAttachmentListRelationFilter
+    deliverableLink?: XOR<DeliverableNullableScalarRelationFilter, DeliverableWhereInput> | null
   }, "id" | "url">
 
   export type ProjectFileOrderByWithAggregationInput = {
@@ -40835,10 +45520,12 @@ export namespace Prisma {
     fileName?: SortOrder
     fileType?: SortOrder
     sizeBytes?: SortOrder
+    status?: SortOrder
     storageProvider?: SortOrder
     providerFileId?: SortOrder
     url?: SortOrder
     description?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ProjectFileCountOrderByAggregateInput
@@ -40858,10 +45545,12 @@ export namespace Prisma {
     fileName?: StringWithAggregatesFilter<"ProjectFile"> | string
     fileType?: StringWithAggregatesFilter<"ProjectFile"> | string
     sizeBytes?: IntWithAggregatesFilter<"ProjectFile"> | number
+    status?: EnumFileStatusWithAggregatesFilter<"ProjectFile"> | $Enums.FileStatus
     storageProvider?: StringWithAggregatesFilter<"ProjectFile"> | string
     providerFileId?: StringWithAggregatesFilter<"ProjectFile"> | string
     url?: StringWithAggregatesFilter<"ProjectFile"> | string
     description?: StringNullableWithAggregatesFilter<"ProjectFile"> | string | null
+    metadata?: JsonNullableWithAggregatesFilter<"ProjectFile">
     createdAt?: DateTimeWithAggregatesFilter<"ProjectFile"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProjectFile"> | Date | string
   }
@@ -40958,6 +45647,8 @@ export namespace Prisma {
     competitors?: CompetitorListRelationFilter
     nameSuggestions?: NameSuggestionListRelationFilter
     pipelineRun?: XOR<ProjectPipelineRunNullableScalarRelationFilter, ProjectPipelineRunWhereInput> | null
+    githubAIActionLogs?: GitHubAIActionLogListRelationFilter
+    generatedDeliverables?: DeliverableListRelationFilter
   }
 
   export type AnalysisOrderByWithRelationInput = {
@@ -40990,6 +45681,8 @@ export namespace Prisma {
     competitors?: CompetitorOrderByRelationAggregateInput
     nameSuggestions?: NameSuggestionOrderByRelationAggregateInput
     pipelineRun?: ProjectPipelineRunOrderByWithRelationInput
+    githubAIActionLogs?: GitHubAIActionLogOrderByRelationAggregateInput
+    generatedDeliverables?: DeliverableOrderByRelationAggregateInput
   }
 
   export type AnalysisWhereUniqueInput = Prisma.AtLeast<{
@@ -41025,6 +45718,8 @@ export namespace Prisma {
     competitors?: CompetitorListRelationFilter
     nameSuggestions?: NameSuggestionListRelationFilter
     pipelineRun?: XOR<ProjectPipelineRunNullableScalarRelationFilter, ProjectPipelineRunWhereInput> | null
+    githubAIActionLogs?: GitHubAIActionLogListRelationFilter
+    generatedDeliverables?: DeliverableListRelationFilter
   }, "id" | "jobId">
 
   export type AnalysisOrderByWithAggregationInput = {
@@ -41657,6 +46352,7 @@ export namespace Prisma {
     pipelineTemplate?: XOR<PipelineTemplateScalarRelationFilter, PipelineTemplateWhereInput>
     initiatedByUser?: XOR<UserScalarRelationFilter, UserWhereInput>
     analyses?: AnalysisListRelationFilter
+    generatedDeliverables?: DeliverableListRelationFilter
   }
 
   export type ProjectPipelineRunOrderByWithRelationInput = {
@@ -41675,6 +46371,7 @@ export namespace Prisma {
     pipelineTemplate?: PipelineTemplateOrderByWithRelationInput
     initiatedByUser?: UserOrderByWithRelationInput
     analyses?: AnalysisOrderByRelationAggregateInput
+    generatedDeliverables?: DeliverableOrderByRelationAggregateInput
   }
 
   export type ProjectPipelineRunWhereUniqueInput = Prisma.AtLeast<{
@@ -41696,6 +46393,7 @@ export namespace Prisma {
     pipelineTemplate?: XOR<PipelineTemplateScalarRelationFilter, PipelineTemplateWhereInput>
     initiatedByUser?: XOR<UserScalarRelationFilter, UserWhereInput>
     analyses?: AnalysisListRelationFilter
+    generatedDeliverables?: DeliverableListRelationFilter
   }, "id">
 
   export type ProjectPipelineRunOrderByWithAggregationInput = {
@@ -41732,6 +46430,138 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ProjectPipelineRun"> | Date | string
   }
 
+  export type DeliverableWhereInput = {
+    AND?: DeliverableWhereInput | DeliverableWhereInput[]
+    OR?: DeliverableWhereInput[]
+    NOT?: DeliverableWhereInput | DeliverableWhereInput[]
+    id?: StringFilter<"Deliverable"> | string
+    projectId?: StringFilter<"Deliverable"> | string
+    title?: StringFilter<"Deliverable"> | string
+    description?: StringNullableFilter<"Deliverable"> | string | null
+    content?: StringNullableFilter<"Deliverable"> | string | null
+    format?: StringFilter<"Deliverable"> | string
+    type?: StringFilter<"Deliverable"> | string
+    status?: EnumDeliverableStatusFilter<"Deliverable"> | $Enums.DeliverableStatus
+    version?: IntFilter<"Deliverable"> | number
+    projectFileId?: StringNullableFilter<"Deliverable"> | string | null
+    externalUrl?: StringNullableFilter<"Deliverable"> | string | null
+    generatedByAnalysisId?: StringNullableFilter<"Deliverable"> | string | null
+    generatedByPipelineRunId?: StringNullableFilter<"Deliverable"> | string | null
+    createdByUserId?: StringFilter<"Deliverable"> | string
+    lastUpdatedByUserId?: StringNullableFilter<"Deliverable"> | string | null
+    createdAt?: DateTimeFilter<"Deliverable"> | Date | string
+    updatedAt?: DateTimeFilter<"Deliverable"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    linkedProjectFile?: XOR<ProjectFileNullableScalarRelationFilter, ProjectFileWhereInput> | null
+    generatedByAnalysis?: XOR<AnalysisNullableScalarRelationFilter, AnalysisWhereInput> | null
+    generatedByPipelineRun?: XOR<ProjectPipelineRunNullableScalarRelationFilter, ProjectPipelineRunWhereInput> | null
+    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    lastUpdater?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type DeliverableOrderByWithRelationInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    content?: SortOrderInput | SortOrder
+    format?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    projectFileId?: SortOrderInput | SortOrder
+    externalUrl?: SortOrderInput | SortOrder
+    generatedByAnalysisId?: SortOrderInput | SortOrder
+    generatedByPipelineRunId?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrder
+    lastUpdatedByUserId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    project?: ProjectOrderByWithRelationInput
+    linkedProjectFile?: ProjectFileOrderByWithRelationInput
+    generatedByAnalysis?: AnalysisOrderByWithRelationInput
+    generatedByPipelineRun?: ProjectPipelineRunOrderByWithRelationInput
+    creator?: UserOrderByWithRelationInput
+    lastUpdater?: UserOrderByWithRelationInput
+  }
+
+  export type DeliverableWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    projectFileId?: string
+    AND?: DeliverableWhereInput | DeliverableWhereInput[]
+    OR?: DeliverableWhereInput[]
+    NOT?: DeliverableWhereInput | DeliverableWhereInput[]
+    projectId?: StringFilter<"Deliverable"> | string
+    title?: StringFilter<"Deliverable"> | string
+    description?: StringNullableFilter<"Deliverable"> | string | null
+    content?: StringNullableFilter<"Deliverable"> | string | null
+    format?: StringFilter<"Deliverable"> | string
+    type?: StringFilter<"Deliverable"> | string
+    status?: EnumDeliverableStatusFilter<"Deliverable"> | $Enums.DeliverableStatus
+    version?: IntFilter<"Deliverable"> | number
+    externalUrl?: StringNullableFilter<"Deliverable"> | string | null
+    generatedByAnalysisId?: StringNullableFilter<"Deliverable"> | string | null
+    generatedByPipelineRunId?: StringNullableFilter<"Deliverable"> | string | null
+    createdByUserId?: StringFilter<"Deliverable"> | string
+    lastUpdatedByUserId?: StringNullableFilter<"Deliverable"> | string | null
+    createdAt?: DateTimeFilter<"Deliverable"> | Date | string
+    updatedAt?: DateTimeFilter<"Deliverable"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    linkedProjectFile?: XOR<ProjectFileNullableScalarRelationFilter, ProjectFileWhereInput> | null
+    generatedByAnalysis?: XOR<AnalysisNullableScalarRelationFilter, AnalysisWhereInput> | null
+    generatedByPipelineRun?: XOR<ProjectPipelineRunNullableScalarRelationFilter, ProjectPipelineRunWhereInput> | null
+    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    lastUpdater?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id" | "projectFileId">
+
+  export type DeliverableOrderByWithAggregationInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    content?: SortOrderInput | SortOrder
+    format?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    projectFileId?: SortOrderInput | SortOrder
+    externalUrl?: SortOrderInput | SortOrder
+    generatedByAnalysisId?: SortOrderInput | SortOrder
+    generatedByPipelineRunId?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrder
+    lastUpdatedByUserId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DeliverableCountOrderByAggregateInput
+    _avg?: DeliverableAvgOrderByAggregateInput
+    _max?: DeliverableMaxOrderByAggregateInput
+    _min?: DeliverableMinOrderByAggregateInput
+    _sum?: DeliverableSumOrderByAggregateInput
+  }
+
+  export type DeliverableScalarWhereWithAggregatesInput = {
+    AND?: DeliverableScalarWhereWithAggregatesInput | DeliverableScalarWhereWithAggregatesInput[]
+    OR?: DeliverableScalarWhereWithAggregatesInput[]
+    NOT?: DeliverableScalarWhereWithAggregatesInput | DeliverableScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Deliverable"> | string
+    projectId?: StringWithAggregatesFilter<"Deliverable"> | string
+    title?: StringWithAggregatesFilter<"Deliverable"> | string
+    description?: StringNullableWithAggregatesFilter<"Deliverable"> | string | null
+    content?: StringNullableWithAggregatesFilter<"Deliverable"> | string | null
+    format?: StringWithAggregatesFilter<"Deliverable"> | string
+    type?: StringWithAggregatesFilter<"Deliverable"> | string
+    status?: EnumDeliverableStatusWithAggregatesFilter<"Deliverable"> | $Enums.DeliverableStatus
+    version?: IntWithAggregatesFilter<"Deliverable"> | number
+    projectFileId?: StringNullableWithAggregatesFilter<"Deliverable"> | string | null
+    externalUrl?: StringNullableWithAggregatesFilter<"Deliverable"> | string | null
+    generatedByAnalysisId?: StringNullableWithAggregatesFilter<"Deliverable"> | string | null
+    generatedByPipelineRunId?: StringNullableWithAggregatesFilter<"Deliverable"> | string | null
+    createdByUserId?: StringWithAggregatesFilter<"Deliverable"> | string
+    lastUpdatedByUserId?: StringNullableWithAggregatesFilter<"Deliverable"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Deliverable"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Deliverable"> | Date | string
+  }
+
   export type ProjectIntegrationWhereInput = {
     AND?: ProjectIntegrationWhereInput | ProjectIntegrationWhereInput[]
     OR?: ProjectIntegrationWhereInput[]
@@ -41752,6 +46582,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProjectIntegration"> | Date | string
     updatedAt?: DateTimeFilter<"ProjectIntegration"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    githubAIActionLogs?: GitHubAIActionLogListRelationFilter
   }
 
   export type ProjectIntegrationOrderByWithRelationInput = {
@@ -41771,6 +46602,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     project?: ProjectOrderByWithRelationInput
+    githubAIActionLogs?: GitHubAIActionLogOrderByRelationAggregateInput
   }
 
   export type ProjectIntegrationWhereUniqueInput = Prisma.AtLeast<{
@@ -41794,6 +46626,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProjectIntegration"> | Date | string
     updatedAt?: DateTimeFilter<"ProjectIntegration"> | Date | string
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    githubAIActionLogs?: GitHubAIActionLogListRelationFilter
   }, "id" | "projectId_provider">
 
   export type ProjectIntegrationOrderByWithAggregationInput = {
@@ -41836,6 +46669,112 @@ export namespace Prisma {
     addedByUserId?: StringNullableWithAggregatesFilter<"ProjectIntegration"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"ProjectIntegration"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProjectIntegration"> | Date | string
+  }
+
+  export type GitHubAIActionLogWhereInput = {
+    AND?: GitHubAIActionLogWhereInput | GitHubAIActionLogWhereInput[]
+    OR?: GitHubAIActionLogWhereInput[]
+    NOT?: GitHubAIActionLogWhereInput | GitHubAIActionLogWhereInput[]
+    id?: StringFilter<"GitHubAIActionLog"> | string
+    projectIntegrationId?: StringFilter<"GitHubAIActionLog"> | string
+    projectId?: StringFilter<"GitHubAIActionLog"> | string
+    analysisId?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    actionType?: EnumGitHubAIActionTypeFilter<"GitHubAIActionLog"> | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFilter<"GitHubAIActionLog"> | $Enums.GitHubEntityType
+    githubEntityId?: StringFilter<"GitHubAIActionLog"> | string
+    githubEntityUrl?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    githubCommentId?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    content?: JsonNullableFilter<"GitHubAIActionLog">
+    status?: EnumActionStatusFilter<"GitHubAIActionLog"> | $Enums.ActionStatus
+    errorMessage?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    triggeredBy?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    performedAt?: DateTimeFilter<"GitHubAIActionLog"> | Date | string
+    projectIntegration?: XOR<ProjectIntegrationScalarRelationFilter, ProjectIntegrationWhereInput>
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    analysis?: XOR<AnalysisNullableScalarRelationFilter, AnalysisWhereInput> | null
+  }
+
+  export type GitHubAIActionLogOrderByWithRelationInput = {
+    id?: SortOrder
+    projectIntegrationId?: SortOrder
+    projectId?: SortOrder
+    analysisId?: SortOrderInput | SortOrder
+    actionType?: SortOrder
+    githubEntityType?: SortOrder
+    githubEntityId?: SortOrder
+    githubEntityUrl?: SortOrderInput | SortOrder
+    githubCommentId?: SortOrderInput | SortOrder
+    content?: SortOrderInput | SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    triggeredBy?: SortOrderInput | SortOrder
+    performedAt?: SortOrder
+    projectIntegration?: ProjectIntegrationOrderByWithRelationInput
+    project?: ProjectOrderByWithRelationInput
+    analysis?: AnalysisOrderByWithRelationInput
+  }
+
+  export type GitHubAIActionLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: GitHubAIActionLogWhereInput | GitHubAIActionLogWhereInput[]
+    OR?: GitHubAIActionLogWhereInput[]
+    NOT?: GitHubAIActionLogWhereInput | GitHubAIActionLogWhereInput[]
+    projectIntegrationId?: StringFilter<"GitHubAIActionLog"> | string
+    projectId?: StringFilter<"GitHubAIActionLog"> | string
+    analysisId?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    actionType?: EnumGitHubAIActionTypeFilter<"GitHubAIActionLog"> | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFilter<"GitHubAIActionLog"> | $Enums.GitHubEntityType
+    githubEntityId?: StringFilter<"GitHubAIActionLog"> | string
+    githubEntityUrl?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    githubCommentId?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    content?: JsonNullableFilter<"GitHubAIActionLog">
+    status?: EnumActionStatusFilter<"GitHubAIActionLog"> | $Enums.ActionStatus
+    errorMessage?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    triggeredBy?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    performedAt?: DateTimeFilter<"GitHubAIActionLog"> | Date | string
+    projectIntegration?: XOR<ProjectIntegrationScalarRelationFilter, ProjectIntegrationWhereInput>
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    analysis?: XOR<AnalysisNullableScalarRelationFilter, AnalysisWhereInput> | null
+  }, "id">
+
+  export type GitHubAIActionLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    projectIntegrationId?: SortOrder
+    projectId?: SortOrder
+    analysisId?: SortOrderInput | SortOrder
+    actionType?: SortOrder
+    githubEntityType?: SortOrder
+    githubEntityId?: SortOrder
+    githubEntityUrl?: SortOrderInput | SortOrder
+    githubCommentId?: SortOrderInput | SortOrder
+    content?: SortOrderInput | SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    triggeredBy?: SortOrderInput | SortOrder
+    performedAt?: SortOrder
+    _count?: GitHubAIActionLogCountOrderByAggregateInput
+    _max?: GitHubAIActionLogMaxOrderByAggregateInput
+    _min?: GitHubAIActionLogMinOrderByAggregateInput
+  }
+
+  export type GitHubAIActionLogScalarWhereWithAggregatesInput = {
+    AND?: GitHubAIActionLogScalarWhereWithAggregatesInput | GitHubAIActionLogScalarWhereWithAggregatesInput[]
+    OR?: GitHubAIActionLogScalarWhereWithAggregatesInput[]
+    NOT?: GitHubAIActionLogScalarWhereWithAggregatesInput | GitHubAIActionLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GitHubAIActionLog"> | string
+    projectIntegrationId?: StringWithAggregatesFilter<"GitHubAIActionLog"> | string
+    projectId?: StringWithAggregatesFilter<"GitHubAIActionLog"> | string
+    analysisId?: StringNullableWithAggregatesFilter<"GitHubAIActionLog"> | string | null
+    actionType?: EnumGitHubAIActionTypeWithAggregatesFilter<"GitHubAIActionLog"> | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeWithAggregatesFilter<"GitHubAIActionLog"> | $Enums.GitHubEntityType
+    githubEntityId?: StringWithAggregatesFilter<"GitHubAIActionLog"> | string
+    githubEntityUrl?: StringNullableWithAggregatesFilter<"GitHubAIActionLog"> | string | null
+    githubCommentId?: StringNullableWithAggregatesFilter<"GitHubAIActionLog"> | string | null
+    content?: JsonNullableWithAggregatesFilter<"GitHubAIActionLog">
+    status?: EnumActionStatusWithAggregatesFilter<"GitHubAIActionLog"> | $Enums.ActionStatus
+    errorMessage?: StringNullableWithAggregatesFilter<"GitHubAIActionLog"> | string | null
+    triggeredBy?: StringNullableWithAggregatesFilter<"GitHubAIActionLog"> | string | null
+    performedAt?: DateTimeWithAggregatesFilter<"GitHubAIActionLog"> | Date | string
   }
 
   export type NotificationWhereInput = {
@@ -41928,6 +46867,88 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
   }
 
+  export type UserFeedbackWhereInput = {
+    AND?: UserFeedbackWhereInput | UserFeedbackWhereInput[]
+    OR?: UserFeedbackWhereInput[]
+    NOT?: UserFeedbackWhereInput | UserFeedbackWhereInput[]
+    id?: StringFilter<"UserFeedback"> | string
+    userId?: StringFilter<"UserFeedback"> | string
+    entityType?: EnumFeedbackEntityTypeFilter<"UserFeedback"> | $Enums.FeedbackEntityType
+    entityId?: StringNullableFilter<"UserFeedback"> | string | null
+    rating?: IntNullableFilter<"UserFeedback"> | number | null
+    comment?: StringNullableFilter<"UserFeedback"> | string | null
+    metadata?: JsonNullableFilter<"UserFeedback">
+    isResolved?: BoolFilter<"UserFeedback"> | boolean
+    createdAt?: DateTimeFilter<"UserFeedback"> | Date | string
+    updatedAt?: DateTimeFilter<"UserFeedback"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type UserFeedbackOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    entityType?: SortOrder
+    entityId?: SortOrderInput | SortOrder
+    rating?: SortOrderInput | SortOrder
+    comment?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    isResolved?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type UserFeedbackWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: UserFeedbackWhereInput | UserFeedbackWhereInput[]
+    OR?: UserFeedbackWhereInput[]
+    NOT?: UserFeedbackWhereInput | UserFeedbackWhereInput[]
+    userId?: StringFilter<"UserFeedback"> | string
+    entityType?: EnumFeedbackEntityTypeFilter<"UserFeedback"> | $Enums.FeedbackEntityType
+    entityId?: StringNullableFilter<"UserFeedback"> | string | null
+    rating?: IntNullableFilter<"UserFeedback"> | number | null
+    comment?: StringNullableFilter<"UserFeedback"> | string | null
+    metadata?: JsonNullableFilter<"UserFeedback">
+    isResolved?: BoolFilter<"UserFeedback"> | boolean
+    createdAt?: DateTimeFilter<"UserFeedback"> | Date | string
+    updatedAt?: DateTimeFilter<"UserFeedback"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type UserFeedbackOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    entityType?: SortOrder
+    entityId?: SortOrderInput | SortOrder
+    rating?: SortOrderInput | SortOrder
+    comment?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    isResolved?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: UserFeedbackCountOrderByAggregateInput
+    _avg?: UserFeedbackAvgOrderByAggregateInput
+    _max?: UserFeedbackMaxOrderByAggregateInput
+    _min?: UserFeedbackMinOrderByAggregateInput
+    _sum?: UserFeedbackSumOrderByAggregateInput
+  }
+
+  export type UserFeedbackScalarWhereWithAggregatesInput = {
+    AND?: UserFeedbackScalarWhereWithAggregatesInput | UserFeedbackScalarWhereWithAggregatesInput[]
+    OR?: UserFeedbackScalarWhereWithAggregatesInput[]
+    NOT?: UserFeedbackScalarWhereWithAggregatesInput | UserFeedbackScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UserFeedback"> | string
+    userId?: StringWithAggregatesFilter<"UserFeedback"> | string
+    entityType?: EnumFeedbackEntityTypeWithAggregatesFilter<"UserFeedback"> | $Enums.FeedbackEntityType
+    entityId?: StringNullableWithAggregatesFilter<"UserFeedback"> | string | null
+    rating?: IntNullableWithAggregatesFilter<"UserFeedback"> | number | null
+    comment?: StringNullableWithAggregatesFilter<"UserFeedback"> | string | null
+    metadata?: JsonNullableWithAggregatesFilter<"UserFeedback">
+    isResolved?: BoolWithAggregatesFilter<"UserFeedback"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"UserFeedback"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"UserFeedback"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -41956,6 +46977,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -41986,6 +47010,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUpdateInput = {
@@ -42016,6 +47043,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -42046,6 +47076,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -42169,78 +47202,78 @@ export namespace Prisma {
 
   export type SessionCreateInput = {
     id: string
+    sessionToken?: string
     expiresAt: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     ipAddress?: string | null
     userAgent?: string | null
-    sessionToken?: string
     user: UserCreateNestedOneWithoutSessionsInput
   }
 
   export type SessionUncheckedCreateInput = {
     id: string
+    sessionToken?: string
     userId: string
     expiresAt: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     ipAddress?: string | null
     userAgent?: string | null
-    sessionToken?: string
   }
 
   export type SessionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    sessionToken?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutSessionsNestedInput
   }
 
   export type SessionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    sessionToken?: StringFieldUpdateOperationsInput | string
   }
 
   export type SessionCreateManyInput = {
     id: string
+    sessionToken?: string
     userId: string
     expiresAt: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     ipAddress?: string | null
     userAgent?: string | null
-    sessionToken?: string
   }
 
   export type SessionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    sessionToken?: StringFieldUpdateOperationsInput | string
   }
 
   export type SessionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    sessionToken?: StringFieldUpdateOperationsInput | string
   }
 
   export type EmailVerificationTokenCreateInput = {
@@ -43185,6 +48218,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
@@ -43197,6 +48231,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateInput = {
@@ -43205,6 +48241,7 @@ export namespace Prisma {
     description?: string | null
     workspaceId: string
     createdByUserId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -43215,12 +48252,15 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricUncheckedCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
@@ -43233,6 +48273,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateInput = {
@@ -43241,6 +48283,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     workspaceId?: StringFieldUpdateOperationsInput | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -43251,6 +48294,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUncheckedUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateManyInput = {
@@ -43259,6 +48304,7 @@ export namespace Prisma {
     description?: string | null
     workspaceId: string
     createdByUserId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -43267,6 +48313,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -43277,6 +48324,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     workspaceId?: StringFieldUpdateOperationsInput | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -43424,16 +48472,19 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status?: $Enums.FileStatus
     storageProvider?: string
     providerFileId: string
     url: string
     description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutProjectFilesInput
     uploader: UserCreateNestedOneWithoutUploadedFilesInput
     ideaLinks?: IdeaProjectFileCreateNestedManyWithoutProjectFileInput
     analysisAttachments?: AnalysisAttachmentCreateNestedManyWithoutProjectFileInput
+    deliverableLink?: DeliverableCreateNestedOneWithoutLinkedProjectFileInput
   }
 
   export type ProjectFileUncheckedCreateInput = {
@@ -43443,14 +48494,17 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status?: $Enums.FileStatus
     storageProvider?: string
     providerFileId: string
     url: string
     description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     ideaLinks?: IdeaProjectFileUncheckedCreateNestedManyWithoutProjectFileInput
     analysisAttachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutProjectFileInput
+    deliverableLink?: DeliverableUncheckedCreateNestedOneWithoutLinkedProjectFileInput
   }
 
   export type ProjectFileUpdateInput = {
@@ -43458,16 +48512,19 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutProjectFilesNestedInput
     uploader?: UserUpdateOneRequiredWithoutUploadedFilesNestedInput
     ideaLinks?: IdeaProjectFileUpdateManyWithoutProjectFileNestedInput
     analysisAttachments?: AnalysisAttachmentUpdateManyWithoutProjectFileNestedInput
+    deliverableLink?: DeliverableUpdateOneWithoutLinkedProjectFileNestedInput
   }
 
   export type ProjectFileUncheckedUpdateInput = {
@@ -43477,14 +48534,17 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ideaLinks?: IdeaProjectFileUncheckedUpdateManyWithoutProjectFileNestedInput
     analysisAttachments?: AnalysisAttachmentUncheckedUpdateManyWithoutProjectFileNestedInput
+    deliverableLink?: DeliverableUncheckedUpdateOneWithoutLinkedProjectFileNestedInput
   }
 
   export type ProjectFileCreateManyInput = {
@@ -43494,10 +48554,12 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status?: $Enums.FileStatus
     storageProvider?: string
     providerFileId: string
     url: string
     description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -43507,10 +48569,12 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -43522,10 +48586,12 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -43610,6 +48676,8 @@ export namespace Prisma {
     competitors?: CompetitorCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionCreateNestedManyWithoutAnalysisInput
     pipelineRun?: ProjectPipelineRunCreateNestedOneWithoutAnalysesInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisUncheckedCreateInput = {
@@ -43638,6 +48706,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutAnalysisInput
     competitors?: CompetitorUncheckedCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionUncheckedCreateNestedManyWithoutAnalysisInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisUpdateInput = {
@@ -43666,6 +48736,8 @@ export namespace Prisma {
     competitors?: CompetitorUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUpdateManyWithoutAnalysisNestedInput
     pipelineRun?: ProjectPipelineRunUpdateOneWithoutAnalysesNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisUncheckedUpdateInput = {
@@ -43694,6 +48766,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentUncheckedUpdateManyWithoutAnalysisNestedInput
     competitors?: CompetitorUncheckedUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUncheckedUpdateManyWithoutAnalysisNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisCreateManyInput = {
@@ -44394,6 +49468,7 @@ export namespace Prisma {
     pipelineTemplate: PipelineTemplateCreateNestedOneWithoutPipelineRunsInput
     initiatedByUser: UserCreateNestedOneWithoutInitiatedPipelineRunsInput
     analyses?: AnalysisCreateNestedManyWithoutPipelineRunInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByPipelineRunInput
   }
 
   export type ProjectPipelineRunUncheckedCreateInput = {
@@ -44409,6 +49484,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     analyses?: AnalysisUncheckedCreateNestedManyWithoutPipelineRunInput
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByPipelineRunInput
   }
 
   export type ProjectPipelineRunUpdateInput = {
@@ -44424,6 +49500,7 @@ export namespace Prisma {
     pipelineTemplate?: PipelineTemplateUpdateOneRequiredWithoutPipelineRunsNestedInput
     initiatedByUser?: UserUpdateOneRequiredWithoutInitiatedPipelineRunsNestedInput
     analyses?: AnalysisUpdateManyWithoutPipelineRunNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByPipelineRunNestedInput
   }
 
   export type ProjectPipelineRunUncheckedUpdateInput = {
@@ -44439,6 +49516,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     analyses?: AnalysisUncheckedUpdateManyWithoutPipelineRunNestedInput
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByPipelineRunNestedInput
   }
 
   export type ProjectPipelineRunCreateManyInput = {
@@ -44480,6 +49558,140 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DeliverableCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    externalUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutDeliverablesInput
+    linkedProjectFile?: ProjectFileCreateNestedOneWithoutDeliverableLinkInput
+    generatedByAnalysis?: AnalysisCreateNestedOneWithoutGeneratedDeliverablesInput
+    generatedByPipelineRun?: ProjectPipelineRunCreateNestedOneWithoutGeneratedDeliverablesInput
+    creator: UserCreateNestedOneWithoutCreatedDeliverablesInput
+    lastUpdater?: UserCreateNestedOneWithoutLastUpdatedDeliverablesInput
+  }
+
+  export type DeliverableUncheckedCreateInput = {
+    id?: string
+    projectId: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    projectFileId?: string | null
+    externalUrl?: string | null
+    generatedByAnalysisId?: string | null
+    generatedByPipelineRunId?: string | null
+    createdByUserId: string
+    lastUpdatedByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliverableUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutDeliverablesNestedInput
+    linkedProjectFile?: ProjectFileUpdateOneWithoutDeliverableLinkNestedInput
+    generatedByAnalysis?: AnalysisUpdateOneWithoutGeneratedDeliverablesNestedInput
+    generatedByPipelineRun?: ProjectPipelineRunUpdateOneWithoutGeneratedDeliverablesNestedInput
+    creator?: UserUpdateOneRequiredWithoutCreatedDeliverablesNestedInput
+    lastUpdater?: UserUpdateOneWithoutLastUpdatedDeliverablesNestedInput
+  }
+
+  export type DeliverableUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    projectFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByAnalysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByPipelineRunId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    lastUpdatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliverableCreateManyInput = {
+    id?: string
+    projectId: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    projectFileId?: string | null
+    externalUrl?: string | null
+    generatedByAnalysisId?: string | null
+    generatedByPipelineRunId?: string | null
+    createdByUserId: string
+    lastUpdatedByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliverableUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliverableUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    projectFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByAnalysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByPipelineRunId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    lastUpdatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ProjectIntegrationCreateInput = {
     id?: string
     provider: $Enums.IntegrationProvider
@@ -44496,6 +49708,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutIntegrationsInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectIntegrationInput
   }
 
   export type ProjectIntegrationUncheckedCreateInput = {
@@ -44514,6 +49727,7 @@ export namespace Prisma {
     addedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectIntegrationInput
   }
 
   export type ProjectIntegrationUpdateInput = {
@@ -44532,6 +49746,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutIntegrationsNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectIntegrationNestedInput
   }
 
   export type ProjectIntegrationUncheckedUpdateInput = {
@@ -44550,6 +49765,7 @@ export namespace Prisma {
     addedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectIntegrationNestedInput
   }
 
   export type ProjectIntegrationCreateManyInput = {
@@ -44603,6 +49819,122 @@ export namespace Prisma {
     addedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GitHubAIActionLogCreateInput = {
+    id?: string
+    actionType: $Enums.GitHubAIActionType
+    githubEntityType: $Enums.GitHubEntityType
+    githubEntityId: string
+    githubEntityUrl?: string | null
+    githubCommentId?: string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status: $Enums.ActionStatus
+    errorMessage?: string | null
+    triggeredBy?: string | null
+    performedAt?: Date | string
+    projectIntegration: ProjectIntegrationCreateNestedOneWithoutGithubAIActionLogsInput
+    project: ProjectCreateNestedOneWithoutGithubAIActionLogsInput
+    analysis?: AnalysisCreateNestedOneWithoutGithubAIActionLogsInput
+  }
+
+  export type GitHubAIActionLogUncheckedCreateInput = {
+    id?: string
+    projectIntegrationId: string
+    projectId: string
+    analysisId?: string | null
+    actionType: $Enums.GitHubAIActionType
+    githubEntityType: $Enums.GitHubEntityType
+    githubEntityId: string
+    githubEntityUrl?: string | null
+    githubCommentId?: string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status: $Enums.ActionStatus
+    errorMessage?: string | null
+    triggeredBy?: string | null
+    performedAt?: Date | string
+  }
+
+  export type GitHubAIActionLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actionType?: EnumGitHubAIActionTypeFieldUpdateOperationsInput | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFieldUpdateOperationsInput | $Enums.GitHubEntityType
+    githubEntityId?: StringFieldUpdateOperationsInput | string
+    githubEntityUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    githubCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumActionStatusFieldUpdateOperationsInput | $Enums.ActionStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    triggeredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    performedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectIntegration?: ProjectIntegrationUpdateOneRequiredWithoutGithubAIActionLogsNestedInput
+    project?: ProjectUpdateOneRequiredWithoutGithubAIActionLogsNestedInput
+    analysis?: AnalysisUpdateOneWithoutGithubAIActionLogsNestedInput
+  }
+
+  export type GitHubAIActionLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectIntegrationId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    analysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    actionType?: EnumGitHubAIActionTypeFieldUpdateOperationsInput | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFieldUpdateOperationsInput | $Enums.GitHubEntityType
+    githubEntityId?: StringFieldUpdateOperationsInput | string
+    githubEntityUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    githubCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumActionStatusFieldUpdateOperationsInput | $Enums.ActionStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    triggeredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    performedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GitHubAIActionLogCreateManyInput = {
+    id?: string
+    projectIntegrationId: string
+    projectId: string
+    analysisId?: string | null
+    actionType: $Enums.GitHubAIActionType
+    githubEntityType: $Enums.GitHubEntityType
+    githubEntityId: string
+    githubEntityUrl?: string | null
+    githubCommentId?: string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status: $Enums.ActionStatus
+    errorMessage?: string | null
+    triggeredBy?: string | null
+    performedAt?: Date | string
+  }
+
+  export type GitHubAIActionLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actionType?: EnumGitHubAIActionTypeFieldUpdateOperationsInput | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFieldUpdateOperationsInput | $Enums.GitHubEntityType
+    githubEntityId?: StringFieldUpdateOperationsInput | string
+    githubEntityUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    githubCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumActionStatusFieldUpdateOperationsInput | $Enums.ActionStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    triggeredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    performedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GitHubAIActionLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectIntegrationId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    analysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    actionType?: EnumGitHubAIActionTypeFieldUpdateOperationsInput | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFieldUpdateOperationsInput | $Enums.GitHubEntityType
+    githubEntityId?: StringFieldUpdateOperationsInput | string
+    githubEntityUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    githubCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumActionStatusFieldUpdateOperationsInput | $Enums.ActionStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    triggeredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    performedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NotificationCreateInput = {
@@ -44705,6 +50037,96 @@ export namespace Prisma {
     isEmailed?: BoolFieldUpdateOperationsInput | boolean
     entityId?: NullableStringFieldUpdateOperationsInput | string | null
     entityType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserFeedbackCreateInput = {
+    id?: string
+    entityType: $Enums.FeedbackEntityType
+    entityId?: string | null
+    rating?: number | null
+    comment?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isResolved?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutFeedbackEntriesInput
+  }
+
+  export type UserFeedbackUncheckedCreateInput = {
+    id?: string
+    userId: string
+    entityType: $Enums.FeedbackEntityType
+    entityId?: string | null
+    rating?: number | null
+    comment?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isResolved?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserFeedbackUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    entityType?: EnumFeedbackEntityTypeFieldUpdateOperationsInput | $Enums.FeedbackEntityType
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutFeedbackEntriesNestedInput
+  }
+
+  export type UserFeedbackUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    entityType?: EnumFeedbackEntityTypeFieldUpdateOperationsInput | $Enums.FeedbackEntityType
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserFeedbackCreateManyInput = {
+    id?: string
+    userId: string
+    entityType: $Enums.FeedbackEntityType
+    entityId?: string | null
+    rating?: number | null
+    comment?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isResolved?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserFeedbackUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    entityType?: EnumFeedbackEntityTypeFieldUpdateOperationsInput | $Enums.FeedbackEntityType
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserFeedbackUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    entityType?: EnumFeedbackEntityTypeFieldUpdateOperationsInput | $Enums.FeedbackEntityType
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -44862,6 +50284,18 @@ export namespace Prisma {
     none?: ProjectPipelineRunWhereInput
   }
 
+  export type UserFeedbackListRelationFilter = {
+    every?: UserFeedbackWhereInput
+    some?: UserFeedbackWhereInput
+    none?: UserFeedbackWhereInput
+  }
+
+  export type DeliverableListRelationFilter = {
+    every?: DeliverableWhereInput
+    some?: DeliverableWhereInput
+    none?: DeliverableWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -44928,6 +50362,14 @@ export namespace Prisma {
   }
 
   export type ProjectPipelineRunOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserFeedbackOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DeliverableOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -45096,35 +50538,35 @@ export namespace Prisma {
 
   export type SessionCountOrderByAggregateInput = {
     id?: SortOrder
+    sessionToken?: SortOrder
     userId?: SortOrder
     expiresAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
-    sessionToken?: SortOrder
   }
 
   export type SessionMaxOrderByAggregateInput = {
     id?: SortOrder
+    sessionToken?: SortOrder
     userId?: SortOrder
     expiresAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
-    sessionToken?: SortOrder
   }
 
   export type SessionMinOrderByAggregateInput = {
     id?: SortOrder
+    sessionToken?: SortOrder
     userId?: SortOrder
     expiresAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
-    sessionToken?: SortOrder
   }
 
   export type EmailVerificationTokenCountOrderByAggregateInput = {
@@ -45866,6 +51308,12 @@ export namespace Prisma {
     none?: ProductivityMetricWhereInput
   }
 
+  export type GitHubAIActionLogListRelationFilter = {
+    every?: GitHubAIActionLogWhereInput
+    some?: GitHubAIActionLogWhereInput
+    none?: GitHubAIActionLogWhereInput
+  }
+
   export type IdeaOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -45878,12 +51326,17 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type GitHubAIActionLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type ProjectCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
     workspaceId?: SortOrder
     createdByUserId?: SortOrder
+    projectStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -45894,6 +51347,7 @@ export namespace Prisma {
     description?: SortOrder
     workspaceId?: SortOrder
     createdByUserId?: SortOrder
+    projectStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -45904,6 +51358,7 @@ export namespace Prisma {
     description?: SortOrder
     workspaceId?: SortOrder
     createdByUserId?: SortOrder
+    projectStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -46028,10 +51483,22 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type EnumFileStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.FileStatus | EnumFileStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.FileStatus[] | ListEnumFileStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FileStatus[] | ListEnumFileStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumFileStatusFilter<$PrismaModel> | $Enums.FileStatus
+  }
+
   export type AnalysisAttachmentListRelationFilter = {
     every?: AnalysisAttachmentWhereInput
     some?: AnalysisAttachmentWhereInput
     none?: AnalysisAttachmentWhereInput
+  }
+
+  export type DeliverableNullableScalarRelationFilter = {
+    is?: DeliverableWhereInput | null
+    isNot?: DeliverableWhereInput | null
   }
 
   export type AnalysisAttachmentOrderByRelationAggregateInput = {
@@ -46045,10 +51512,12 @@ export namespace Prisma {
     fileName?: SortOrder
     fileType?: SortOrder
     sizeBytes?: SortOrder
+    status?: SortOrder
     storageProvider?: SortOrder
     providerFileId?: SortOrder
     url?: SortOrder
     description?: SortOrder
+    metadata?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -46064,6 +51533,7 @@ export namespace Prisma {
     fileName?: SortOrder
     fileType?: SortOrder
     sizeBytes?: SortOrder
+    status?: SortOrder
     storageProvider?: SortOrder
     providerFileId?: SortOrder
     url?: SortOrder
@@ -46079,6 +51549,7 @@ export namespace Prisma {
     fileName?: SortOrder
     fileType?: SortOrder
     sizeBytes?: SortOrder
+    status?: SortOrder
     storageProvider?: SortOrder
     providerFileId?: SortOrder
     url?: SortOrder
@@ -46105,6 +51576,16 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumFileStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FileStatus | EnumFileStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.FileStatus[] | ListEnumFileStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FileStatus[] | ListEnumFileStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumFileStatusWithAggregatesFilter<$PrismaModel> | $Enums.FileStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumFileStatusFilter<$PrismaModel>
+    _max?: NestedEnumFileStatusFilter<$PrismaModel>
   }
 
   export type IdeaScalarRelationFilter = {
@@ -46698,6 +52179,101 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumDeliverableStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliverableStatus | EnumDeliverableStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliverableStatus[] | ListEnumDeliverableStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliverableStatus[] | ListEnumDeliverableStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliverableStatusFilter<$PrismaModel> | $Enums.DeliverableStatus
+  }
+
+  export type ProjectFileNullableScalarRelationFilter = {
+    is?: ProjectFileWhereInput | null
+    isNot?: ProjectFileWhereInput | null
+  }
+
+  export type AnalysisNullableScalarRelationFilter = {
+    is?: AnalysisWhereInput | null
+    isNot?: AnalysisWhereInput | null
+  }
+
+  export type DeliverableCountOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    content?: SortOrder
+    format?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    projectFileId?: SortOrder
+    externalUrl?: SortOrder
+    generatedByAnalysisId?: SortOrder
+    generatedByPipelineRunId?: SortOrder
+    createdByUserId?: SortOrder
+    lastUpdatedByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DeliverableAvgOrderByAggregateInput = {
+    version?: SortOrder
+  }
+
+  export type DeliverableMaxOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    content?: SortOrder
+    format?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    projectFileId?: SortOrder
+    externalUrl?: SortOrder
+    generatedByAnalysisId?: SortOrder
+    generatedByPipelineRunId?: SortOrder
+    createdByUserId?: SortOrder
+    lastUpdatedByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DeliverableMinOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    content?: SortOrder
+    format?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    projectFileId?: SortOrder
+    externalUrl?: SortOrder
+    generatedByAnalysisId?: SortOrder
+    generatedByPipelineRunId?: SortOrder
+    createdByUserId?: SortOrder
+    lastUpdatedByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DeliverableSumOrderByAggregateInput = {
+    version?: SortOrder
+  }
+
+  export type EnumDeliverableStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliverableStatus | EnumDeliverableStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliverableStatus[] | ListEnumDeliverableStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliverableStatus[] | ListEnumDeliverableStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliverableStatusWithAggregatesFilter<$PrismaModel> | $Enums.DeliverableStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeliverableStatusFilter<$PrismaModel>
+    _max?: NestedEnumDeliverableStatusFilter<$PrismaModel>
+  }
+
   export type EnumIntegrationProviderFilter<$PrismaModel = never> = {
     equals?: $Enums.IntegrationProvider | EnumIntegrationProviderFieldRefInput<$PrismaModel>
     in?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
@@ -46789,6 +52365,111 @@ export namespace Prisma {
     _max?: NestedEnumIntegrationSyncStatusNullableFilter<$PrismaModel>
   }
 
+  export type EnumGitHubAIActionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.GitHubAIActionType | EnumGitHubAIActionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GitHubAIActionType[] | ListEnumGitHubAIActionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GitHubAIActionType[] | ListEnumGitHubAIActionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGitHubAIActionTypeFilter<$PrismaModel> | $Enums.GitHubAIActionType
+  }
+
+  export type EnumGitHubEntityTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.GitHubEntityType | EnumGitHubEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GitHubEntityType[] | ListEnumGitHubEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GitHubEntityType[] | ListEnumGitHubEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGitHubEntityTypeFilter<$PrismaModel> | $Enums.GitHubEntityType
+  }
+
+  export type EnumActionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ActionStatus | EnumActionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ActionStatus[] | ListEnumActionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ActionStatus[] | ListEnumActionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumActionStatusFilter<$PrismaModel> | $Enums.ActionStatus
+  }
+
+  export type ProjectIntegrationScalarRelationFilter = {
+    is?: ProjectIntegrationWhereInput
+    isNot?: ProjectIntegrationWhereInput
+  }
+
+  export type GitHubAIActionLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    projectIntegrationId?: SortOrder
+    projectId?: SortOrder
+    analysisId?: SortOrder
+    actionType?: SortOrder
+    githubEntityType?: SortOrder
+    githubEntityId?: SortOrder
+    githubEntityUrl?: SortOrder
+    githubCommentId?: SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    triggeredBy?: SortOrder
+    performedAt?: SortOrder
+  }
+
+  export type GitHubAIActionLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    projectIntegrationId?: SortOrder
+    projectId?: SortOrder
+    analysisId?: SortOrder
+    actionType?: SortOrder
+    githubEntityType?: SortOrder
+    githubEntityId?: SortOrder
+    githubEntityUrl?: SortOrder
+    githubCommentId?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    triggeredBy?: SortOrder
+    performedAt?: SortOrder
+  }
+
+  export type GitHubAIActionLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    projectIntegrationId?: SortOrder
+    projectId?: SortOrder
+    analysisId?: SortOrder
+    actionType?: SortOrder
+    githubEntityType?: SortOrder
+    githubEntityId?: SortOrder
+    githubEntityUrl?: SortOrder
+    githubCommentId?: SortOrder
+    status?: SortOrder
+    errorMessage?: SortOrder
+    triggeredBy?: SortOrder
+    performedAt?: SortOrder
+  }
+
+  export type EnumGitHubAIActionTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GitHubAIActionType | EnumGitHubAIActionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GitHubAIActionType[] | ListEnumGitHubAIActionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GitHubAIActionType[] | ListEnumGitHubAIActionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGitHubAIActionTypeWithAggregatesFilter<$PrismaModel> | $Enums.GitHubAIActionType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGitHubAIActionTypeFilter<$PrismaModel>
+    _max?: NestedEnumGitHubAIActionTypeFilter<$PrismaModel>
+  }
+
+  export type EnumGitHubEntityTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GitHubEntityType | EnumGitHubEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GitHubEntityType[] | ListEnumGitHubEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GitHubEntityType[] | ListEnumGitHubEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGitHubEntityTypeWithAggregatesFilter<$PrismaModel> | $Enums.GitHubEntityType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGitHubEntityTypeFilter<$PrismaModel>
+    _max?: NestedEnumGitHubEntityTypeFilter<$PrismaModel>
+  }
+
+  export type EnumActionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ActionStatus | EnumActionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ActionStatus[] | ListEnumActionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ActionStatus[] | ListEnumActionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumActionStatusWithAggregatesFilter<$PrismaModel> | $Enums.ActionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumActionStatusFilter<$PrismaModel>
+    _max?: NestedEnumActionStatusFilter<$PrismaModel>
+  }
+
   export type EnumNotificationTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
     in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
@@ -46849,6 +52530,68 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumNotificationTypeFilter<$PrismaModel>
     _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
+  }
+
+  export type EnumFeedbackEntityTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.FeedbackEntityType | EnumFeedbackEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.FeedbackEntityType[] | ListEnumFeedbackEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FeedbackEntityType[] | ListEnumFeedbackEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumFeedbackEntityTypeFilter<$PrismaModel> | $Enums.FeedbackEntityType
+  }
+
+  export type UserFeedbackCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    entityType?: SortOrder
+    entityId?: SortOrder
+    rating?: SortOrder
+    comment?: SortOrder
+    metadata?: SortOrder
+    isResolved?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserFeedbackAvgOrderByAggregateInput = {
+    rating?: SortOrder
+  }
+
+  export type UserFeedbackMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    entityType?: SortOrder
+    entityId?: SortOrder
+    rating?: SortOrder
+    comment?: SortOrder
+    isResolved?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserFeedbackMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    entityType?: SortOrder
+    entityId?: SortOrder
+    rating?: SortOrder
+    comment?: SortOrder
+    isResolved?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserFeedbackSumOrderByAggregateInput = {
+    rating?: SortOrder
+  }
+
+  export type EnumFeedbackEntityTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FeedbackEntityType | EnumFeedbackEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.FeedbackEntityType[] | ListEnumFeedbackEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FeedbackEntityType[] | ListEnumFeedbackEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumFeedbackEntityTypeWithAggregatesFilter<$PrismaModel> | $Enums.FeedbackEntityType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumFeedbackEntityTypeFilter<$PrismaModel>
+    _max?: NestedEnumFeedbackEntityTypeFilter<$PrismaModel>
   }
 
   export type SessionCreateNestedManyWithoutUserInput = {
@@ -46976,6 +52719,27 @@ export namespace Prisma {
     connect?: ProjectPipelineRunWhereUniqueInput | ProjectPipelineRunWhereUniqueInput[]
   }
 
+  export type UserFeedbackCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserFeedbackCreateWithoutUserInput, UserFeedbackUncheckedCreateWithoutUserInput> | UserFeedbackCreateWithoutUserInput[] | UserFeedbackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserFeedbackCreateOrConnectWithoutUserInput | UserFeedbackCreateOrConnectWithoutUserInput[]
+    createMany?: UserFeedbackCreateManyUserInputEnvelope
+    connect?: UserFeedbackWhereUniqueInput | UserFeedbackWhereUniqueInput[]
+  }
+
+  export type DeliverableCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<DeliverableCreateWithoutCreatorInput, DeliverableUncheckedCreateWithoutCreatorInput> | DeliverableCreateWithoutCreatorInput[] | DeliverableUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutCreatorInput | DeliverableCreateOrConnectWithoutCreatorInput[]
+    createMany?: DeliverableCreateManyCreatorInputEnvelope
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+  }
+
+  export type DeliverableCreateNestedManyWithoutLastUpdaterInput = {
+    create?: XOR<DeliverableCreateWithoutLastUpdaterInput, DeliverableUncheckedCreateWithoutLastUpdaterInput> | DeliverableCreateWithoutLastUpdaterInput[] | DeliverableUncheckedCreateWithoutLastUpdaterInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutLastUpdaterInput | DeliverableCreateOrConnectWithoutLastUpdaterInput[]
+    createMany?: DeliverableCreateManyLastUpdaterInputEnvelope
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -47099,6 +52863,27 @@ export namespace Prisma {
     connectOrCreate?: ProjectPipelineRunCreateOrConnectWithoutInitiatedByUserInput | ProjectPipelineRunCreateOrConnectWithoutInitiatedByUserInput[]
     createMany?: ProjectPipelineRunCreateManyInitiatedByUserInputEnvelope
     connect?: ProjectPipelineRunWhereUniqueInput | ProjectPipelineRunWhereUniqueInput[]
+  }
+
+  export type UserFeedbackUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserFeedbackCreateWithoutUserInput, UserFeedbackUncheckedCreateWithoutUserInput> | UserFeedbackCreateWithoutUserInput[] | UserFeedbackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserFeedbackCreateOrConnectWithoutUserInput | UserFeedbackCreateOrConnectWithoutUserInput[]
+    createMany?: UserFeedbackCreateManyUserInputEnvelope
+    connect?: UserFeedbackWhereUniqueInput | UserFeedbackWhereUniqueInput[]
+  }
+
+  export type DeliverableUncheckedCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<DeliverableCreateWithoutCreatorInput, DeliverableUncheckedCreateWithoutCreatorInput> | DeliverableCreateWithoutCreatorInput[] | DeliverableUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutCreatorInput | DeliverableCreateOrConnectWithoutCreatorInput[]
+    createMany?: DeliverableCreateManyCreatorInputEnvelope
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+  }
+
+  export type DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput = {
+    create?: XOR<DeliverableCreateWithoutLastUpdaterInput, DeliverableUncheckedCreateWithoutLastUpdaterInput> | DeliverableCreateWithoutLastUpdaterInput[] | DeliverableUncheckedCreateWithoutLastUpdaterInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutLastUpdaterInput | DeliverableCreateOrConnectWithoutLastUpdaterInput[]
+    createMany?: DeliverableCreateManyLastUpdaterInputEnvelope
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -47365,6 +53150,48 @@ export namespace Prisma {
     deleteMany?: ProjectPipelineRunScalarWhereInput | ProjectPipelineRunScalarWhereInput[]
   }
 
+  export type UserFeedbackUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserFeedbackCreateWithoutUserInput, UserFeedbackUncheckedCreateWithoutUserInput> | UserFeedbackCreateWithoutUserInput[] | UserFeedbackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserFeedbackCreateOrConnectWithoutUserInput | UserFeedbackCreateOrConnectWithoutUserInput[]
+    upsert?: UserFeedbackUpsertWithWhereUniqueWithoutUserInput | UserFeedbackUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserFeedbackCreateManyUserInputEnvelope
+    set?: UserFeedbackWhereUniqueInput | UserFeedbackWhereUniqueInput[]
+    disconnect?: UserFeedbackWhereUniqueInput | UserFeedbackWhereUniqueInput[]
+    delete?: UserFeedbackWhereUniqueInput | UserFeedbackWhereUniqueInput[]
+    connect?: UserFeedbackWhereUniqueInput | UserFeedbackWhereUniqueInput[]
+    update?: UserFeedbackUpdateWithWhereUniqueWithoutUserInput | UserFeedbackUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserFeedbackUpdateManyWithWhereWithoutUserInput | UserFeedbackUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserFeedbackScalarWhereInput | UserFeedbackScalarWhereInput[]
+  }
+
+  export type DeliverableUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<DeliverableCreateWithoutCreatorInput, DeliverableUncheckedCreateWithoutCreatorInput> | DeliverableCreateWithoutCreatorInput[] | DeliverableUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutCreatorInput | DeliverableCreateOrConnectWithoutCreatorInput[]
+    upsert?: DeliverableUpsertWithWhereUniqueWithoutCreatorInput | DeliverableUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: DeliverableCreateManyCreatorInputEnvelope
+    set?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    disconnect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    delete?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    update?: DeliverableUpdateWithWhereUniqueWithoutCreatorInput | DeliverableUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: DeliverableUpdateManyWithWhereWithoutCreatorInput | DeliverableUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: DeliverableScalarWhereInput | DeliverableScalarWhereInput[]
+  }
+
+  export type DeliverableUpdateManyWithoutLastUpdaterNestedInput = {
+    create?: XOR<DeliverableCreateWithoutLastUpdaterInput, DeliverableUncheckedCreateWithoutLastUpdaterInput> | DeliverableCreateWithoutLastUpdaterInput[] | DeliverableUncheckedCreateWithoutLastUpdaterInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutLastUpdaterInput | DeliverableCreateOrConnectWithoutLastUpdaterInput[]
+    upsert?: DeliverableUpsertWithWhereUniqueWithoutLastUpdaterInput | DeliverableUpsertWithWhereUniqueWithoutLastUpdaterInput[]
+    createMany?: DeliverableCreateManyLastUpdaterInputEnvelope
+    set?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    disconnect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    delete?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    update?: DeliverableUpdateWithWhereUniqueWithoutLastUpdaterInput | DeliverableUpdateWithWhereUniqueWithoutLastUpdaterInput[]
+    updateMany?: DeliverableUpdateManyWithWhereWithoutLastUpdaterInput | DeliverableUpdateManyWithWhereWithoutLastUpdaterInput[]
+    deleteMany?: DeliverableScalarWhereInput | DeliverableScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -47611,6 +53438,48 @@ export namespace Prisma {
     update?: ProjectPipelineRunUpdateWithWhereUniqueWithoutInitiatedByUserInput | ProjectPipelineRunUpdateWithWhereUniqueWithoutInitiatedByUserInput[]
     updateMany?: ProjectPipelineRunUpdateManyWithWhereWithoutInitiatedByUserInput | ProjectPipelineRunUpdateManyWithWhereWithoutInitiatedByUserInput[]
     deleteMany?: ProjectPipelineRunScalarWhereInput | ProjectPipelineRunScalarWhereInput[]
+  }
+
+  export type UserFeedbackUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserFeedbackCreateWithoutUserInput, UserFeedbackUncheckedCreateWithoutUserInput> | UserFeedbackCreateWithoutUserInput[] | UserFeedbackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserFeedbackCreateOrConnectWithoutUserInput | UserFeedbackCreateOrConnectWithoutUserInput[]
+    upsert?: UserFeedbackUpsertWithWhereUniqueWithoutUserInput | UserFeedbackUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserFeedbackCreateManyUserInputEnvelope
+    set?: UserFeedbackWhereUniqueInput | UserFeedbackWhereUniqueInput[]
+    disconnect?: UserFeedbackWhereUniqueInput | UserFeedbackWhereUniqueInput[]
+    delete?: UserFeedbackWhereUniqueInput | UserFeedbackWhereUniqueInput[]
+    connect?: UserFeedbackWhereUniqueInput | UserFeedbackWhereUniqueInput[]
+    update?: UserFeedbackUpdateWithWhereUniqueWithoutUserInput | UserFeedbackUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserFeedbackUpdateManyWithWhereWithoutUserInput | UserFeedbackUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserFeedbackScalarWhereInput | UserFeedbackScalarWhereInput[]
+  }
+
+  export type DeliverableUncheckedUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<DeliverableCreateWithoutCreatorInput, DeliverableUncheckedCreateWithoutCreatorInput> | DeliverableCreateWithoutCreatorInput[] | DeliverableUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutCreatorInput | DeliverableCreateOrConnectWithoutCreatorInput[]
+    upsert?: DeliverableUpsertWithWhereUniqueWithoutCreatorInput | DeliverableUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: DeliverableCreateManyCreatorInputEnvelope
+    set?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    disconnect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    delete?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    update?: DeliverableUpdateWithWhereUniqueWithoutCreatorInput | DeliverableUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: DeliverableUpdateManyWithWhereWithoutCreatorInput | DeliverableUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: DeliverableScalarWhereInput | DeliverableScalarWhereInput[]
+  }
+
+  export type DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput = {
+    create?: XOR<DeliverableCreateWithoutLastUpdaterInput, DeliverableUncheckedCreateWithoutLastUpdaterInput> | DeliverableCreateWithoutLastUpdaterInput[] | DeliverableUncheckedCreateWithoutLastUpdaterInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutLastUpdaterInput | DeliverableCreateOrConnectWithoutLastUpdaterInput[]
+    upsert?: DeliverableUpsertWithWhereUniqueWithoutLastUpdaterInput | DeliverableUpsertWithWhereUniqueWithoutLastUpdaterInput[]
+    createMany?: DeliverableCreateManyLastUpdaterInputEnvelope
+    set?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    disconnect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    delete?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    update?: DeliverableUpdateWithWhereUniqueWithoutLastUpdaterInput | DeliverableUpdateWithWhereUniqueWithoutLastUpdaterInput[]
+    updateMany?: DeliverableUpdateManyWithWhereWithoutLastUpdaterInput | DeliverableUpdateManyWithWhereWithoutLastUpdaterInput[]
+    deleteMany?: DeliverableScalarWhereInput | DeliverableScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutOauthAccountsInput = {
@@ -48344,6 +54213,20 @@ export namespace Prisma {
     connect?: ProductivityMetricWhereUniqueInput | ProductivityMetricWhereUniqueInput[]
   }
 
+  export type GitHubAIActionLogCreateNestedManyWithoutProjectInput = {
+    create?: XOR<GitHubAIActionLogCreateWithoutProjectInput, GitHubAIActionLogUncheckedCreateWithoutProjectInput> | GitHubAIActionLogCreateWithoutProjectInput[] | GitHubAIActionLogUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: GitHubAIActionLogCreateOrConnectWithoutProjectInput | GitHubAIActionLogCreateOrConnectWithoutProjectInput[]
+    createMany?: GitHubAIActionLogCreateManyProjectInputEnvelope
+    connect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+  }
+
+  export type DeliverableCreateNestedManyWithoutProjectInput = {
+    create?: XOR<DeliverableCreateWithoutProjectInput, DeliverableUncheckedCreateWithoutProjectInput> | DeliverableCreateWithoutProjectInput[] | DeliverableUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutProjectInput | DeliverableCreateOrConnectWithoutProjectInput[]
+    createMany?: DeliverableCreateManyProjectInputEnvelope
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+  }
+
   export type ProjectMemberUncheckedCreateNestedManyWithoutProjectInput = {
     create?: XOR<ProjectMemberCreateWithoutProjectInput, ProjectMemberUncheckedCreateWithoutProjectInput> | ProjectMemberCreateWithoutProjectInput[] | ProjectMemberUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: ProjectMemberCreateOrConnectWithoutProjectInput | ProjectMemberCreateOrConnectWithoutProjectInput[]
@@ -48398,6 +54281,20 @@ export namespace Prisma {
     connectOrCreate?: ProductivityMetricCreateOrConnectWithoutProjectInput | ProductivityMetricCreateOrConnectWithoutProjectInput[]
     createMany?: ProductivityMetricCreateManyProjectInputEnvelope
     connect?: ProductivityMetricWhereUniqueInput | ProductivityMetricWhereUniqueInput[]
+  }
+
+  export type GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<GitHubAIActionLogCreateWithoutProjectInput, GitHubAIActionLogUncheckedCreateWithoutProjectInput> | GitHubAIActionLogCreateWithoutProjectInput[] | GitHubAIActionLogUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: GitHubAIActionLogCreateOrConnectWithoutProjectInput | GitHubAIActionLogCreateOrConnectWithoutProjectInput[]
+    createMany?: GitHubAIActionLogCreateManyProjectInputEnvelope
+    connect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+  }
+
+  export type DeliverableUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<DeliverableCreateWithoutProjectInput, DeliverableUncheckedCreateWithoutProjectInput> | DeliverableCreateWithoutProjectInput[] | DeliverableUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutProjectInput | DeliverableCreateOrConnectWithoutProjectInput[]
+    createMany?: DeliverableCreateManyProjectInputEnvelope
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
   }
 
   export type WorkspaceUpdateOneRequiredWithoutProjectsNestedInput = {
@@ -48528,6 +54425,34 @@ export namespace Prisma {
     deleteMany?: ProductivityMetricScalarWhereInput | ProductivityMetricScalarWhereInput[]
   }
 
+  export type GitHubAIActionLogUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<GitHubAIActionLogCreateWithoutProjectInput, GitHubAIActionLogUncheckedCreateWithoutProjectInput> | GitHubAIActionLogCreateWithoutProjectInput[] | GitHubAIActionLogUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: GitHubAIActionLogCreateOrConnectWithoutProjectInput | GitHubAIActionLogCreateOrConnectWithoutProjectInput[]
+    upsert?: GitHubAIActionLogUpsertWithWhereUniqueWithoutProjectInput | GitHubAIActionLogUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: GitHubAIActionLogCreateManyProjectInputEnvelope
+    set?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    disconnect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    delete?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    connect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    update?: GitHubAIActionLogUpdateWithWhereUniqueWithoutProjectInput | GitHubAIActionLogUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: GitHubAIActionLogUpdateManyWithWhereWithoutProjectInput | GitHubAIActionLogUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: GitHubAIActionLogScalarWhereInput | GitHubAIActionLogScalarWhereInput[]
+  }
+
+  export type DeliverableUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<DeliverableCreateWithoutProjectInput, DeliverableUncheckedCreateWithoutProjectInput> | DeliverableCreateWithoutProjectInput[] | DeliverableUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutProjectInput | DeliverableCreateOrConnectWithoutProjectInput[]
+    upsert?: DeliverableUpsertWithWhereUniqueWithoutProjectInput | DeliverableUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: DeliverableCreateManyProjectInputEnvelope
+    set?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    disconnect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    delete?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    update?: DeliverableUpdateWithWhereUniqueWithoutProjectInput | DeliverableUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: DeliverableUpdateManyWithWhereWithoutProjectInput | DeliverableUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: DeliverableScalarWhereInput | DeliverableScalarWhereInput[]
+  }
+
   export type ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput = {
     create?: XOR<ProjectMemberCreateWithoutProjectInput, ProjectMemberUncheckedCreateWithoutProjectInput> | ProjectMemberCreateWithoutProjectInput[] | ProjectMemberUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: ProjectMemberCreateOrConnectWithoutProjectInput | ProjectMemberCreateOrConnectWithoutProjectInput[]
@@ -48638,6 +54563,34 @@ export namespace Prisma {
     update?: ProductivityMetricUpdateWithWhereUniqueWithoutProjectInput | ProductivityMetricUpdateWithWhereUniqueWithoutProjectInput[]
     updateMany?: ProductivityMetricUpdateManyWithWhereWithoutProjectInput | ProductivityMetricUpdateManyWithWhereWithoutProjectInput[]
     deleteMany?: ProductivityMetricScalarWhereInput | ProductivityMetricScalarWhereInput[]
+  }
+
+  export type GitHubAIActionLogUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<GitHubAIActionLogCreateWithoutProjectInput, GitHubAIActionLogUncheckedCreateWithoutProjectInput> | GitHubAIActionLogCreateWithoutProjectInput[] | GitHubAIActionLogUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: GitHubAIActionLogCreateOrConnectWithoutProjectInput | GitHubAIActionLogCreateOrConnectWithoutProjectInput[]
+    upsert?: GitHubAIActionLogUpsertWithWhereUniqueWithoutProjectInput | GitHubAIActionLogUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: GitHubAIActionLogCreateManyProjectInputEnvelope
+    set?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    disconnect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    delete?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    connect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    update?: GitHubAIActionLogUpdateWithWhereUniqueWithoutProjectInput | GitHubAIActionLogUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: GitHubAIActionLogUpdateManyWithWhereWithoutProjectInput | GitHubAIActionLogUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: GitHubAIActionLogScalarWhereInput | GitHubAIActionLogScalarWhereInput[]
+  }
+
+  export type DeliverableUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<DeliverableCreateWithoutProjectInput, DeliverableUncheckedCreateWithoutProjectInput> | DeliverableCreateWithoutProjectInput[] | DeliverableUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutProjectInput | DeliverableCreateOrConnectWithoutProjectInput[]
+    upsert?: DeliverableUpsertWithWhereUniqueWithoutProjectInput | DeliverableUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: DeliverableCreateManyProjectInputEnvelope
+    set?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    disconnect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    delete?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    update?: DeliverableUpdateWithWhereUniqueWithoutProjectInput | DeliverableUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: DeliverableUpdateManyWithWhereWithoutProjectInput | DeliverableUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: DeliverableScalarWhereInput | DeliverableScalarWhereInput[]
   }
 
   export type ProjectCreateNestedOneWithoutMembersInput = {
@@ -48809,6 +54762,12 @@ export namespace Prisma {
     connect?: AnalysisAttachmentWhereUniqueInput | AnalysisAttachmentWhereUniqueInput[]
   }
 
+  export type DeliverableCreateNestedOneWithoutLinkedProjectFileInput = {
+    create?: XOR<DeliverableCreateWithoutLinkedProjectFileInput, DeliverableUncheckedCreateWithoutLinkedProjectFileInput>
+    connectOrCreate?: DeliverableCreateOrConnectWithoutLinkedProjectFileInput
+    connect?: DeliverableWhereUniqueInput
+  }
+
   export type IdeaProjectFileUncheckedCreateNestedManyWithoutProjectFileInput = {
     create?: XOR<IdeaProjectFileCreateWithoutProjectFileInput, IdeaProjectFileUncheckedCreateWithoutProjectFileInput> | IdeaProjectFileCreateWithoutProjectFileInput[] | IdeaProjectFileUncheckedCreateWithoutProjectFileInput[]
     connectOrCreate?: IdeaProjectFileCreateOrConnectWithoutProjectFileInput | IdeaProjectFileCreateOrConnectWithoutProjectFileInput[]
@@ -48823,12 +54782,22 @@ export namespace Prisma {
     connect?: AnalysisAttachmentWhereUniqueInput | AnalysisAttachmentWhereUniqueInput[]
   }
 
+  export type DeliverableUncheckedCreateNestedOneWithoutLinkedProjectFileInput = {
+    create?: XOR<DeliverableCreateWithoutLinkedProjectFileInput, DeliverableUncheckedCreateWithoutLinkedProjectFileInput>
+    connectOrCreate?: DeliverableCreateOrConnectWithoutLinkedProjectFileInput
+    connect?: DeliverableWhereUniqueInput
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type EnumFileStatusFieldUpdateOperationsInput = {
+    set?: $Enums.FileStatus
   }
 
   export type ProjectUpdateOneRequiredWithoutProjectFilesNestedInput = {
@@ -48875,6 +54844,16 @@ export namespace Prisma {
     deleteMany?: AnalysisAttachmentScalarWhereInput | AnalysisAttachmentScalarWhereInput[]
   }
 
+  export type DeliverableUpdateOneWithoutLinkedProjectFileNestedInput = {
+    create?: XOR<DeliverableCreateWithoutLinkedProjectFileInput, DeliverableUncheckedCreateWithoutLinkedProjectFileInput>
+    connectOrCreate?: DeliverableCreateOrConnectWithoutLinkedProjectFileInput
+    upsert?: DeliverableUpsertWithoutLinkedProjectFileInput
+    disconnect?: DeliverableWhereInput | boolean
+    delete?: DeliverableWhereInput | boolean
+    connect?: DeliverableWhereUniqueInput
+    update?: XOR<XOR<DeliverableUpdateToOneWithWhereWithoutLinkedProjectFileInput, DeliverableUpdateWithoutLinkedProjectFileInput>, DeliverableUncheckedUpdateWithoutLinkedProjectFileInput>
+  }
+
   export type IdeaProjectFileUncheckedUpdateManyWithoutProjectFileNestedInput = {
     create?: XOR<IdeaProjectFileCreateWithoutProjectFileInput, IdeaProjectFileUncheckedCreateWithoutProjectFileInput> | IdeaProjectFileCreateWithoutProjectFileInput[] | IdeaProjectFileUncheckedCreateWithoutProjectFileInput[]
     connectOrCreate?: IdeaProjectFileCreateOrConnectWithoutProjectFileInput | IdeaProjectFileCreateOrConnectWithoutProjectFileInput[]
@@ -48901,6 +54880,16 @@ export namespace Prisma {
     update?: AnalysisAttachmentUpdateWithWhereUniqueWithoutProjectFileInput | AnalysisAttachmentUpdateWithWhereUniqueWithoutProjectFileInput[]
     updateMany?: AnalysisAttachmentUpdateManyWithWhereWithoutProjectFileInput | AnalysisAttachmentUpdateManyWithWhereWithoutProjectFileInput[]
     deleteMany?: AnalysisAttachmentScalarWhereInput | AnalysisAttachmentScalarWhereInput[]
+  }
+
+  export type DeliverableUncheckedUpdateOneWithoutLinkedProjectFileNestedInput = {
+    create?: XOR<DeliverableCreateWithoutLinkedProjectFileInput, DeliverableUncheckedCreateWithoutLinkedProjectFileInput>
+    connectOrCreate?: DeliverableCreateOrConnectWithoutLinkedProjectFileInput
+    upsert?: DeliverableUpsertWithoutLinkedProjectFileInput
+    disconnect?: DeliverableWhereInput | boolean
+    delete?: DeliverableWhereInput | boolean
+    connect?: DeliverableWhereUniqueInput
+    update?: XOR<XOR<DeliverableUpdateToOneWithWhereWithoutLinkedProjectFileInput, DeliverableUpdateWithoutLinkedProjectFileInput>, DeliverableUncheckedUpdateWithoutLinkedProjectFileInput>
   }
 
   export type IdeaCreateNestedOneWithoutUploadedFilesInput = {
@@ -48976,6 +54965,20 @@ export namespace Prisma {
     connect?: ProjectPipelineRunWhereUniqueInput
   }
 
+  export type GitHubAIActionLogCreateNestedManyWithoutAnalysisInput = {
+    create?: XOR<GitHubAIActionLogCreateWithoutAnalysisInput, GitHubAIActionLogUncheckedCreateWithoutAnalysisInput> | GitHubAIActionLogCreateWithoutAnalysisInput[] | GitHubAIActionLogUncheckedCreateWithoutAnalysisInput[]
+    connectOrCreate?: GitHubAIActionLogCreateOrConnectWithoutAnalysisInput | GitHubAIActionLogCreateOrConnectWithoutAnalysisInput[]
+    createMany?: GitHubAIActionLogCreateManyAnalysisInputEnvelope
+    connect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+  }
+
+  export type DeliverableCreateNestedManyWithoutGeneratedByAnalysisInput = {
+    create?: XOR<DeliverableCreateWithoutGeneratedByAnalysisInput, DeliverableUncheckedCreateWithoutGeneratedByAnalysisInput> | DeliverableCreateWithoutGeneratedByAnalysisInput[] | DeliverableUncheckedCreateWithoutGeneratedByAnalysisInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutGeneratedByAnalysisInput | DeliverableCreateOrConnectWithoutGeneratedByAnalysisInput[]
+    createMany?: DeliverableCreateManyGeneratedByAnalysisInputEnvelope
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+  }
+
   export type AnalysisAttachmentUncheckedCreateNestedManyWithoutAnalysisInput = {
     create?: XOR<AnalysisAttachmentCreateWithoutAnalysisInput, AnalysisAttachmentUncheckedCreateWithoutAnalysisInput> | AnalysisAttachmentCreateWithoutAnalysisInput[] | AnalysisAttachmentUncheckedCreateWithoutAnalysisInput[]
     connectOrCreate?: AnalysisAttachmentCreateOrConnectWithoutAnalysisInput | AnalysisAttachmentCreateOrConnectWithoutAnalysisInput[]
@@ -48995,6 +54998,20 @@ export namespace Prisma {
     connectOrCreate?: NameSuggestionCreateOrConnectWithoutAnalysisInput | NameSuggestionCreateOrConnectWithoutAnalysisInput[]
     createMany?: NameSuggestionCreateManyAnalysisInputEnvelope
     connect?: NameSuggestionWhereUniqueInput | NameSuggestionWhereUniqueInput[]
+  }
+
+  export type GitHubAIActionLogUncheckedCreateNestedManyWithoutAnalysisInput = {
+    create?: XOR<GitHubAIActionLogCreateWithoutAnalysisInput, GitHubAIActionLogUncheckedCreateWithoutAnalysisInput> | GitHubAIActionLogCreateWithoutAnalysisInput[] | GitHubAIActionLogUncheckedCreateWithoutAnalysisInput[]
+    connectOrCreate?: GitHubAIActionLogCreateOrConnectWithoutAnalysisInput | GitHubAIActionLogCreateOrConnectWithoutAnalysisInput[]
+    createMany?: GitHubAIActionLogCreateManyAnalysisInputEnvelope
+    connect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+  }
+
+  export type DeliverableUncheckedCreateNestedManyWithoutGeneratedByAnalysisInput = {
+    create?: XOR<DeliverableCreateWithoutGeneratedByAnalysisInput, DeliverableUncheckedCreateWithoutGeneratedByAnalysisInput> | DeliverableCreateWithoutGeneratedByAnalysisInput[] | DeliverableUncheckedCreateWithoutGeneratedByAnalysisInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutGeneratedByAnalysisInput | DeliverableCreateOrConnectWithoutGeneratedByAnalysisInput[]
+    createMany?: DeliverableCreateManyGeneratedByAnalysisInputEnvelope
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
   }
 
   export type EnumAnalysisTypeFieldUpdateOperationsInput = {
@@ -49083,6 +55100,34 @@ export namespace Prisma {
     update?: XOR<XOR<ProjectPipelineRunUpdateToOneWithWhereWithoutAnalysesInput, ProjectPipelineRunUpdateWithoutAnalysesInput>, ProjectPipelineRunUncheckedUpdateWithoutAnalysesInput>
   }
 
+  export type GitHubAIActionLogUpdateManyWithoutAnalysisNestedInput = {
+    create?: XOR<GitHubAIActionLogCreateWithoutAnalysisInput, GitHubAIActionLogUncheckedCreateWithoutAnalysisInput> | GitHubAIActionLogCreateWithoutAnalysisInput[] | GitHubAIActionLogUncheckedCreateWithoutAnalysisInput[]
+    connectOrCreate?: GitHubAIActionLogCreateOrConnectWithoutAnalysisInput | GitHubAIActionLogCreateOrConnectWithoutAnalysisInput[]
+    upsert?: GitHubAIActionLogUpsertWithWhereUniqueWithoutAnalysisInput | GitHubAIActionLogUpsertWithWhereUniqueWithoutAnalysisInput[]
+    createMany?: GitHubAIActionLogCreateManyAnalysisInputEnvelope
+    set?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    disconnect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    delete?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    connect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    update?: GitHubAIActionLogUpdateWithWhereUniqueWithoutAnalysisInput | GitHubAIActionLogUpdateWithWhereUniqueWithoutAnalysisInput[]
+    updateMany?: GitHubAIActionLogUpdateManyWithWhereWithoutAnalysisInput | GitHubAIActionLogUpdateManyWithWhereWithoutAnalysisInput[]
+    deleteMany?: GitHubAIActionLogScalarWhereInput | GitHubAIActionLogScalarWhereInput[]
+  }
+
+  export type DeliverableUpdateManyWithoutGeneratedByAnalysisNestedInput = {
+    create?: XOR<DeliverableCreateWithoutGeneratedByAnalysisInput, DeliverableUncheckedCreateWithoutGeneratedByAnalysisInput> | DeliverableCreateWithoutGeneratedByAnalysisInput[] | DeliverableUncheckedCreateWithoutGeneratedByAnalysisInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutGeneratedByAnalysisInput | DeliverableCreateOrConnectWithoutGeneratedByAnalysisInput[]
+    upsert?: DeliverableUpsertWithWhereUniqueWithoutGeneratedByAnalysisInput | DeliverableUpsertWithWhereUniqueWithoutGeneratedByAnalysisInput[]
+    createMany?: DeliverableCreateManyGeneratedByAnalysisInputEnvelope
+    set?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    disconnect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    delete?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    update?: DeliverableUpdateWithWhereUniqueWithoutGeneratedByAnalysisInput | DeliverableUpdateWithWhereUniqueWithoutGeneratedByAnalysisInput[]
+    updateMany?: DeliverableUpdateManyWithWhereWithoutGeneratedByAnalysisInput | DeliverableUpdateManyWithWhereWithoutGeneratedByAnalysisInput[]
+    deleteMany?: DeliverableScalarWhereInput | DeliverableScalarWhereInput[]
+  }
+
   export type AnalysisAttachmentUncheckedUpdateManyWithoutAnalysisNestedInput = {
     create?: XOR<AnalysisAttachmentCreateWithoutAnalysisInput, AnalysisAttachmentUncheckedCreateWithoutAnalysisInput> | AnalysisAttachmentCreateWithoutAnalysisInput[] | AnalysisAttachmentUncheckedCreateWithoutAnalysisInput[]
     connectOrCreate?: AnalysisAttachmentCreateOrConnectWithoutAnalysisInput | AnalysisAttachmentCreateOrConnectWithoutAnalysisInput[]
@@ -49123,6 +55168,34 @@ export namespace Prisma {
     update?: NameSuggestionUpdateWithWhereUniqueWithoutAnalysisInput | NameSuggestionUpdateWithWhereUniqueWithoutAnalysisInput[]
     updateMany?: NameSuggestionUpdateManyWithWhereWithoutAnalysisInput | NameSuggestionUpdateManyWithWhereWithoutAnalysisInput[]
     deleteMany?: NameSuggestionScalarWhereInput | NameSuggestionScalarWhereInput[]
+  }
+
+  export type GitHubAIActionLogUncheckedUpdateManyWithoutAnalysisNestedInput = {
+    create?: XOR<GitHubAIActionLogCreateWithoutAnalysisInput, GitHubAIActionLogUncheckedCreateWithoutAnalysisInput> | GitHubAIActionLogCreateWithoutAnalysisInput[] | GitHubAIActionLogUncheckedCreateWithoutAnalysisInput[]
+    connectOrCreate?: GitHubAIActionLogCreateOrConnectWithoutAnalysisInput | GitHubAIActionLogCreateOrConnectWithoutAnalysisInput[]
+    upsert?: GitHubAIActionLogUpsertWithWhereUniqueWithoutAnalysisInput | GitHubAIActionLogUpsertWithWhereUniqueWithoutAnalysisInput[]
+    createMany?: GitHubAIActionLogCreateManyAnalysisInputEnvelope
+    set?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    disconnect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    delete?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    connect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    update?: GitHubAIActionLogUpdateWithWhereUniqueWithoutAnalysisInput | GitHubAIActionLogUpdateWithWhereUniqueWithoutAnalysisInput[]
+    updateMany?: GitHubAIActionLogUpdateManyWithWhereWithoutAnalysisInput | GitHubAIActionLogUpdateManyWithWhereWithoutAnalysisInput[]
+    deleteMany?: GitHubAIActionLogScalarWhereInput | GitHubAIActionLogScalarWhereInput[]
+  }
+
+  export type DeliverableUncheckedUpdateManyWithoutGeneratedByAnalysisNestedInput = {
+    create?: XOR<DeliverableCreateWithoutGeneratedByAnalysisInput, DeliverableUncheckedCreateWithoutGeneratedByAnalysisInput> | DeliverableCreateWithoutGeneratedByAnalysisInput[] | DeliverableUncheckedCreateWithoutGeneratedByAnalysisInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutGeneratedByAnalysisInput | DeliverableCreateOrConnectWithoutGeneratedByAnalysisInput[]
+    upsert?: DeliverableUpsertWithWhereUniqueWithoutGeneratedByAnalysisInput | DeliverableUpsertWithWhereUniqueWithoutGeneratedByAnalysisInput[]
+    createMany?: DeliverableCreateManyGeneratedByAnalysisInputEnvelope
+    set?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    disconnect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    delete?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    update?: DeliverableUpdateWithWhereUniqueWithoutGeneratedByAnalysisInput | DeliverableUpdateWithWhereUniqueWithoutGeneratedByAnalysisInput[]
+    updateMany?: DeliverableUpdateManyWithWhereWithoutGeneratedByAnalysisInput | DeliverableUpdateManyWithWhereWithoutGeneratedByAnalysisInput[]
+    deleteMany?: DeliverableScalarWhereInput | DeliverableScalarWhereInput[]
   }
 
   export type AnalysisCreateNestedOneWithoutAttachmentsInput = {
@@ -49441,11 +55514,25 @@ export namespace Prisma {
     connect?: AnalysisWhereUniqueInput | AnalysisWhereUniqueInput[]
   }
 
+  export type DeliverableCreateNestedManyWithoutGeneratedByPipelineRunInput = {
+    create?: XOR<DeliverableCreateWithoutGeneratedByPipelineRunInput, DeliverableUncheckedCreateWithoutGeneratedByPipelineRunInput> | DeliverableCreateWithoutGeneratedByPipelineRunInput[] | DeliverableUncheckedCreateWithoutGeneratedByPipelineRunInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutGeneratedByPipelineRunInput | DeliverableCreateOrConnectWithoutGeneratedByPipelineRunInput[]
+    createMany?: DeliverableCreateManyGeneratedByPipelineRunInputEnvelope
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+  }
+
   export type AnalysisUncheckedCreateNestedManyWithoutPipelineRunInput = {
     create?: XOR<AnalysisCreateWithoutPipelineRunInput, AnalysisUncheckedCreateWithoutPipelineRunInput> | AnalysisCreateWithoutPipelineRunInput[] | AnalysisUncheckedCreateWithoutPipelineRunInput[]
     connectOrCreate?: AnalysisCreateOrConnectWithoutPipelineRunInput | AnalysisCreateOrConnectWithoutPipelineRunInput[]
     createMany?: AnalysisCreateManyPipelineRunInputEnvelope
     connect?: AnalysisWhereUniqueInput | AnalysisWhereUniqueInput[]
+  }
+
+  export type DeliverableUncheckedCreateNestedManyWithoutGeneratedByPipelineRunInput = {
+    create?: XOR<DeliverableCreateWithoutGeneratedByPipelineRunInput, DeliverableUncheckedCreateWithoutGeneratedByPipelineRunInput> | DeliverableCreateWithoutGeneratedByPipelineRunInput[] | DeliverableUncheckedCreateWithoutGeneratedByPipelineRunInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutGeneratedByPipelineRunInput | DeliverableCreateOrConnectWithoutGeneratedByPipelineRunInput[]
+    createMany?: DeliverableCreateManyGeneratedByPipelineRunInputEnvelope
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
   }
 
   export type ProjectUpdateOneRequiredWithoutPipelineRunsNestedInput = {
@@ -49486,6 +55573,20 @@ export namespace Prisma {
     deleteMany?: AnalysisScalarWhereInput | AnalysisScalarWhereInput[]
   }
 
+  export type DeliverableUpdateManyWithoutGeneratedByPipelineRunNestedInput = {
+    create?: XOR<DeliverableCreateWithoutGeneratedByPipelineRunInput, DeliverableUncheckedCreateWithoutGeneratedByPipelineRunInput> | DeliverableCreateWithoutGeneratedByPipelineRunInput[] | DeliverableUncheckedCreateWithoutGeneratedByPipelineRunInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutGeneratedByPipelineRunInput | DeliverableCreateOrConnectWithoutGeneratedByPipelineRunInput[]
+    upsert?: DeliverableUpsertWithWhereUniqueWithoutGeneratedByPipelineRunInput | DeliverableUpsertWithWhereUniqueWithoutGeneratedByPipelineRunInput[]
+    createMany?: DeliverableCreateManyGeneratedByPipelineRunInputEnvelope
+    set?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    disconnect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    delete?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    update?: DeliverableUpdateWithWhereUniqueWithoutGeneratedByPipelineRunInput | DeliverableUpdateWithWhereUniqueWithoutGeneratedByPipelineRunInput[]
+    updateMany?: DeliverableUpdateManyWithWhereWithoutGeneratedByPipelineRunInput | DeliverableUpdateManyWithWhereWithoutGeneratedByPipelineRunInput[]
+    deleteMany?: DeliverableScalarWhereInput | DeliverableScalarWhereInput[]
+  }
+
   export type AnalysisUncheckedUpdateManyWithoutPipelineRunNestedInput = {
     create?: XOR<AnalysisCreateWithoutPipelineRunInput, AnalysisUncheckedCreateWithoutPipelineRunInput> | AnalysisCreateWithoutPipelineRunInput[] | AnalysisUncheckedCreateWithoutPipelineRunInput[]
     connectOrCreate?: AnalysisCreateOrConnectWithoutPipelineRunInput | AnalysisCreateOrConnectWithoutPipelineRunInput[]
@@ -49500,10 +55601,134 @@ export namespace Prisma {
     deleteMany?: AnalysisScalarWhereInput | AnalysisScalarWhereInput[]
   }
 
+  export type DeliverableUncheckedUpdateManyWithoutGeneratedByPipelineRunNestedInput = {
+    create?: XOR<DeliverableCreateWithoutGeneratedByPipelineRunInput, DeliverableUncheckedCreateWithoutGeneratedByPipelineRunInput> | DeliverableCreateWithoutGeneratedByPipelineRunInput[] | DeliverableUncheckedCreateWithoutGeneratedByPipelineRunInput[]
+    connectOrCreate?: DeliverableCreateOrConnectWithoutGeneratedByPipelineRunInput | DeliverableCreateOrConnectWithoutGeneratedByPipelineRunInput[]
+    upsert?: DeliverableUpsertWithWhereUniqueWithoutGeneratedByPipelineRunInput | DeliverableUpsertWithWhereUniqueWithoutGeneratedByPipelineRunInput[]
+    createMany?: DeliverableCreateManyGeneratedByPipelineRunInputEnvelope
+    set?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    disconnect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    delete?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    connect?: DeliverableWhereUniqueInput | DeliverableWhereUniqueInput[]
+    update?: DeliverableUpdateWithWhereUniqueWithoutGeneratedByPipelineRunInput | DeliverableUpdateWithWhereUniqueWithoutGeneratedByPipelineRunInput[]
+    updateMany?: DeliverableUpdateManyWithWhereWithoutGeneratedByPipelineRunInput | DeliverableUpdateManyWithWhereWithoutGeneratedByPipelineRunInput[]
+    deleteMany?: DeliverableScalarWhereInput | DeliverableScalarWhereInput[]
+  }
+
+  export type ProjectCreateNestedOneWithoutDeliverablesInput = {
+    create?: XOR<ProjectCreateWithoutDeliverablesInput, ProjectUncheckedCreateWithoutDeliverablesInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutDeliverablesInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type ProjectFileCreateNestedOneWithoutDeliverableLinkInput = {
+    create?: XOR<ProjectFileCreateWithoutDeliverableLinkInput, ProjectFileUncheckedCreateWithoutDeliverableLinkInput>
+    connectOrCreate?: ProjectFileCreateOrConnectWithoutDeliverableLinkInput
+    connect?: ProjectFileWhereUniqueInput
+  }
+
+  export type AnalysisCreateNestedOneWithoutGeneratedDeliverablesInput = {
+    create?: XOR<AnalysisCreateWithoutGeneratedDeliverablesInput, AnalysisUncheckedCreateWithoutGeneratedDeliverablesInput>
+    connectOrCreate?: AnalysisCreateOrConnectWithoutGeneratedDeliverablesInput
+    connect?: AnalysisWhereUniqueInput
+  }
+
+  export type ProjectPipelineRunCreateNestedOneWithoutGeneratedDeliverablesInput = {
+    create?: XOR<ProjectPipelineRunCreateWithoutGeneratedDeliverablesInput, ProjectPipelineRunUncheckedCreateWithoutGeneratedDeliverablesInput>
+    connectOrCreate?: ProjectPipelineRunCreateOrConnectWithoutGeneratedDeliverablesInput
+    connect?: ProjectPipelineRunWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCreatedDeliverablesInput = {
+    create?: XOR<UserCreateWithoutCreatedDeliverablesInput, UserUncheckedCreateWithoutCreatedDeliverablesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedDeliverablesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutLastUpdatedDeliverablesInput = {
+    create?: XOR<UserCreateWithoutLastUpdatedDeliverablesInput, UserUncheckedCreateWithoutLastUpdatedDeliverablesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLastUpdatedDeliverablesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumDeliverableStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DeliverableStatus
+  }
+
+  export type ProjectUpdateOneRequiredWithoutDeliverablesNestedInput = {
+    create?: XOR<ProjectCreateWithoutDeliverablesInput, ProjectUncheckedCreateWithoutDeliverablesInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutDeliverablesInput
+    upsert?: ProjectUpsertWithoutDeliverablesInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutDeliverablesInput, ProjectUpdateWithoutDeliverablesInput>, ProjectUncheckedUpdateWithoutDeliverablesInput>
+  }
+
+  export type ProjectFileUpdateOneWithoutDeliverableLinkNestedInput = {
+    create?: XOR<ProjectFileCreateWithoutDeliverableLinkInput, ProjectFileUncheckedCreateWithoutDeliverableLinkInput>
+    connectOrCreate?: ProjectFileCreateOrConnectWithoutDeliverableLinkInput
+    upsert?: ProjectFileUpsertWithoutDeliverableLinkInput
+    disconnect?: ProjectFileWhereInput | boolean
+    delete?: ProjectFileWhereInput | boolean
+    connect?: ProjectFileWhereUniqueInput
+    update?: XOR<XOR<ProjectFileUpdateToOneWithWhereWithoutDeliverableLinkInput, ProjectFileUpdateWithoutDeliverableLinkInput>, ProjectFileUncheckedUpdateWithoutDeliverableLinkInput>
+  }
+
+  export type AnalysisUpdateOneWithoutGeneratedDeliverablesNestedInput = {
+    create?: XOR<AnalysisCreateWithoutGeneratedDeliverablesInput, AnalysisUncheckedCreateWithoutGeneratedDeliverablesInput>
+    connectOrCreate?: AnalysisCreateOrConnectWithoutGeneratedDeliverablesInput
+    upsert?: AnalysisUpsertWithoutGeneratedDeliverablesInput
+    disconnect?: AnalysisWhereInput | boolean
+    delete?: AnalysisWhereInput | boolean
+    connect?: AnalysisWhereUniqueInput
+    update?: XOR<XOR<AnalysisUpdateToOneWithWhereWithoutGeneratedDeliverablesInput, AnalysisUpdateWithoutGeneratedDeliverablesInput>, AnalysisUncheckedUpdateWithoutGeneratedDeliverablesInput>
+  }
+
+  export type ProjectPipelineRunUpdateOneWithoutGeneratedDeliverablesNestedInput = {
+    create?: XOR<ProjectPipelineRunCreateWithoutGeneratedDeliverablesInput, ProjectPipelineRunUncheckedCreateWithoutGeneratedDeliverablesInput>
+    connectOrCreate?: ProjectPipelineRunCreateOrConnectWithoutGeneratedDeliverablesInput
+    upsert?: ProjectPipelineRunUpsertWithoutGeneratedDeliverablesInput
+    disconnect?: ProjectPipelineRunWhereInput | boolean
+    delete?: ProjectPipelineRunWhereInput | boolean
+    connect?: ProjectPipelineRunWhereUniqueInput
+    update?: XOR<XOR<ProjectPipelineRunUpdateToOneWithWhereWithoutGeneratedDeliverablesInput, ProjectPipelineRunUpdateWithoutGeneratedDeliverablesInput>, ProjectPipelineRunUncheckedUpdateWithoutGeneratedDeliverablesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCreatedDeliverablesNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedDeliverablesInput, UserUncheckedCreateWithoutCreatedDeliverablesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedDeliverablesInput
+    upsert?: UserUpsertWithoutCreatedDeliverablesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedDeliverablesInput, UserUpdateWithoutCreatedDeliverablesInput>, UserUncheckedUpdateWithoutCreatedDeliverablesInput>
+  }
+
+  export type UserUpdateOneWithoutLastUpdatedDeliverablesNestedInput = {
+    create?: XOR<UserCreateWithoutLastUpdatedDeliverablesInput, UserUncheckedCreateWithoutLastUpdatedDeliverablesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLastUpdatedDeliverablesInput
+    upsert?: UserUpsertWithoutLastUpdatedDeliverablesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLastUpdatedDeliverablesInput, UserUpdateWithoutLastUpdatedDeliverablesInput>, UserUncheckedUpdateWithoutLastUpdatedDeliverablesInput>
+  }
+
   export type ProjectCreateNestedOneWithoutIntegrationsInput = {
     create?: XOR<ProjectCreateWithoutIntegrationsInput, ProjectUncheckedCreateWithoutIntegrationsInput>
     connectOrCreate?: ProjectCreateOrConnectWithoutIntegrationsInput
     connect?: ProjectWhereUniqueInput
+  }
+
+  export type GitHubAIActionLogCreateNestedManyWithoutProjectIntegrationInput = {
+    create?: XOR<GitHubAIActionLogCreateWithoutProjectIntegrationInput, GitHubAIActionLogUncheckedCreateWithoutProjectIntegrationInput> | GitHubAIActionLogCreateWithoutProjectIntegrationInput[] | GitHubAIActionLogUncheckedCreateWithoutProjectIntegrationInput[]
+    connectOrCreate?: GitHubAIActionLogCreateOrConnectWithoutProjectIntegrationInput | GitHubAIActionLogCreateOrConnectWithoutProjectIntegrationInput[]
+    createMany?: GitHubAIActionLogCreateManyProjectIntegrationInputEnvelope
+    connect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+  }
+
+  export type GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectIntegrationInput = {
+    create?: XOR<GitHubAIActionLogCreateWithoutProjectIntegrationInput, GitHubAIActionLogUncheckedCreateWithoutProjectIntegrationInput> | GitHubAIActionLogCreateWithoutProjectIntegrationInput[] | GitHubAIActionLogUncheckedCreateWithoutProjectIntegrationInput[]
+    connectOrCreate?: GitHubAIActionLogCreateOrConnectWithoutProjectIntegrationInput | GitHubAIActionLogCreateOrConnectWithoutProjectIntegrationInput[]
+    createMany?: GitHubAIActionLogCreateManyProjectIntegrationInputEnvelope
+    connect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
   }
 
   export type EnumIntegrationProviderFieldUpdateOperationsInput = {
@@ -49522,6 +55747,90 @@ export namespace Prisma {
     update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutIntegrationsInput, ProjectUpdateWithoutIntegrationsInput>, ProjectUncheckedUpdateWithoutIntegrationsInput>
   }
 
+  export type GitHubAIActionLogUpdateManyWithoutProjectIntegrationNestedInput = {
+    create?: XOR<GitHubAIActionLogCreateWithoutProjectIntegrationInput, GitHubAIActionLogUncheckedCreateWithoutProjectIntegrationInput> | GitHubAIActionLogCreateWithoutProjectIntegrationInput[] | GitHubAIActionLogUncheckedCreateWithoutProjectIntegrationInput[]
+    connectOrCreate?: GitHubAIActionLogCreateOrConnectWithoutProjectIntegrationInput | GitHubAIActionLogCreateOrConnectWithoutProjectIntegrationInput[]
+    upsert?: GitHubAIActionLogUpsertWithWhereUniqueWithoutProjectIntegrationInput | GitHubAIActionLogUpsertWithWhereUniqueWithoutProjectIntegrationInput[]
+    createMany?: GitHubAIActionLogCreateManyProjectIntegrationInputEnvelope
+    set?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    disconnect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    delete?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    connect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    update?: GitHubAIActionLogUpdateWithWhereUniqueWithoutProjectIntegrationInput | GitHubAIActionLogUpdateWithWhereUniqueWithoutProjectIntegrationInput[]
+    updateMany?: GitHubAIActionLogUpdateManyWithWhereWithoutProjectIntegrationInput | GitHubAIActionLogUpdateManyWithWhereWithoutProjectIntegrationInput[]
+    deleteMany?: GitHubAIActionLogScalarWhereInput | GitHubAIActionLogScalarWhereInput[]
+  }
+
+  export type GitHubAIActionLogUncheckedUpdateManyWithoutProjectIntegrationNestedInput = {
+    create?: XOR<GitHubAIActionLogCreateWithoutProjectIntegrationInput, GitHubAIActionLogUncheckedCreateWithoutProjectIntegrationInput> | GitHubAIActionLogCreateWithoutProjectIntegrationInput[] | GitHubAIActionLogUncheckedCreateWithoutProjectIntegrationInput[]
+    connectOrCreate?: GitHubAIActionLogCreateOrConnectWithoutProjectIntegrationInput | GitHubAIActionLogCreateOrConnectWithoutProjectIntegrationInput[]
+    upsert?: GitHubAIActionLogUpsertWithWhereUniqueWithoutProjectIntegrationInput | GitHubAIActionLogUpsertWithWhereUniqueWithoutProjectIntegrationInput[]
+    createMany?: GitHubAIActionLogCreateManyProjectIntegrationInputEnvelope
+    set?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    disconnect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    delete?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    connect?: GitHubAIActionLogWhereUniqueInput | GitHubAIActionLogWhereUniqueInput[]
+    update?: GitHubAIActionLogUpdateWithWhereUniqueWithoutProjectIntegrationInput | GitHubAIActionLogUpdateWithWhereUniqueWithoutProjectIntegrationInput[]
+    updateMany?: GitHubAIActionLogUpdateManyWithWhereWithoutProjectIntegrationInput | GitHubAIActionLogUpdateManyWithWhereWithoutProjectIntegrationInput[]
+    deleteMany?: GitHubAIActionLogScalarWhereInput | GitHubAIActionLogScalarWhereInput[]
+  }
+
+  export type ProjectIntegrationCreateNestedOneWithoutGithubAIActionLogsInput = {
+    create?: XOR<ProjectIntegrationCreateWithoutGithubAIActionLogsInput, ProjectIntegrationUncheckedCreateWithoutGithubAIActionLogsInput>
+    connectOrCreate?: ProjectIntegrationCreateOrConnectWithoutGithubAIActionLogsInput
+    connect?: ProjectIntegrationWhereUniqueInput
+  }
+
+  export type ProjectCreateNestedOneWithoutGithubAIActionLogsInput = {
+    create?: XOR<ProjectCreateWithoutGithubAIActionLogsInput, ProjectUncheckedCreateWithoutGithubAIActionLogsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutGithubAIActionLogsInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type AnalysisCreateNestedOneWithoutGithubAIActionLogsInput = {
+    create?: XOR<AnalysisCreateWithoutGithubAIActionLogsInput, AnalysisUncheckedCreateWithoutGithubAIActionLogsInput>
+    connectOrCreate?: AnalysisCreateOrConnectWithoutGithubAIActionLogsInput
+    connect?: AnalysisWhereUniqueInput
+  }
+
+  export type EnumGitHubAIActionTypeFieldUpdateOperationsInput = {
+    set?: $Enums.GitHubAIActionType
+  }
+
+  export type EnumGitHubEntityTypeFieldUpdateOperationsInput = {
+    set?: $Enums.GitHubEntityType
+  }
+
+  export type EnumActionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ActionStatus
+  }
+
+  export type ProjectIntegrationUpdateOneRequiredWithoutGithubAIActionLogsNestedInput = {
+    create?: XOR<ProjectIntegrationCreateWithoutGithubAIActionLogsInput, ProjectIntegrationUncheckedCreateWithoutGithubAIActionLogsInput>
+    connectOrCreate?: ProjectIntegrationCreateOrConnectWithoutGithubAIActionLogsInput
+    upsert?: ProjectIntegrationUpsertWithoutGithubAIActionLogsInput
+    connect?: ProjectIntegrationWhereUniqueInput
+    update?: XOR<XOR<ProjectIntegrationUpdateToOneWithWhereWithoutGithubAIActionLogsInput, ProjectIntegrationUpdateWithoutGithubAIActionLogsInput>, ProjectIntegrationUncheckedUpdateWithoutGithubAIActionLogsInput>
+  }
+
+  export type ProjectUpdateOneRequiredWithoutGithubAIActionLogsNestedInput = {
+    create?: XOR<ProjectCreateWithoutGithubAIActionLogsInput, ProjectUncheckedCreateWithoutGithubAIActionLogsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutGithubAIActionLogsInput
+    upsert?: ProjectUpsertWithoutGithubAIActionLogsInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutGithubAIActionLogsInput, ProjectUpdateWithoutGithubAIActionLogsInput>, ProjectUncheckedUpdateWithoutGithubAIActionLogsInput>
+  }
+
+  export type AnalysisUpdateOneWithoutGithubAIActionLogsNestedInput = {
+    create?: XOR<AnalysisCreateWithoutGithubAIActionLogsInput, AnalysisUncheckedCreateWithoutGithubAIActionLogsInput>
+    connectOrCreate?: AnalysisCreateOrConnectWithoutGithubAIActionLogsInput
+    upsert?: AnalysisUpsertWithoutGithubAIActionLogsInput
+    disconnect?: AnalysisWhereInput | boolean
+    delete?: AnalysisWhereInput | boolean
+    connect?: AnalysisWhereUniqueInput
+    update?: XOR<XOR<AnalysisUpdateToOneWithWhereWithoutGithubAIActionLogsInput, AnalysisUpdateWithoutGithubAIActionLogsInput>, AnalysisUncheckedUpdateWithoutGithubAIActionLogsInput>
+  }
+
   export type UserCreateNestedOneWithoutNotificationsInput = {
     create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
@@ -49538,6 +55847,24 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutNotificationsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationsInput, UserUpdateWithoutNotificationsInput>, UserUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type UserCreateNestedOneWithoutFeedbackEntriesInput = {
+    create?: XOR<UserCreateWithoutFeedbackEntriesInput, UserUncheckedCreateWithoutFeedbackEntriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFeedbackEntriesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumFeedbackEntityTypeFieldUpdateOperationsInput = {
+    set?: $Enums.FeedbackEntityType
+  }
+
+  export type UserUpdateOneRequiredWithoutFeedbackEntriesNestedInput = {
+    create?: XOR<UserCreateWithoutFeedbackEntriesInput, UserUncheckedCreateWithoutFeedbackEntriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFeedbackEntriesInput
+    upsert?: UserUpsertWithoutFeedbackEntriesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFeedbackEntriesInput, UserUpdateWithoutFeedbackEntriesInput>, UserUncheckedUpdateWithoutFeedbackEntriesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -49951,6 +56278,13 @@ export namespace Prisma {
     _max?: NestedEnumIdeaStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumFileStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.FileStatus | EnumFileStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.FileStatus[] | ListEnumFileStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FileStatus[] | ListEnumFileStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumFileStatusFilter<$PrismaModel> | $Enums.FileStatus
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -49965,6 +56299,16 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedEnumFileStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FileStatus | EnumFileStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.FileStatus[] | ListEnumFileStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FileStatus[] | ListEnumFileStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumFileStatusWithAggregatesFilter<$PrismaModel> | $Enums.FileStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumFileStatusFilter<$PrismaModel>
+    _max?: NestedEnumFileStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumAnalysisTypeFilter<$PrismaModel = never> = {
@@ -50051,6 +56395,23 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumDeliverableStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliverableStatus | EnumDeliverableStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliverableStatus[] | ListEnumDeliverableStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliverableStatus[] | ListEnumDeliverableStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliverableStatusFilter<$PrismaModel> | $Enums.DeliverableStatus
+  }
+
+  export type NestedEnumDeliverableStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliverableStatus | EnumDeliverableStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliverableStatus[] | ListEnumDeliverableStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliverableStatus[] | ListEnumDeliverableStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliverableStatusWithAggregatesFilter<$PrismaModel> | $Enums.DeliverableStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeliverableStatusFilter<$PrismaModel>
+    _max?: NestedEnumDeliverableStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumIntegrationProviderFilter<$PrismaModel = never> = {
     equals?: $Enums.IntegrationProvider | EnumIntegrationProviderFieldRefInput<$PrismaModel>
     in?: $Enums.IntegrationProvider[] | ListEnumIntegrationProviderFieldRefInput<$PrismaModel>
@@ -50085,6 +56446,57 @@ export namespace Prisma {
     _max?: NestedEnumIntegrationSyncStatusNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumGitHubAIActionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.GitHubAIActionType | EnumGitHubAIActionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GitHubAIActionType[] | ListEnumGitHubAIActionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GitHubAIActionType[] | ListEnumGitHubAIActionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGitHubAIActionTypeFilter<$PrismaModel> | $Enums.GitHubAIActionType
+  }
+
+  export type NestedEnumGitHubEntityTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.GitHubEntityType | EnumGitHubEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GitHubEntityType[] | ListEnumGitHubEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GitHubEntityType[] | ListEnumGitHubEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGitHubEntityTypeFilter<$PrismaModel> | $Enums.GitHubEntityType
+  }
+
+  export type NestedEnumActionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ActionStatus | EnumActionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ActionStatus[] | ListEnumActionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ActionStatus[] | ListEnumActionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumActionStatusFilter<$PrismaModel> | $Enums.ActionStatus
+  }
+
+  export type NestedEnumGitHubAIActionTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GitHubAIActionType | EnumGitHubAIActionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GitHubAIActionType[] | ListEnumGitHubAIActionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GitHubAIActionType[] | ListEnumGitHubAIActionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGitHubAIActionTypeWithAggregatesFilter<$PrismaModel> | $Enums.GitHubAIActionType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGitHubAIActionTypeFilter<$PrismaModel>
+    _max?: NestedEnumGitHubAIActionTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumGitHubEntityTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GitHubEntityType | EnumGitHubEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GitHubEntityType[] | ListEnumGitHubEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GitHubEntityType[] | ListEnumGitHubEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGitHubEntityTypeWithAggregatesFilter<$PrismaModel> | $Enums.GitHubEntityType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGitHubEntityTypeFilter<$PrismaModel>
+    _max?: NestedEnumGitHubEntityTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumActionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ActionStatus | EnumActionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ActionStatus[] | ListEnumActionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ActionStatus[] | ListEnumActionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumActionStatusWithAggregatesFilter<$PrismaModel> | $Enums.ActionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumActionStatusFilter<$PrismaModel>
+    _max?: NestedEnumActionStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumNotificationTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
     in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
@@ -50102,24 +56514,41 @@ export namespace Prisma {
     _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
   }
 
+  export type NestedEnumFeedbackEntityTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.FeedbackEntityType | EnumFeedbackEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.FeedbackEntityType[] | ListEnumFeedbackEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FeedbackEntityType[] | ListEnumFeedbackEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumFeedbackEntityTypeFilter<$PrismaModel> | $Enums.FeedbackEntityType
+  }
+
+  export type NestedEnumFeedbackEntityTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FeedbackEntityType | EnumFeedbackEntityTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.FeedbackEntityType[] | ListEnumFeedbackEntityTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.FeedbackEntityType[] | ListEnumFeedbackEntityTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumFeedbackEntityTypeWithAggregatesFilter<$PrismaModel> | $Enums.FeedbackEntityType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumFeedbackEntityTypeFilter<$PrismaModel>
+    _max?: NestedEnumFeedbackEntityTypeFilter<$PrismaModel>
+  }
+
   export type SessionCreateWithoutUserInput = {
     id: string
+    sessionToken?: string
     expiresAt: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     ipAddress?: string | null
     userAgent?: string | null
-    sessionToken?: string
   }
 
   export type SessionUncheckedCreateWithoutUserInput = {
     id: string
+    sessionToken?: string
     expiresAt: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     ipAddress?: string | null
     userAgent?: string | null
-    sessionToken?: string
   }
 
   export type SessionCreateOrConnectWithoutUserInput = {
@@ -50459,6 +56888,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
@@ -50470,6 +56900,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutCreatedByUserInput = {
@@ -50477,6 +56909,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     workspaceId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -50487,6 +56920,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricUncheckedCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutCreatedByUserInput = {
@@ -50504,15 +56939,18 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status?: $Enums.FileStatus
     storageProvider?: string
     providerFileId: string
     url: string
     description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutProjectFilesInput
     ideaLinks?: IdeaProjectFileCreateNestedManyWithoutProjectFileInput
     analysisAttachments?: AnalysisAttachmentCreateNestedManyWithoutProjectFileInput
+    deliverableLink?: DeliverableCreateNestedOneWithoutLinkedProjectFileInput
   }
 
   export type ProjectFileUncheckedCreateWithoutUploaderInput = {
@@ -50521,14 +56959,17 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status?: $Enums.FileStatus
     storageProvider?: string
     providerFileId: string
     url: string
     description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     ideaLinks?: IdeaProjectFileUncheckedCreateNestedManyWithoutProjectFileInput
     analysisAttachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutProjectFileInput
+    deliverableLink?: DeliverableUncheckedCreateNestedOneWithoutLinkedProjectFileInput
   }
 
   export type ProjectFileCreateOrConnectWithoutUploaderInput = {
@@ -50566,6 +57007,8 @@ export namespace Prisma {
     competitors?: CompetitorCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionCreateNestedManyWithoutAnalysisInput
     pipelineRun?: ProjectPipelineRunCreateNestedOneWithoutAnalysesInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisUncheckedCreateWithoutRequestedByUserInput = {
@@ -50593,6 +57036,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutAnalysisInput
     competitors?: CompetitorUncheckedCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionUncheckedCreateNestedManyWithoutAnalysisInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisCreateOrConnectWithoutRequestedByUserInput = {
@@ -50743,6 +57188,7 @@ export namespace Prisma {
     project: ProjectCreateNestedOneWithoutPipelineRunsInput
     pipelineTemplate: PipelineTemplateCreateNestedOneWithoutPipelineRunsInput
     analyses?: AnalysisCreateNestedManyWithoutPipelineRunInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByPipelineRunInput
   }
 
   export type ProjectPipelineRunUncheckedCreateWithoutInitiatedByUserInput = {
@@ -50757,6 +57203,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     analyses?: AnalysisUncheckedCreateNestedManyWithoutPipelineRunInput
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByPipelineRunInput
   }
 
   export type ProjectPipelineRunCreateOrConnectWithoutInitiatedByUserInput = {
@@ -50766,6 +57213,136 @@ export namespace Prisma {
 
   export type ProjectPipelineRunCreateManyInitiatedByUserInputEnvelope = {
     data: ProjectPipelineRunCreateManyInitiatedByUserInput | ProjectPipelineRunCreateManyInitiatedByUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserFeedbackCreateWithoutUserInput = {
+    id?: string
+    entityType: $Enums.FeedbackEntityType
+    entityId?: string | null
+    rating?: number | null
+    comment?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isResolved?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserFeedbackUncheckedCreateWithoutUserInput = {
+    id?: string
+    entityType: $Enums.FeedbackEntityType
+    entityId?: string | null
+    rating?: number | null
+    comment?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isResolved?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserFeedbackCreateOrConnectWithoutUserInput = {
+    where: UserFeedbackWhereUniqueInput
+    create: XOR<UserFeedbackCreateWithoutUserInput, UserFeedbackUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserFeedbackCreateManyUserInputEnvelope = {
+    data: UserFeedbackCreateManyUserInput | UserFeedbackCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DeliverableCreateWithoutCreatorInput = {
+    id?: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    externalUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutDeliverablesInput
+    linkedProjectFile?: ProjectFileCreateNestedOneWithoutDeliverableLinkInput
+    generatedByAnalysis?: AnalysisCreateNestedOneWithoutGeneratedDeliverablesInput
+    generatedByPipelineRun?: ProjectPipelineRunCreateNestedOneWithoutGeneratedDeliverablesInput
+    lastUpdater?: UserCreateNestedOneWithoutLastUpdatedDeliverablesInput
+  }
+
+  export type DeliverableUncheckedCreateWithoutCreatorInput = {
+    id?: string
+    projectId: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    projectFileId?: string | null
+    externalUrl?: string | null
+    generatedByAnalysisId?: string | null
+    generatedByPipelineRunId?: string | null
+    lastUpdatedByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliverableCreateOrConnectWithoutCreatorInput = {
+    where: DeliverableWhereUniqueInput
+    create: XOR<DeliverableCreateWithoutCreatorInput, DeliverableUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type DeliverableCreateManyCreatorInputEnvelope = {
+    data: DeliverableCreateManyCreatorInput | DeliverableCreateManyCreatorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DeliverableCreateWithoutLastUpdaterInput = {
+    id?: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    externalUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutDeliverablesInput
+    linkedProjectFile?: ProjectFileCreateNestedOneWithoutDeliverableLinkInput
+    generatedByAnalysis?: AnalysisCreateNestedOneWithoutGeneratedDeliverablesInput
+    generatedByPipelineRun?: ProjectPipelineRunCreateNestedOneWithoutGeneratedDeliverablesInput
+    creator: UserCreateNestedOneWithoutCreatedDeliverablesInput
+  }
+
+  export type DeliverableUncheckedCreateWithoutLastUpdaterInput = {
+    id?: string
+    projectId: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    projectFileId?: string | null
+    externalUrl?: string | null
+    generatedByAnalysisId?: string | null
+    generatedByPipelineRunId?: string | null
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliverableCreateOrConnectWithoutLastUpdaterInput = {
+    where: DeliverableWhereUniqueInput
+    create: XOR<DeliverableCreateWithoutLastUpdaterInput, DeliverableUncheckedCreateWithoutLastUpdaterInput>
+  }
+
+  export type DeliverableCreateManyLastUpdaterInputEnvelope = {
+    data: DeliverableCreateManyLastUpdaterInput | DeliverableCreateManyLastUpdaterInput[]
     skipDuplicates?: boolean
   }
 
@@ -50790,13 +57367,13 @@ export namespace Prisma {
     OR?: SessionScalarWhereInput[]
     NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
     id?: StringFilter<"Session"> | string
+    sessionToken?: StringFilter<"Session"> | string
     userId?: StringFilter<"Session"> | string
     expiresAt?: DateTimeFilter<"Session"> | Date | string
     createdAt?: DateTimeFilter<"Session"> | Date | string
     updatedAt?: DateTimeFilter<"Session"> | Date | string
     ipAddress?: StringNullableFilter<"Session"> | string | null
     userAgent?: StringNullableFilter<"Session"> | string | null
-    sessionToken?: StringFilter<"Session"> | string
   }
 
   export type OAuthAccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -51092,6 +57669,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Project"> | string | null
     workspaceId?: StringFilter<"Project"> | string
     createdByUserId?: StringFilter<"Project"> | string
+    projectStatus?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
   }
@@ -51122,10 +57700,12 @@ export namespace Prisma {
     fileName?: StringFilter<"ProjectFile"> | string
     fileType?: StringFilter<"ProjectFile"> | string
     sizeBytes?: IntFilter<"ProjectFile"> | number
+    status?: EnumFileStatusFilter<"ProjectFile"> | $Enums.FileStatus
     storageProvider?: StringFilter<"ProjectFile"> | string
     providerFileId?: StringFilter<"ProjectFile"> | string
     url?: StringFilter<"ProjectFile"> | string
     description?: StringNullableFilter<"ProjectFile"> | string | null
+    metadata?: JsonNullableFilter<"ProjectFile">
     createdAt?: DateTimeFilter<"ProjectFile"> | Date | string
     updatedAt?: DateTimeFilter<"ProjectFile"> | Date | string
   }
@@ -51330,6 +57910,93 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ProjectPipelineRun"> | Date | string
   }
 
+  export type UserFeedbackUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserFeedbackWhereUniqueInput
+    update: XOR<UserFeedbackUpdateWithoutUserInput, UserFeedbackUncheckedUpdateWithoutUserInput>
+    create: XOR<UserFeedbackCreateWithoutUserInput, UserFeedbackUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserFeedbackUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserFeedbackWhereUniqueInput
+    data: XOR<UserFeedbackUpdateWithoutUserInput, UserFeedbackUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserFeedbackUpdateManyWithWhereWithoutUserInput = {
+    where: UserFeedbackScalarWhereInput
+    data: XOR<UserFeedbackUpdateManyMutationInput, UserFeedbackUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserFeedbackScalarWhereInput = {
+    AND?: UserFeedbackScalarWhereInput | UserFeedbackScalarWhereInput[]
+    OR?: UserFeedbackScalarWhereInput[]
+    NOT?: UserFeedbackScalarWhereInput | UserFeedbackScalarWhereInput[]
+    id?: StringFilter<"UserFeedback"> | string
+    userId?: StringFilter<"UserFeedback"> | string
+    entityType?: EnumFeedbackEntityTypeFilter<"UserFeedback"> | $Enums.FeedbackEntityType
+    entityId?: StringNullableFilter<"UserFeedback"> | string | null
+    rating?: IntNullableFilter<"UserFeedback"> | number | null
+    comment?: StringNullableFilter<"UserFeedback"> | string | null
+    metadata?: JsonNullableFilter<"UserFeedback">
+    isResolved?: BoolFilter<"UserFeedback"> | boolean
+    createdAt?: DateTimeFilter<"UserFeedback"> | Date | string
+    updatedAt?: DateTimeFilter<"UserFeedback"> | Date | string
+  }
+
+  export type DeliverableUpsertWithWhereUniqueWithoutCreatorInput = {
+    where: DeliverableWhereUniqueInput
+    update: XOR<DeliverableUpdateWithoutCreatorInput, DeliverableUncheckedUpdateWithoutCreatorInput>
+    create: XOR<DeliverableCreateWithoutCreatorInput, DeliverableUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type DeliverableUpdateWithWhereUniqueWithoutCreatorInput = {
+    where: DeliverableWhereUniqueInput
+    data: XOR<DeliverableUpdateWithoutCreatorInput, DeliverableUncheckedUpdateWithoutCreatorInput>
+  }
+
+  export type DeliverableUpdateManyWithWhereWithoutCreatorInput = {
+    where: DeliverableScalarWhereInput
+    data: XOR<DeliverableUpdateManyMutationInput, DeliverableUncheckedUpdateManyWithoutCreatorInput>
+  }
+
+  export type DeliverableScalarWhereInput = {
+    AND?: DeliverableScalarWhereInput | DeliverableScalarWhereInput[]
+    OR?: DeliverableScalarWhereInput[]
+    NOT?: DeliverableScalarWhereInput | DeliverableScalarWhereInput[]
+    id?: StringFilter<"Deliverable"> | string
+    projectId?: StringFilter<"Deliverable"> | string
+    title?: StringFilter<"Deliverable"> | string
+    description?: StringNullableFilter<"Deliverable"> | string | null
+    content?: StringNullableFilter<"Deliverable"> | string | null
+    format?: StringFilter<"Deliverable"> | string
+    type?: StringFilter<"Deliverable"> | string
+    status?: EnumDeliverableStatusFilter<"Deliverable"> | $Enums.DeliverableStatus
+    version?: IntFilter<"Deliverable"> | number
+    projectFileId?: StringNullableFilter<"Deliverable"> | string | null
+    externalUrl?: StringNullableFilter<"Deliverable"> | string | null
+    generatedByAnalysisId?: StringNullableFilter<"Deliverable"> | string | null
+    generatedByPipelineRunId?: StringNullableFilter<"Deliverable"> | string | null
+    createdByUserId?: StringFilter<"Deliverable"> | string
+    lastUpdatedByUserId?: StringNullableFilter<"Deliverable"> | string | null
+    createdAt?: DateTimeFilter<"Deliverable"> | Date | string
+    updatedAt?: DateTimeFilter<"Deliverable"> | Date | string
+  }
+
+  export type DeliverableUpsertWithWhereUniqueWithoutLastUpdaterInput = {
+    where: DeliverableWhereUniqueInput
+    update: XOR<DeliverableUpdateWithoutLastUpdaterInput, DeliverableUncheckedUpdateWithoutLastUpdaterInput>
+    create: XOR<DeliverableCreateWithoutLastUpdaterInput, DeliverableUncheckedCreateWithoutLastUpdaterInput>
+  }
+
+  export type DeliverableUpdateWithWhereUniqueWithoutLastUpdaterInput = {
+    where: DeliverableWhereUniqueInput
+    data: XOR<DeliverableUpdateWithoutLastUpdaterInput, DeliverableUncheckedUpdateWithoutLastUpdaterInput>
+  }
+
+  export type DeliverableUpdateManyWithWhereWithoutLastUpdaterInput = {
+    where: DeliverableScalarWhereInput
+    data: XOR<DeliverableUpdateManyMutationInput, DeliverableUncheckedUpdateManyWithoutLastUpdaterInput>
+  }
+
   export type UserCreateWithoutOauthAccountsInput = {
     id?: string
     email: string
@@ -51357,6 +58024,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutOauthAccountsInput = {
@@ -51386,6 +58056,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutOauthAccountsInput = {
@@ -51431,6 +58104,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOauthAccountsInput = {
@@ -51460,6 +58136,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -51489,6 +58168,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -51518,6 +58200,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -51563,6 +58248,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -51592,6 +58280,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserCreateWithoutEmailVerificationTokensInput = {
@@ -51621,6 +58312,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutEmailVerificationTokensInput = {
@@ -51650,6 +58344,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutEmailVerificationTokensInput = {
@@ -51695,6 +58392,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEmailVerificationTokensInput = {
@@ -51724,6 +58424,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserCreateWithoutPasswordResetTokensInput = {
@@ -51753,6 +58456,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -51782,6 +58488,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -51827,6 +58536,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -51856,6 +58568,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserCreateWithoutApiKeysInput = {
@@ -51885,6 +58600,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutApiKeysInput = {
@@ -51914,6 +58632,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutApiKeysInput = {
@@ -51959,6 +58680,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApiKeysInput = {
@@ -51988,6 +58712,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserCreateWithoutUserSettingsInput = {
@@ -52017,6 +58744,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutUserSettingsInput = {
@@ -52046,6 +58776,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutUserSettingsInput = {
@@ -52091,6 +58824,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserSettingsInput = {
@@ -52120,6 +58856,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserCreateWithoutOwnedWorkspacesInput = {
@@ -52149,6 +58888,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutOwnedWorkspacesInput = {
@@ -52178,6 +58920,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutOwnedWorkspacesInput = {
@@ -52213,6 +58958,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUser: UserCreateNestedOneWithoutCreatedProjectsInput
@@ -52224,6 +58970,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutWorkspaceInput = {
@@ -52231,6 +58979,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     createdByUserId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -52241,6 +58990,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricUncheckedCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutWorkspaceInput = {
@@ -52459,6 +59210,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOwnedWorkspacesInput = {
@@ -52488,6 +59242,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type WorkspaceMemberUpsertWithWhereUniqueWithoutWorkspaceInput = {
@@ -52716,6 +59473,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutWorkspaceMembershipsInput = {
@@ -52745,6 +59505,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutWorkspaceMembershipsInput = {
@@ -52831,6 +59594,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWorkspaceMembershipsInput = {
@@ -52860,6 +59626,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type WorkspaceCreateWithoutInvitesInput = {
@@ -52924,6 +59693,9 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutWorkspaceInvitesSentInput = {
@@ -52953,6 +59725,9 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutWorkspaceInvitesSentInput = {
@@ -53039,6 +59814,9 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWorkspaceInvitesSentInput = {
@@ -53068,6 +59846,9 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type WorkspaceCreateWithoutSettingsInput = {
@@ -53505,6 +60286,9 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutInitiatedOrdersInput = {
@@ -53534,6 +60318,9 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutInitiatedOrdersInput = {
@@ -53661,6 +60448,9 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInitiatedOrdersInput = {
@@ -53690,6 +60480,9 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type PlanUpsertWithoutOrdersInput = {
@@ -53801,6 +60594,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutCreatedProjectsInput = {
@@ -53830,6 +60626,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutCreatedProjectsInput = {
@@ -53972,6 +60771,8 @@ export namespace Prisma {
     competitors?: CompetitorCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionCreateNestedManyWithoutAnalysisInput
     pipelineRun?: ProjectPipelineRunCreateNestedOneWithoutAnalysesInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisUncheckedCreateWithoutProjectInput = {
@@ -53999,6 +60800,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutAnalysisInput
     competitors?: CompetitorUncheckedCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionUncheckedCreateNestedManyWithoutAnalysisInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisCreateOrConnectWithoutProjectInput = {
@@ -54016,15 +60819,18 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status?: $Enums.FileStatus
     storageProvider?: string
     providerFileId: string
     url: string
     description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     uploader: UserCreateNestedOneWithoutUploadedFilesInput
     ideaLinks?: IdeaProjectFileCreateNestedManyWithoutProjectFileInput
     analysisAttachments?: AnalysisAttachmentCreateNestedManyWithoutProjectFileInput
+    deliverableLink?: DeliverableCreateNestedOneWithoutLinkedProjectFileInput
   }
 
   export type ProjectFileUncheckedCreateWithoutProjectInput = {
@@ -54033,14 +60839,17 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status?: $Enums.FileStatus
     storageProvider?: string
     providerFileId: string
     url: string
     description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     ideaLinks?: IdeaProjectFileUncheckedCreateNestedManyWithoutProjectFileInput
     analysisAttachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutProjectFileInput
+    deliverableLink?: DeliverableUncheckedCreateNestedOneWithoutLinkedProjectFileInput
   }
 
   export type ProjectFileCreateOrConnectWithoutProjectInput = {
@@ -54068,6 +60877,7 @@ export namespace Prisma {
     addedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectIntegrationInput
   }
 
   export type ProjectIntegrationUncheckedCreateWithoutProjectInput = {
@@ -54085,6 +60895,7 @@ export namespace Prisma {
     addedByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectIntegrationInput
   }
 
   export type ProjectIntegrationCreateOrConnectWithoutProjectInput = {
@@ -54109,6 +60920,7 @@ export namespace Prisma {
     pipelineTemplate: PipelineTemplateCreateNestedOneWithoutPipelineRunsInput
     initiatedByUser: UserCreateNestedOneWithoutInitiatedPipelineRunsInput
     analyses?: AnalysisCreateNestedManyWithoutPipelineRunInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByPipelineRunInput
   }
 
   export type ProjectPipelineRunUncheckedCreateWithoutProjectInput = {
@@ -54123,6 +60935,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     analyses?: AnalysisUncheckedCreateNestedManyWithoutPipelineRunInput
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByPipelineRunInput
   }
 
   export type ProjectPipelineRunCreateOrConnectWithoutProjectInput = {
@@ -54166,6 +60979,96 @@ export namespace Prisma {
 
   export type ProductivityMetricCreateManyProjectInputEnvelope = {
     data: ProductivityMetricCreateManyProjectInput | ProductivityMetricCreateManyProjectInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GitHubAIActionLogCreateWithoutProjectInput = {
+    id?: string
+    actionType: $Enums.GitHubAIActionType
+    githubEntityType: $Enums.GitHubEntityType
+    githubEntityId: string
+    githubEntityUrl?: string | null
+    githubCommentId?: string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status: $Enums.ActionStatus
+    errorMessage?: string | null
+    triggeredBy?: string | null
+    performedAt?: Date | string
+    projectIntegration: ProjectIntegrationCreateNestedOneWithoutGithubAIActionLogsInput
+    analysis?: AnalysisCreateNestedOneWithoutGithubAIActionLogsInput
+  }
+
+  export type GitHubAIActionLogUncheckedCreateWithoutProjectInput = {
+    id?: string
+    projectIntegrationId: string
+    analysisId?: string | null
+    actionType: $Enums.GitHubAIActionType
+    githubEntityType: $Enums.GitHubEntityType
+    githubEntityId: string
+    githubEntityUrl?: string | null
+    githubCommentId?: string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status: $Enums.ActionStatus
+    errorMessage?: string | null
+    triggeredBy?: string | null
+    performedAt?: Date | string
+  }
+
+  export type GitHubAIActionLogCreateOrConnectWithoutProjectInput = {
+    where: GitHubAIActionLogWhereUniqueInput
+    create: XOR<GitHubAIActionLogCreateWithoutProjectInput, GitHubAIActionLogUncheckedCreateWithoutProjectInput>
+  }
+
+  export type GitHubAIActionLogCreateManyProjectInputEnvelope = {
+    data: GitHubAIActionLogCreateManyProjectInput | GitHubAIActionLogCreateManyProjectInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DeliverableCreateWithoutProjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    externalUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkedProjectFile?: ProjectFileCreateNestedOneWithoutDeliverableLinkInput
+    generatedByAnalysis?: AnalysisCreateNestedOneWithoutGeneratedDeliverablesInput
+    generatedByPipelineRun?: ProjectPipelineRunCreateNestedOneWithoutGeneratedDeliverablesInput
+    creator: UserCreateNestedOneWithoutCreatedDeliverablesInput
+    lastUpdater?: UserCreateNestedOneWithoutLastUpdatedDeliverablesInput
+  }
+
+  export type DeliverableUncheckedCreateWithoutProjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    projectFileId?: string | null
+    externalUrl?: string | null
+    generatedByAnalysisId?: string | null
+    generatedByPipelineRunId?: string | null
+    createdByUserId: string
+    lastUpdatedByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliverableCreateOrConnectWithoutProjectInput = {
+    where: DeliverableWhereUniqueInput
+    create: XOR<DeliverableCreateWithoutProjectInput, DeliverableUncheckedCreateWithoutProjectInput>
+  }
+
+  export type DeliverableCreateManyProjectInputEnvelope = {
+    data: DeliverableCreateManyProjectInput | DeliverableCreateManyProjectInput[]
     skipDuplicates?: boolean
   }
 
@@ -54248,6 +61151,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedProjectsInput = {
@@ -54277,6 +61183,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type ProjectMemberUpsertWithWhereUniqueWithoutProjectInput = {
@@ -54458,10 +61367,63 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProductivityMetric"> | Date | string
   }
 
+  export type GitHubAIActionLogUpsertWithWhereUniqueWithoutProjectInput = {
+    where: GitHubAIActionLogWhereUniqueInput
+    update: XOR<GitHubAIActionLogUpdateWithoutProjectInput, GitHubAIActionLogUncheckedUpdateWithoutProjectInput>
+    create: XOR<GitHubAIActionLogCreateWithoutProjectInput, GitHubAIActionLogUncheckedCreateWithoutProjectInput>
+  }
+
+  export type GitHubAIActionLogUpdateWithWhereUniqueWithoutProjectInput = {
+    where: GitHubAIActionLogWhereUniqueInput
+    data: XOR<GitHubAIActionLogUpdateWithoutProjectInput, GitHubAIActionLogUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type GitHubAIActionLogUpdateManyWithWhereWithoutProjectInput = {
+    where: GitHubAIActionLogScalarWhereInput
+    data: XOR<GitHubAIActionLogUpdateManyMutationInput, GitHubAIActionLogUncheckedUpdateManyWithoutProjectInput>
+  }
+
+  export type GitHubAIActionLogScalarWhereInput = {
+    AND?: GitHubAIActionLogScalarWhereInput | GitHubAIActionLogScalarWhereInput[]
+    OR?: GitHubAIActionLogScalarWhereInput[]
+    NOT?: GitHubAIActionLogScalarWhereInput | GitHubAIActionLogScalarWhereInput[]
+    id?: StringFilter<"GitHubAIActionLog"> | string
+    projectIntegrationId?: StringFilter<"GitHubAIActionLog"> | string
+    projectId?: StringFilter<"GitHubAIActionLog"> | string
+    analysisId?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    actionType?: EnumGitHubAIActionTypeFilter<"GitHubAIActionLog"> | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFilter<"GitHubAIActionLog"> | $Enums.GitHubEntityType
+    githubEntityId?: StringFilter<"GitHubAIActionLog"> | string
+    githubEntityUrl?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    githubCommentId?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    content?: JsonNullableFilter<"GitHubAIActionLog">
+    status?: EnumActionStatusFilter<"GitHubAIActionLog"> | $Enums.ActionStatus
+    errorMessage?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    triggeredBy?: StringNullableFilter<"GitHubAIActionLog"> | string | null
+    performedAt?: DateTimeFilter<"GitHubAIActionLog"> | Date | string
+  }
+
+  export type DeliverableUpsertWithWhereUniqueWithoutProjectInput = {
+    where: DeliverableWhereUniqueInput
+    update: XOR<DeliverableUpdateWithoutProjectInput, DeliverableUncheckedUpdateWithoutProjectInput>
+    create: XOR<DeliverableCreateWithoutProjectInput, DeliverableUncheckedCreateWithoutProjectInput>
+  }
+
+  export type DeliverableUpdateWithWhereUniqueWithoutProjectInput = {
+    where: DeliverableWhereUniqueInput
+    data: XOR<DeliverableUpdateWithoutProjectInput, DeliverableUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type DeliverableUpdateManyWithWhereWithoutProjectInput = {
+    where: DeliverableScalarWhereInput
+    data: XOR<DeliverableUpdateManyMutationInput, DeliverableUncheckedUpdateManyWithoutProjectInput>
+  }
+
   export type ProjectCreateWithoutMembersInput = {
     id?: string
     name: string
     description?: string | null
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
@@ -54473,6 +61435,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutMembersInput = {
@@ -54481,6 +61445,7 @@ export namespace Prisma {
     description?: string | null
     workspaceId: string
     createdByUserId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     ideas?: IdeaUncheckedCreateNestedManyWithoutProjectInput
@@ -54490,6 +61455,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricUncheckedCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutMembersInput = {
@@ -54524,6 +61491,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutProjectMembershipsInput = {
@@ -54553,6 +61523,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutProjectMembershipsInput = {
@@ -54575,6 +61548,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
@@ -54586,6 +61560,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutMembersInput = {
@@ -54594,6 +61570,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     workspaceId?: StringFieldUpdateOperationsInput | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ideas?: IdeaUncheckedUpdateManyWithoutProjectNestedInput
@@ -54603,6 +61580,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUncheckedUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type UserUpsertWithoutProjectMembershipsInput = {
@@ -54643,6 +61622,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProjectMembershipsInput = {
@@ -54672,12 +61654,16 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type ProjectCreateWithoutIdeasInput = {
     id?: string
     name: string
     description?: string | null
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
@@ -54689,6 +61675,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutIdeasInput = {
@@ -54697,6 +61685,7 @@ export namespace Prisma {
     description?: string | null
     workspaceId: string
     createdByUserId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -54706,6 +61695,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricUncheckedCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutIdeasInput = {
@@ -54762,6 +61753,8 @@ export namespace Prisma {
     competitors?: CompetitorCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionCreateNestedManyWithoutAnalysisInput
     pipelineRun?: ProjectPipelineRunCreateNestedOneWithoutAnalysesInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisUncheckedCreateWithoutIdeaInput = {
@@ -54789,6 +61782,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutAnalysisInput
     competitors?: CompetitorUncheckedCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionUncheckedCreateNestedManyWithoutAnalysisInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisCreateOrConnectWithoutIdeaInput = {
@@ -54816,6 +61811,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
@@ -54827,6 +61823,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutIdeasInput = {
@@ -54835,6 +61833,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     workspaceId?: StringFieldUpdateOperationsInput | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -54844,6 +61843,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUncheckedUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type IdeaProjectFileUpsertWithWhereUniqueWithoutIdeaInput = {
@@ -54893,6 +61894,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
@@ -54904,6 +61906,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutProjectFilesInput = {
@@ -54912,6 +61916,7 @@ export namespace Prisma {
     description?: string | null
     workspaceId: string
     createdByUserId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -54921,6 +61926,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricUncheckedCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutProjectFilesInput = {
@@ -54955,6 +61962,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutUploadedFilesInput = {
@@ -54984,6 +61994,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutUploadedFilesInput = {
@@ -55039,6 +62052,49 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DeliverableCreateWithoutLinkedProjectFileInput = {
+    id?: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    externalUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutDeliverablesInput
+    generatedByAnalysis?: AnalysisCreateNestedOneWithoutGeneratedDeliverablesInput
+    generatedByPipelineRun?: ProjectPipelineRunCreateNestedOneWithoutGeneratedDeliverablesInput
+    creator: UserCreateNestedOneWithoutCreatedDeliverablesInput
+    lastUpdater?: UserCreateNestedOneWithoutLastUpdatedDeliverablesInput
+  }
+
+  export type DeliverableUncheckedCreateWithoutLinkedProjectFileInput = {
+    id?: string
+    projectId: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    externalUrl?: string | null
+    generatedByAnalysisId?: string | null
+    generatedByPipelineRunId?: string | null
+    createdByUserId: string
+    lastUpdatedByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliverableCreateOrConnectWithoutLinkedProjectFileInput = {
+    where: DeliverableWhereUniqueInput
+    create: XOR<DeliverableCreateWithoutLinkedProjectFileInput, DeliverableUncheckedCreateWithoutLinkedProjectFileInput>
+  }
+
   export type ProjectUpsertWithoutProjectFilesInput = {
     update: XOR<ProjectUpdateWithoutProjectFilesInput, ProjectUncheckedUpdateWithoutProjectFilesInput>
     create: XOR<ProjectCreateWithoutProjectFilesInput, ProjectUncheckedCreateWithoutProjectFilesInput>
@@ -55054,6 +62110,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
@@ -55065,6 +62122,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutProjectFilesInput = {
@@ -55073,6 +62132,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     workspaceId?: StringFieldUpdateOperationsInput | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -55082,6 +62142,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUncheckedUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type UserUpsertWithoutUploadedFilesInput = {
@@ -55122,6 +62184,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUploadedFilesInput = {
@@ -55151,6 +62216,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type IdeaProjectFileUpsertWithWhereUniqueWithoutProjectFileInput = {
@@ -55196,6 +62264,55 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AnalysisAttachment"> | Date | string
   }
 
+  export type DeliverableUpsertWithoutLinkedProjectFileInput = {
+    update: XOR<DeliverableUpdateWithoutLinkedProjectFileInput, DeliverableUncheckedUpdateWithoutLinkedProjectFileInput>
+    create: XOR<DeliverableCreateWithoutLinkedProjectFileInput, DeliverableUncheckedCreateWithoutLinkedProjectFileInput>
+    where?: DeliverableWhereInput
+  }
+
+  export type DeliverableUpdateToOneWithWhereWithoutLinkedProjectFileInput = {
+    where?: DeliverableWhereInput
+    data: XOR<DeliverableUpdateWithoutLinkedProjectFileInput, DeliverableUncheckedUpdateWithoutLinkedProjectFileInput>
+  }
+
+  export type DeliverableUpdateWithoutLinkedProjectFileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutDeliverablesNestedInput
+    generatedByAnalysis?: AnalysisUpdateOneWithoutGeneratedDeliverablesNestedInput
+    generatedByPipelineRun?: ProjectPipelineRunUpdateOneWithoutGeneratedDeliverablesNestedInput
+    creator?: UserUpdateOneRequiredWithoutCreatedDeliverablesNestedInput
+    lastUpdater?: UserUpdateOneWithoutLastUpdatedDeliverablesNestedInput
+  }
+
+  export type DeliverableUncheckedUpdateWithoutLinkedProjectFileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByAnalysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByPipelineRunId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    lastUpdatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IdeaCreateWithoutUploadedFilesInput = {
     id?: string
     title?: string | null
@@ -55230,15 +62347,18 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status?: $Enums.FileStatus
     storageProvider?: string
     providerFileId: string
     url: string
     description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutProjectFilesInput
     uploader: UserCreateNestedOneWithoutUploadedFilesInput
     analysisAttachments?: AnalysisAttachmentCreateNestedManyWithoutProjectFileInput
+    deliverableLink?: DeliverableCreateNestedOneWithoutLinkedProjectFileInput
   }
 
   export type ProjectFileUncheckedCreateWithoutIdeaLinksInput = {
@@ -55248,13 +62368,16 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status?: $Enums.FileStatus
     storageProvider?: string
     providerFileId: string
     url: string
     description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     analysisAttachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutProjectFileInput
+    deliverableLink?: DeliverableUncheckedCreateNestedOneWithoutLinkedProjectFileInput
   }
 
   export type ProjectFileCreateOrConnectWithoutIdeaLinksInput = {
@@ -55313,15 +62436,18 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutProjectFilesNestedInput
     uploader?: UserUpdateOneRequiredWithoutUploadedFilesNestedInput
     analysisAttachments?: AnalysisAttachmentUpdateManyWithoutProjectFileNestedInput
+    deliverableLink?: DeliverableUpdateOneWithoutLinkedProjectFileNestedInput
   }
 
   export type ProjectFileUncheckedUpdateWithoutIdeaLinksInput = {
@@ -55331,19 +62457,23 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     analysisAttachments?: AnalysisAttachmentUncheckedUpdateManyWithoutProjectFileNestedInput
+    deliverableLink?: DeliverableUncheckedUpdateOneWithoutLinkedProjectFileNestedInput
   }
 
   export type ProjectCreateWithoutAnalysesInput = {
     id?: string
     name: string
     description?: string | null
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
@@ -55355,6 +62485,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutAnalysesInput = {
@@ -55363,6 +62495,7 @@ export namespace Prisma {
     description?: string | null
     workspaceId: string
     createdByUserId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -55372,6 +62505,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricUncheckedCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutAnalysesInput = {
@@ -55435,6 +62570,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutRequestedAnalysesInput = {
@@ -55464,6 +62602,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutRequestedAnalysesInput = {
@@ -55589,6 +62730,7 @@ export namespace Prisma {
     project: ProjectCreateNestedOneWithoutPipelineRunsInput
     pipelineTemplate: PipelineTemplateCreateNestedOneWithoutPipelineRunsInput
     initiatedByUser: UserCreateNestedOneWithoutInitiatedPipelineRunsInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByPipelineRunInput
   }
 
   export type ProjectPipelineRunUncheckedCreateWithoutAnalysesInput = {
@@ -55603,11 +62745,102 @@ export namespace Prisma {
     errorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByPipelineRunInput
   }
 
   export type ProjectPipelineRunCreateOrConnectWithoutAnalysesInput = {
     where: ProjectPipelineRunWhereUniqueInput
     create: XOR<ProjectPipelineRunCreateWithoutAnalysesInput, ProjectPipelineRunUncheckedCreateWithoutAnalysesInput>
+  }
+
+  export type GitHubAIActionLogCreateWithoutAnalysisInput = {
+    id?: string
+    actionType: $Enums.GitHubAIActionType
+    githubEntityType: $Enums.GitHubEntityType
+    githubEntityId: string
+    githubEntityUrl?: string | null
+    githubCommentId?: string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status: $Enums.ActionStatus
+    errorMessage?: string | null
+    triggeredBy?: string | null
+    performedAt?: Date | string
+    projectIntegration: ProjectIntegrationCreateNestedOneWithoutGithubAIActionLogsInput
+    project: ProjectCreateNestedOneWithoutGithubAIActionLogsInput
+  }
+
+  export type GitHubAIActionLogUncheckedCreateWithoutAnalysisInput = {
+    id?: string
+    projectIntegrationId: string
+    projectId: string
+    actionType: $Enums.GitHubAIActionType
+    githubEntityType: $Enums.GitHubEntityType
+    githubEntityId: string
+    githubEntityUrl?: string | null
+    githubCommentId?: string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status: $Enums.ActionStatus
+    errorMessage?: string | null
+    triggeredBy?: string | null
+    performedAt?: Date | string
+  }
+
+  export type GitHubAIActionLogCreateOrConnectWithoutAnalysisInput = {
+    where: GitHubAIActionLogWhereUniqueInput
+    create: XOR<GitHubAIActionLogCreateWithoutAnalysisInput, GitHubAIActionLogUncheckedCreateWithoutAnalysisInput>
+  }
+
+  export type GitHubAIActionLogCreateManyAnalysisInputEnvelope = {
+    data: GitHubAIActionLogCreateManyAnalysisInput | GitHubAIActionLogCreateManyAnalysisInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DeliverableCreateWithoutGeneratedByAnalysisInput = {
+    id?: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    externalUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutDeliverablesInput
+    linkedProjectFile?: ProjectFileCreateNestedOneWithoutDeliverableLinkInput
+    generatedByPipelineRun?: ProjectPipelineRunCreateNestedOneWithoutGeneratedDeliverablesInput
+    creator: UserCreateNestedOneWithoutCreatedDeliverablesInput
+    lastUpdater?: UserCreateNestedOneWithoutLastUpdatedDeliverablesInput
+  }
+
+  export type DeliverableUncheckedCreateWithoutGeneratedByAnalysisInput = {
+    id?: string
+    projectId: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    projectFileId?: string | null
+    externalUrl?: string | null
+    generatedByPipelineRunId?: string | null
+    createdByUserId: string
+    lastUpdatedByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliverableCreateOrConnectWithoutGeneratedByAnalysisInput = {
+    where: DeliverableWhereUniqueInput
+    create: XOR<DeliverableCreateWithoutGeneratedByAnalysisInput, DeliverableUncheckedCreateWithoutGeneratedByAnalysisInput>
+  }
+
+  export type DeliverableCreateManyGeneratedByAnalysisInputEnvelope = {
+    data: DeliverableCreateManyGeneratedByAnalysisInput | DeliverableCreateManyGeneratedByAnalysisInput[]
+    skipDuplicates?: boolean
   }
 
   export type ProjectUpsertWithoutAnalysesInput = {
@@ -55625,6 +62858,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
@@ -55636,6 +62870,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutAnalysesInput = {
@@ -55644,6 +62880,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     workspaceId?: StringFieldUpdateOperationsInput | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -55653,6 +62890,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUncheckedUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type IdeaUpsertWithoutAnalysesInput = {
@@ -55728,6 +62967,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRequestedAnalysesInput = {
@@ -55757,6 +62999,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type AnalysisAttachmentUpsertWithWhereUniqueWithoutAnalysisInput = {
@@ -55869,6 +63114,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneRequiredWithoutPipelineRunsNestedInput
     pipelineTemplate?: PipelineTemplateUpdateOneRequiredWithoutPipelineRunsNestedInput
     initiatedByUser?: UserUpdateOneRequiredWithoutInitiatedPipelineRunsNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByPipelineRunNestedInput
   }
 
   export type ProjectPipelineRunUncheckedUpdateWithoutAnalysesInput = {
@@ -55883,6 +63129,39 @@ export namespace Prisma {
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByPipelineRunNestedInput
+  }
+
+  export type GitHubAIActionLogUpsertWithWhereUniqueWithoutAnalysisInput = {
+    where: GitHubAIActionLogWhereUniqueInput
+    update: XOR<GitHubAIActionLogUpdateWithoutAnalysisInput, GitHubAIActionLogUncheckedUpdateWithoutAnalysisInput>
+    create: XOR<GitHubAIActionLogCreateWithoutAnalysisInput, GitHubAIActionLogUncheckedCreateWithoutAnalysisInput>
+  }
+
+  export type GitHubAIActionLogUpdateWithWhereUniqueWithoutAnalysisInput = {
+    where: GitHubAIActionLogWhereUniqueInput
+    data: XOR<GitHubAIActionLogUpdateWithoutAnalysisInput, GitHubAIActionLogUncheckedUpdateWithoutAnalysisInput>
+  }
+
+  export type GitHubAIActionLogUpdateManyWithWhereWithoutAnalysisInput = {
+    where: GitHubAIActionLogScalarWhereInput
+    data: XOR<GitHubAIActionLogUpdateManyMutationInput, GitHubAIActionLogUncheckedUpdateManyWithoutAnalysisInput>
+  }
+
+  export type DeliverableUpsertWithWhereUniqueWithoutGeneratedByAnalysisInput = {
+    where: DeliverableWhereUniqueInput
+    update: XOR<DeliverableUpdateWithoutGeneratedByAnalysisInput, DeliverableUncheckedUpdateWithoutGeneratedByAnalysisInput>
+    create: XOR<DeliverableCreateWithoutGeneratedByAnalysisInput, DeliverableUncheckedCreateWithoutGeneratedByAnalysisInput>
+  }
+
+  export type DeliverableUpdateWithWhereUniqueWithoutGeneratedByAnalysisInput = {
+    where: DeliverableWhereUniqueInput
+    data: XOR<DeliverableUpdateWithoutGeneratedByAnalysisInput, DeliverableUncheckedUpdateWithoutGeneratedByAnalysisInput>
+  }
+
+  export type DeliverableUpdateManyWithWhereWithoutGeneratedByAnalysisInput = {
+    where: DeliverableScalarWhereInput
+    data: XOR<DeliverableUpdateManyMutationInput, DeliverableUncheckedUpdateManyWithoutGeneratedByAnalysisInput>
   }
 
   export type AnalysisCreateWithoutAttachmentsInput = {
@@ -55910,6 +63189,8 @@ export namespace Prisma {
     competitors?: CompetitorCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionCreateNestedManyWithoutAnalysisInput
     pipelineRun?: ProjectPipelineRunCreateNestedOneWithoutAnalysesInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisUncheckedCreateWithoutAttachmentsInput = {
@@ -55937,6 +63218,8 @@ export namespace Prisma {
     completedAt?: Date | string | null
     competitors?: CompetitorUncheckedCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionUncheckedCreateNestedManyWithoutAnalysisInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisCreateOrConnectWithoutAttachmentsInput = {
@@ -55949,15 +63232,18 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status?: $Enums.FileStatus
     storageProvider?: string
     providerFileId: string
     url: string
     description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutProjectFilesInput
     uploader: UserCreateNestedOneWithoutUploadedFilesInput
     ideaLinks?: IdeaProjectFileCreateNestedManyWithoutProjectFileInput
+    deliverableLink?: DeliverableCreateNestedOneWithoutLinkedProjectFileInput
   }
 
   export type ProjectFileUncheckedCreateWithoutAnalysisAttachmentsInput = {
@@ -55967,13 +63253,16 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status?: $Enums.FileStatus
     storageProvider?: string
     providerFileId: string
     url: string
     description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     ideaLinks?: IdeaProjectFileUncheckedCreateNestedManyWithoutProjectFileInput
+    deliverableLink?: DeliverableUncheckedCreateNestedOneWithoutLinkedProjectFileInput
   }
 
   export type ProjectFileCreateOrConnectWithoutAnalysisAttachmentsInput = {
@@ -56017,6 +63306,8 @@ export namespace Prisma {
     competitors?: CompetitorUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUpdateManyWithoutAnalysisNestedInput
     pipelineRun?: ProjectPipelineRunUpdateOneWithoutAnalysesNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisUncheckedUpdateWithoutAttachmentsInput = {
@@ -56044,6 +63335,8 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     competitors?: CompetitorUncheckedUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUncheckedUpdateManyWithoutAnalysisNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type ProjectFileUpsertWithoutAnalysisAttachmentsInput = {
@@ -56062,15 +63355,18 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutProjectFilesNestedInput
     uploader?: UserUpdateOneRequiredWithoutUploadedFilesNestedInput
     ideaLinks?: IdeaProjectFileUpdateManyWithoutProjectFileNestedInput
+    deliverableLink?: DeliverableUpdateOneWithoutLinkedProjectFileNestedInput
   }
 
   export type ProjectFileUncheckedUpdateWithoutAnalysisAttachmentsInput = {
@@ -56080,13 +63376,16 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ideaLinks?: IdeaProjectFileUncheckedUpdateManyWithoutProjectFileNestedInput
+    deliverableLink?: DeliverableUncheckedUpdateOneWithoutLinkedProjectFileNestedInput
   }
 
   export type AnalysisCreateWithoutCompetitorsInput = {
@@ -56114,6 +63413,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionCreateNestedManyWithoutAnalysisInput
     pipelineRun?: ProjectPipelineRunCreateNestedOneWithoutAnalysesInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisUncheckedCreateWithoutCompetitorsInput = {
@@ -56141,6 +63442,8 @@ export namespace Prisma {
     completedAt?: Date | string | null
     attachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionUncheckedCreateNestedManyWithoutAnalysisInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisCreateOrConnectWithoutCompetitorsInput = {
@@ -56184,6 +63487,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUpdateManyWithoutAnalysisNestedInput
     pipelineRun?: ProjectPipelineRunUpdateOneWithoutAnalysesNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisUncheckedUpdateWithoutCompetitorsInput = {
@@ -56211,6 +63516,8 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     attachments?: AnalysisAttachmentUncheckedUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUncheckedUpdateManyWithoutAnalysisNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisCreateWithoutNameSuggestionsInput = {
@@ -56238,6 +63545,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentCreateNestedManyWithoutAnalysisInput
     competitors?: CompetitorCreateNestedManyWithoutAnalysisInput
     pipelineRun?: ProjectPipelineRunCreateNestedOneWithoutAnalysesInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisUncheckedCreateWithoutNameSuggestionsInput = {
@@ -56265,6 +63574,8 @@ export namespace Prisma {
     completedAt?: Date | string | null
     attachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutAnalysisInput
     competitors?: CompetitorUncheckedCreateNestedManyWithoutAnalysisInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisCreateOrConnectWithoutNameSuggestionsInput = {
@@ -56308,6 +63619,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentUpdateManyWithoutAnalysisNestedInput
     competitors?: CompetitorUpdateManyWithoutAnalysisNestedInput
     pipelineRun?: ProjectPipelineRunUpdateOneWithoutAnalysesNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisUncheckedUpdateWithoutNameSuggestionsInput = {
@@ -56335,12 +63648,15 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     attachments?: AnalysisAttachmentUncheckedUpdateManyWithoutAnalysisNestedInput
     competitors?: CompetitorUncheckedUpdateManyWithoutAnalysisNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type ProjectCreateWithoutTasksInput = {
     id?: string
     name: string
     description?: string | null
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
@@ -56352,6 +63668,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutTasksInput = {
@@ -56360,6 +63678,7 @@ export namespace Prisma {
     description?: string | null
     workspaceId: string
     createdByUserId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -56369,6 +63688,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricUncheckedCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutTasksInput = {
@@ -56403,6 +63724,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -56432,6 +63756,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -56466,6 +63793,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutReportedTasksInput = {
@@ -56495,6 +63825,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutReportedTasksInput = {
@@ -56616,6 +63949,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
@@ -56627,6 +63961,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutTasksInput = {
@@ -56635,6 +63971,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     workspaceId?: StringFieldUpdateOperationsInput | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -56644,6 +63981,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUncheckedUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type UserUpsertWithoutAssignedTasksInput = {
@@ -56684,6 +64023,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -56713,6 +64055,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUpsertWithoutReportedTasksInput = {
@@ -56753,6 +64098,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportedTasksInput = {
@@ -56782,6 +64130,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type TaskUpsertWithoutSubTasksInput = {
@@ -56857,6 +64208,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
@@ -56868,6 +64220,8 @@ export namespace Prisma {
     projectFiles?: ProjectFileCreateNestedManyWithoutProjectInput
     integrations?: ProjectIntegrationCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutProductivityMetricsInput = {
@@ -56876,6 +64230,7 @@ export namespace Prisma {
     description?: string | null
     workspaceId: string
     createdByUserId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -56885,6 +64240,8 @@ export namespace Prisma {
     projectFiles?: ProjectFileUncheckedCreateNestedManyWithoutProjectInput
     integrations?: ProjectIntegrationUncheckedCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutProductivityMetricsInput = {
@@ -56907,6 +64264,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
@@ -56918,6 +64276,8 @@ export namespace Prisma {
     projectFiles?: ProjectFileUpdateManyWithoutProjectNestedInput
     integrations?: ProjectIntegrationUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutProductivityMetricsInput = {
@@ -56926,6 +64286,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     workspaceId?: StringFieldUpdateOperationsInput | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -56935,6 +64296,8 @@ export namespace Prisma {
     projectFiles?: ProjectFileUncheckedUpdateManyWithoutProjectNestedInput
     integrations?: ProjectIntegrationUncheckedUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type WorkspaceCreateWithoutPipelineTemplatesInput = {
@@ -56984,6 +64347,7 @@ export namespace Prisma {
     project: ProjectCreateNestedOneWithoutPipelineRunsInput
     initiatedByUser: UserCreateNestedOneWithoutInitiatedPipelineRunsInput
     analyses?: AnalysisCreateNestedManyWithoutPipelineRunInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByPipelineRunInput
   }
 
   export type ProjectPipelineRunUncheckedCreateWithoutPipelineTemplateInput = {
@@ -56998,6 +64362,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     analyses?: AnalysisUncheckedCreateNestedManyWithoutPipelineRunInput
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByPipelineRunInput
   }
 
   export type ProjectPipelineRunCreateOrConnectWithoutPipelineTemplateInput = {
@@ -57071,6 +64436,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
@@ -57082,6 +64448,8 @@ export namespace Prisma {
     projectFiles?: ProjectFileCreateNestedManyWithoutProjectInput
     integrations?: ProjectIntegrationCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutPipelineRunsInput = {
@@ -57090,6 +64458,7 @@ export namespace Prisma {
     description?: string | null
     workspaceId: string
     createdByUserId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -57099,6 +64468,8 @@ export namespace Prisma {
     projectFiles?: ProjectFileUncheckedCreateNestedManyWithoutProjectInput
     integrations?: ProjectIntegrationUncheckedCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricUncheckedCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutPipelineRunsInput = {
@@ -57164,6 +64535,9 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutInitiatedPipelineRunsInput = {
@@ -57193,6 +64567,9 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutInitiatedPipelineRunsInput = {
@@ -57225,6 +64602,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentCreateNestedManyWithoutAnalysisInput
     competitors?: CompetitorCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionCreateNestedManyWithoutAnalysisInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisUncheckedCreateWithoutPipelineRunInput = {
@@ -57252,6 +64631,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutAnalysisInput
     competitors?: CompetitorUncheckedCreateNestedManyWithoutAnalysisInput
     nameSuggestions?: NameSuggestionUncheckedCreateNestedManyWithoutAnalysisInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByAnalysisInput
   }
 
   export type AnalysisCreateOrConnectWithoutPipelineRunInput = {
@@ -57261,6 +64642,54 @@ export namespace Prisma {
 
   export type AnalysisCreateManyPipelineRunInputEnvelope = {
     data: AnalysisCreateManyPipelineRunInput | AnalysisCreateManyPipelineRunInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DeliverableCreateWithoutGeneratedByPipelineRunInput = {
+    id?: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    externalUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutDeliverablesInput
+    linkedProjectFile?: ProjectFileCreateNestedOneWithoutDeliverableLinkInput
+    generatedByAnalysis?: AnalysisCreateNestedOneWithoutGeneratedDeliverablesInput
+    creator: UserCreateNestedOneWithoutCreatedDeliverablesInput
+    lastUpdater?: UserCreateNestedOneWithoutLastUpdatedDeliverablesInput
+  }
+
+  export type DeliverableUncheckedCreateWithoutGeneratedByPipelineRunInput = {
+    id?: string
+    projectId: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    projectFileId?: string | null
+    externalUrl?: string | null
+    generatedByAnalysisId?: string | null
+    createdByUserId: string
+    lastUpdatedByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliverableCreateOrConnectWithoutGeneratedByPipelineRunInput = {
+    where: DeliverableWhereUniqueInput
+    create: XOR<DeliverableCreateWithoutGeneratedByPipelineRunInput, DeliverableUncheckedCreateWithoutGeneratedByPipelineRunInput>
+  }
+
+  export type DeliverableCreateManyGeneratedByPipelineRunInputEnvelope = {
+    data: DeliverableCreateManyGeneratedByPipelineRunInput | DeliverableCreateManyGeneratedByPipelineRunInput[]
     skipDuplicates?: boolean
   }
 
@@ -57279,6 +64708,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
@@ -57290,6 +64720,8 @@ export namespace Prisma {
     projectFiles?: ProjectFileUpdateManyWithoutProjectNestedInput
     integrations?: ProjectIntegrationUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutPipelineRunsInput = {
@@ -57298,6 +64730,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     workspaceId?: StringFieldUpdateOperationsInput | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -57307,6 +64740,8 @@ export namespace Prisma {
     projectFiles?: ProjectFileUncheckedUpdateManyWithoutProjectNestedInput
     integrations?: ProjectIntegrationUncheckedUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUncheckedUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type PipelineTemplateUpsertWithoutPipelineRunsInput = {
@@ -57384,6 +64819,9 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInitiatedPipelineRunsInput = {
@@ -57413,6 +64851,9 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type AnalysisUpsertWithWhereUniqueWithoutPipelineRunInput = {
@@ -57431,10 +64872,711 @@ export namespace Prisma {
     data: XOR<AnalysisUpdateManyMutationInput, AnalysisUncheckedUpdateManyWithoutPipelineRunInput>
   }
 
+  export type DeliverableUpsertWithWhereUniqueWithoutGeneratedByPipelineRunInput = {
+    where: DeliverableWhereUniqueInput
+    update: XOR<DeliverableUpdateWithoutGeneratedByPipelineRunInput, DeliverableUncheckedUpdateWithoutGeneratedByPipelineRunInput>
+    create: XOR<DeliverableCreateWithoutGeneratedByPipelineRunInput, DeliverableUncheckedCreateWithoutGeneratedByPipelineRunInput>
+  }
+
+  export type DeliverableUpdateWithWhereUniqueWithoutGeneratedByPipelineRunInput = {
+    where: DeliverableWhereUniqueInput
+    data: XOR<DeliverableUpdateWithoutGeneratedByPipelineRunInput, DeliverableUncheckedUpdateWithoutGeneratedByPipelineRunInput>
+  }
+
+  export type DeliverableUpdateManyWithWhereWithoutGeneratedByPipelineRunInput = {
+    where: DeliverableScalarWhereInput
+    data: XOR<DeliverableUpdateManyMutationInput, DeliverableUncheckedUpdateManyWithoutGeneratedByPipelineRunInput>
+  }
+
+  export type ProjectCreateWithoutDeliverablesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    projectStatus?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutProjectsInput
+    createdByUser: UserCreateNestedOneWithoutCreatedProjectsInput
+    members?: ProjectMemberCreateNestedManyWithoutProjectInput
+    ideas?: IdeaCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
+    analyses?: AnalysisCreateNestedManyWithoutProjectInput
+    projectFiles?: ProjectFileCreateNestedManyWithoutProjectInput
+    integrations?: ProjectIntegrationCreateNestedManyWithoutProjectInput
+    pipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutProjectInput
+    productivityMetrics?: ProductivityMetricCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutDeliverablesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    workspaceId: string
+    createdByUserId: string
+    projectStatus?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
+    ideas?: IdeaUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
+    analyses?: AnalysisUncheckedCreateNestedManyWithoutProjectInput
+    projectFiles?: ProjectFileUncheckedCreateNestedManyWithoutProjectInput
+    integrations?: ProjectIntegrationUncheckedCreateNestedManyWithoutProjectInput
+    pipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutProjectInput
+    productivityMetrics?: ProductivityMetricUncheckedCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutDeliverablesInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutDeliverablesInput, ProjectUncheckedCreateWithoutDeliverablesInput>
+  }
+
+  export type ProjectFileCreateWithoutDeliverableLinkInput = {
+    id?: string
+    fileName: string
+    fileType: string
+    sizeBytes: number
+    status?: $Enums.FileStatus
+    storageProvider?: string
+    providerFileId: string
+    url: string
+    description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutProjectFilesInput
+    uploader: UserCreateNestedOneWithoutUploadedFilesInput
+    ideaLinks?: IdeaProjectFileCreateNestedManyWithoutProjectFileInput
+    analysisAttachments?: AnalysisAttachmentCreateNestedManyWithoutProjectFileInput
+  }
+
+  export type ProjectFileUncheckedCreateWithoutDeliverableLinkInput = {
+    id?: string
+    projectId: string
+    uploaderUserId: string
+    fileName: string
+    fileType: string
+    sizeBytes: number
+    status?: $Enums.FileStatus
+    storageProvider?: string
+    providerFileId: string
+    url: string
+    description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ideaLinks?: IdeaProjectFileUncheckedCreateNestedManyWithoutProjectFileInput
+    analysisAttachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutProjectFileInput
+  }
+
+  export type ProjectFileCreateOrConnectWithoutDeliverableLinkInput = {
+    where: ProjectFileWhereUniqueInput
+    create: XOR<ProjectFileCreateWithoutDeliverableLinkInput, ProjectFileUncheckedCreateWithoutDeliverableLinkInput>
+  }
+
+  export type AnalysisCreateWithoutGeneratedDeliverablesInput = {
+    id?: string
+    type: $Enums.AnalysisType
+    status?: $Enums.AnalysisStatus
+    parameters?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    summary?: string | null
+    errorMessage?: string | null
+    aiProvider?: string | null
+    modelUsed?: string | null
+    promptTokens?: number | null
+    completionTokens?: number | null
+    totalTokens?: number | null
+    durationMs?: number | null
+    jobId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    project: ProjectCreateNestedOneWithoutAnalysesInput
+    idea?: IdeaCreateNestedOneWithoutAnalysesInput
+    requestedByUser: UserCreateNestedOneWithoutRequestedAnalysesInput
+    attachments?: AnalysisAttachmentCreateNestedManyWithoutAnalysisInput
+    competitors?: CompetitorCreateNestedManyWithoutAnalysisInput
+    nameSuggestions?: NameSuggestionCreateNestedManyWithoutAnalysisInput
+    pipelineRun?: ProjectPipelineRunCreateNestedOneWithoutAnalysesInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutAnalysisInput
+  }
+
+  export type AnalysisUncheckedCreateWithoutGeneratedDeliverablesInput = {
+    id?: string
+    projectId: string
+    ideaId?: string | null
+    pipelineRunId?: string | null
+    type: $Enums.AnalysisType
+    status?: $Enums.AnalysisStatus
+    requestedByUserId: string
+    parameters?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    summary?: string | null
+    errorMessage?: string | null
+    aiProvider?: string | null
+    modelUsed?: string | null
+    promptTokens?: number | null
+    completionTokens?: number | null
+    totalTokens?: number | null
+    durationMs?: number | null
+    jobId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    attachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutAnalysisInput
+    competitors?: CompetitorUncheckedCreateNestedManyWithoutAnalysisInput
+    nameSuggestions?: NameSuggestionUncheckedCreateNestedManyWithoutAnalysisInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutAnalysisInput
+  }
+
+  export type AnalysisCreateOrConnectWithoutGeneratedDeliverablesInput = {
+    where: AnalysisWhereUniqueInput
+    create: XOR<AnalysisCreateWithoutGeneratedDeliverablesInput, AnalysisUncheckedCreateWithoutGeneratedDeliverablesInput>
+  }
+
+  export type ProjectPipelineRunCreateWithoutGeneratedDeliverablesInput = {
+    id?: string
+    status?: $Enums.AnalysisStatus
+    parametersOverrides?: NullableJsonNullValueInput | InputJsonValue
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutPipelineRunsInput
+    pipelineTemplate: PipelineTemplateCreateNestedOneWithoutPipelineRunsInput
+    initiatedByUser: UserCreateNestedOneWithoutInitiatedPipelineRunsInput
+    analyses?: AnalysisCreateNestedManyWithoutPipelineRunInput
+  }
+
+  export type ProjectPipelineRunUncheckedCreateWithoutGeneratedDeliverablesInput = {
+    id?: string
+    projectId: string
+    pipelineTemplateId: string
+    initiatedByUserId: string
+    status?: $Enums.AnalysisStatus
+    parametersOverrides?: NullableJsonNullValueInput | InputJsonValue
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    analyses?: AnalysisUncheckedCreateNestedManyWithoutPipelineRunInput
+  }
+
+  export type ProjectPipelineRunCreateOrConnectWithoutGeneratedDeliverablesInput = {
+    where: ProjectPipelineRunWhereUniqueInput
+    create: XOR<ProjectPipelineRunCreateWithoutGeneratedDeliverablesInput, ProjectPipelineRunUncheckedCreateWithoutGeneratedDeliverablesInput>
+  }
+
+  export type UserCreateWithoutCreatedDeliverablesInput = {
+    id?: string
+    email: string
+    hashedPassword?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    avatarUrl?: string | null
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    oauthAccounts?: OAuthAccountCreateNestedManyWithoutUserInput
+    ownedWorkspaces?: WorkspaceCreateNestedManyWithoutOwnerInput
+    workspaceMemberships?: WorkspaceMemberCreateNestedManyWithoutUserInput
+    projectMemberships?: ProjectMemberCreateNestedManyWithoutUserInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssigneeInput
+    reportedTasks?: TaskCreateNestedManyWithoutReporterInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    userSettings?: UserSettingsCreateNestedOneWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectCreateNestedManyWithoutCreatedByUserInput
+    uploadedFiles?: ProjectFileCreateNestedManyWithoutUploaderInput
+    requestedAnalyses?: AnalysisCreateNestedManyWithoutRequestedByUserInput
+    emailVerificationTokens?: EmailVerificationTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
+    workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
+    initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedDeliverablesInput = {
+    id?: string
+    email: string
+    hashedPassword?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    avatarUrl?: string | null
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    oauthAccounts?: OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+    ownedWorkspaces?: WorkspaceUncheckedCreateNestedManyWithoutOwnerInput
+    workspaceMemberships?: WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+    projectMemberships?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    reportedTasks?: TaskUncheckedCreateNestedManyWithoutReporterInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    userSettings?: UserSettingsUncheckedCreateNestedOneWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByUserInput
+    uploadedFiles?: ProjectFileUncheckedCreateNestedManyWithoutUploaderInput
+    requestedAnalyses?: AnalysisUncheckedCreateNestedManyWithoutRequestedByUserInput
+    emailVerificationTokens?: EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
+    workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
+    initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedDeliverablesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedDeliverablesInput, UserUncheckedCreateWithoutCreatedDeliverablesInput>
+  }
+
+  export type UserCreateWithoutLastUpdatedDeliverablesInput = {
+    id?: string
+    email: string
+    hashedPassword?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    avatarUrl?: string | null
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    oauthAccounts?: OAuthAccountCreateNestedManyWithoutUserInput
+    ownedWorkspaces?: WorkspaceCreateNestedManyWithoutOwnerInput
+    workspaceMemberships?: WorkspaceMemberCreateNestedManyWithoutUserInput
+    projectMemberships?: ProjectMemberCreateNestedManyWithoutUserInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssigneeInput
+    reportedTasks?: TaskCreateNestedManyWithoutReporterInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    userSettings?: UserSettingsCreateNestedOneWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectCreateNestedManyWithoutCreatedByUserInput
+    uploadedFiles?: ProjectFileCreateNestedManyWithoutUploaderInput
+    requestedAnalyses?: AnalysisCreateNestedManyWithoutRequestedByUserInput
+    emailVerificationTokens?: EmailVerificationTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
+    workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
+    initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserUncheckedCreateWithoutLastUpdatedDeliverablesInput = {
+    id?: string
+    email: string
+    hashedPassword?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    avatarUrl?: string | null
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    oauthAccounts?: OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+    ownedWorkspaces?: WorkspaceUncheckedCreateNestedManyWithoutOwnerInput
+    workspaceMemberships?: WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+    projectMemberships?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    reportedTasks?: TaskUncheckedCreateNestedManyWithoutReporterInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    userSettings?: UserSettingsUncheckedCreateNestedOneWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByUserInput
+    uploadedFiles?: ProjectFileUncheckedCreateNestedManyWithoutUploaderInput
+    requestedAnalyses?: AnalysisUncheckedCreateNestedManyWithoutRequestedByUserInput
+    emailVerificationTokens?: EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
+    workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
+    initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserCreateOrConnectWithoutLastUpdatedDeliverablesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLastUpdatedDeliverablesInput, UserUncheckedCreateWithoutLastUpdatedDeliverablesInput>
+  }
+
+  export type ProjectUpsertWithoutDeliverablesInput = {
+    update: XOR<ProjectUpdateWithoutDeliverablesInput, ProjectUncheckedUpdateWithoutDeliverablesInput>
+    create: XOR<ProjectCreateWithoutDeliverablesInput, ProjectUncheckedCreateWithoutDeliverablesInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutDeliverablesInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutDeliverablesInput, ProjectUncheckedUpdateWithoutDeliverablesInput>
+  }
+
+  export type ProjectUpdateWithoutDeliverablesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
+    createdByUser?: UserUpdateOneRequiredWithoutCreatedProjectsNestedInput
+    members?: ProjectMemberUpdateManyWithoutProjectNestedInput
+    ideas?: IdeaUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
+    analyses?: AnalysisUpdateManyWithoutProjectNestedInput
+    projectFiles?: ProjectFileUpdateManyWithoutProjectNestedInput
+    integrations?: ProjectIntegrationUpdateManyWithoutProjectNestedInput
+    pipelineRuns?: ProjectPipelineRunUpdateManyWithoutProjectNestedInput
+    productivityMetrics?: ProductivityMetricUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutDeliverablesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+    ideas?: IdeaUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
+    analyses?: AnalysisUncheckedUpdateManyWithoutProjectNestedInput
+    projectFiles?: ProjectFileUncheckedUpdateManyWithoutProjectNestedInput
+    integrations?: ProjectIntegrationUncheckedUpdateManyWithoutProjectNestedInput
+    pipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutProjectNestedInput
+    productivityMetrics?: ProductivityMetricUncheckedUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectFileUpsertWithoutDeliverableLinkInput = {
+    update: XOR<ProjectFileUpdateWithoutDeliverableLinkInput, ProjectFileUncheckedUpdateWithoutDeliverableLinkInput>
+    create: XOR<ProjectFileCreateWithoutDeliverableLinkInput, ProjectFileUncheckedCreateWithoutDeliverableLinkInput>
+    where?: ProjectFileWhereInput
+  }
+
+  export type ProjectFileUpdateToOneWithWhereWithoutDeliverableLinkInput = {
+    where?: ProjectFileWhereInput
+    data: XOR<ProjectFileUpdateWithoutDeliverableLinkInput, ProjectFileUncheckedUpdateWithoutDeliverableLinkInput>
+  }
+
+  export type ProjectFileUpdateWithoutDeliverableLinkInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    providerFileId?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutProjectFilesNestedInput
+    uploader?: UserUpdateOneRequiredWithoutUploadedFilesNestedInput
+    ideaLinks?: IdeaProjectFileUpdateManyWithoutProjectFileNestedInput
+    analysisAttachments?: AnalysisAttachmentUpdateManyWithoutProjectFileNestedInput
+  }
+
+  export type ProjectFileUncheckedUpdateWithoutDeliverableLinkInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    uploaderUserId?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    providerFileId?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ideaLinks?: IdeaProjectFileUncheckedUpdateManyWithoutProjectFileNestedInput
+    analysisAttachments?: AnalysisAttachmentUncheckedUpdateManyWithoutProjectFileNestedInput
+  }
+
+  export type AnalysisUpsertWithoutGeneratedDeliverablesInput = {
+    update: XOR<AnalysisUpdateWithoutGeneratedDeliverablesInput, AnalysisUncheckedUpdateWithoutGeneratedDeliverablesInput>
+    create: XOR<AnalysisCreateWithoutGeneratedDeliverablesInput, AnalysisUncheckedCreateWithoutGeneratedDeliverablesInput>
+    where?: AnalysisWhereInput
+  }
+
+  export type AnalysisUpdateToOneWithWhereWithoutGeneratedDeliverablesInput = {
+    where?: AnalysisWhereInput
+    data: XOR<AnalysisUpdateWithoutGeneratedDeliverablesInput, AnalysisUncheckedUpdateWithoutGeneratedDeliverablesInput>
+  }
+
+  export type AnalysisUpdateWithoutGeneratedDeliverablesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAnalysisTypeFieldUpdateOperationsInput | $Enums.AnalysisType
+    status?: EnumAnalysisStatusFieldUpdateOperationsInput | $Enums.AnalysisStatus
+    parameters?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    modelUsed?: NullableStringFieldUpdateOperationsInput | string | null
+    promptTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    completionTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    totalTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    durationMs?: NullableIntFieldUpdateOperationsInput | number | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    project?: ProjectUpdateOneRequiredWithoutAnalysesNestedInput
+    idea?: IdeaUpdateOneWithoutAnalysesNestedInput
+    requestedByUser?: UserUpdateOneRequiredWithoutRequestedAnalysesNestedInput
+    attachments?: AnalysisAttachmentUpdateManyWithoutAnalysisNestedInput
+    competitors?: CompetitorUpdateManyWithoutAnalysisNestedInput
+    nameSuggestions?: NameSuggestionUpdateManyWithoutAnalysisNestedInput
+    pipelineRun?: ProjectPipelineRunUpdateOneWithoutAnalysesNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutAnalysisNestedInput
+  }
+
+  export type AnalysisUncheckedUpdateWithoutGeneratedDeliverablesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    ideaId?: NullableStringFieldUpdateOperationsInput | string | null
+    pipelineRunId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAnalysisTypeFieldUpdateOperationsInput | $Enums.AnalysisType
+    status?: EnumAnalysisStatusFieldUpdateOperationsInput | $Enums.AnalysisStatus
+    requestedByUserId?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    modelUsed?: NullableStringFieldUpdateOperationsInput | string | null
+    promptTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    completionTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    totalTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    durationMs?: NullableIntFieldUpdateOperationsInput | number | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    attachments?: AnalysisAttachmentUncheckedUpdateManyWithoutAnalysisNestedInput
+    competitors?: CompetitorUncheckedUpdateManyWithoutAnalysisNestedInput
+    nameSuggestions?: NameSuggestionUncheckedUpdateManyWithoutAnalysisNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutAnalysisNestedInput
+  }
+
+  export type ProjectPipelineRunUpsertWithoutGeneratedDeliverablesInput = {
+    update: XOR<ProjectPipelineRunUpdateWithoutGeneratedDeliverablesInput, ProjectPipelineRunUncheckedUpdateWithoutGeneratedDeliverablesInput>
+    create: XOR<ProjectPipelineRunCreateWithoutGeneratedDeliverablesInput, ProjectPipelineRunUncheckedCreateWithoutGeneratedDeliverablesInput>
+    where?: ProjectPipelineRunWhereInput
+  }
+
+  export type ProjectPipelineRunUpdateToOneWithWhereWithoutGeneratedDeliverablesInput = {
+    where?: ProjectPipelineRunWhereInput
+    data: XOR<ProjectPipelineRunUpdateWithoutGeneratedDeliverablesInput, ProjectPipelineRunUncheckedUpdateWithoutGeneratedDeliverablesInput>
+  }
+
+  export type ProjectPipelineRunUpdateWithoutGeneratedDeliverablesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAnalysisStatusFieldUpdateOperationsInput | $Enums.AnalysisStatus
+    parametersOverrides?: NullableJsonNullValueInput | InputJsonValue
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutPipelineRunsNestedInput
+    pipelineTemplate?: PipelineTemplateUpdateOneRequiredWithoutPipelineRunsNestedInput
+    initiatedByUser?: UserUpdateOneRequiredWithoutInitiatedPipelineRunsNestedInput
+    analyses?: AnalysisUpdateManyWithoutPipelineRunNestedInput
+  }
+
+  export type ProjectPipelineRunUncheckedUpdateWithoutGeneratedDeliverablesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    pipelineTemplateId?: StringFieldUpdateOperationsInput | string
+    initiatedByUserId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAnalysisStatusFieldUpdateOperationsInput | $Enums.AnalysisStatus
+    parametersOverrides?: NullableJsonNullValueInput | InputJsonValue
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    analyses?: AnalysisUncheckedUpdateManyWithoutPipelineRunNestedInput
+  }
+
+  export type UserUpsertWithoutCreatedDeliverablesInput = {
+    update: XOR<UserUpdateWithoutCreatedDeliverablesInput, UserUncheckedUpdateWithoutCreatedDeliverablesInput>
+    create: XOR<UserCreateWithoutCreatedDeliverablesInput, UserUncheckedCreateWithoutCreatedDeliverablesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedDeliverablesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedDeliverablesInput, UserUncheckedUpdateWithoutCreatedDeliverablesInput>
+  }
+
+  export type UserUpdateWithoutCreatedDeliverablesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    oauthAccounts?: OAuthAccountUpdateManyWithoutUserNestedInput
+    ownedWorkspaces?: WorkspaceUpdateManyWithoutOwnerNestedInput
+    workspaceMemberships?: WorkspaceMemberUpdateManyWithoutUserNestedInput
+    projectMemberships?: ProjectMemberUpdateManyWithoutUserNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssigneeNestedInput
+    reportedTasks?: TaskUpdateManyWithoutReporterNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    userSettings?: UserSettingsUpdateOneWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUpdateManyWithoutCreatedByUserNestedInput
+    uploadedFiles?: ProjectFileUpdateManyWithoutUploaderNestedInput
+    requestedAnalyses?: AnalysisUpdateManyWithoutRequestedByUserNestedInput
+    emailVerificationTokens?: EmailVerificationTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
+    workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
+    initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedDeliverablesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    oauthAccounts?: OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+    ownedWorkspaces?: WorkspaceUncheckedUpdateManyWithoutOwnerNestedInput
+    workspaceMemberships?: WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+    projectMemberships?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    reportedTasks?: TaskUncheckedUpdateManyWithoutReporterNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    userSettings?: UserSettingsUncheckedUpdateOneWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    uploadedFiles?: ProjectFileUncheckedUpdateManyWithoutUploaderNestedInput
+    requestedAnalyses?: AnalysisUncheckedUpdateManyWithoutRequestedByUserNestedInput
+    emailVerificationTokens?: EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
+    workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
+    initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
+  }
+
+  export type UserUpsertWithoutLastUpdatedDeliverablesInput = {
+    update: XOR<UserUpdateWithoutLastUpdatedDeliverablesInput, UserUncheckedUpdateWithoutLastUpdatedDeliverablesInput>
+    create: XOR<UserCreateWithoutLastUpdatedDeliverablesInput, UserUncheckedCreateWithoutLastUpdatedDeliverablesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLastUpdatedDeliverablesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLastUpdatedDeliverablesInput, UserUncheckedUpdateWithoutLastUpdatedDeliverablesInput>
+  }
+
+  export type UserUpdateWithoutLastUpdatedDeliverablesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    oauthAccounts?: OAuthAccountUpdateManyWithoutUserNestedInput
+    ownedWorkspaces?: WorkspaceUpdateManyWithoutOwnerNestedInput
+    workspaceMemberships?: WorkspaceMemberUpdateManyWithoutUserNestedInput
+    projectMemberships?: ProjectMemberUpdateManyWithoutUserNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssigneeNestedInput
+    reportedTasks?: TaskUpdateManyWithoutReporterNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    userSettings?: UserSettingsUpdateOneWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUpdateManyWithoutCreatedByUserNestedInput
+    uploadedFiles?: ProjectFileUpdateManyWithoutUploaderNestedInput
+    requestedAnalyses?: AnalysisUpdateManyWithoutRequestedByUserNestedInput
+    emailVerificationTokens?: EmailVerificationTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
+    workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
+    initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLastUpdatedDeliverablesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    oauthAccounts?: OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+    ownedWorkspaces?: WorkspaceUncheckedUpdateManyWithoutOwnerNestedInput
+    workspaceMemberships?: WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+    projectMemberships?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    reportedTasks?: TaskUncheckedUpdateManyWithoutReporterNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    userSettings?: UserSettingsUncheckedUpdateOneWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    uploadedFiles?: ProjectFileUncheckedUpdateManyWithoutUploaderNestedInput
+    requestedAnalyses?: AnalysisUncheckedUpdateManyWithoutRequestedByUserNestedInput
+    emailVerificationTokens?: EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
+    workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
+    initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+  }
+
   export type ProjectCreateWithoutIntegrationsInput = {
     id?: string
     name: string
     description?: string | null
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
@@ -57446,6 +65588,8 @@ export namespace Prisma {
     projectFiles?: ProjectFileCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutIntegrationsInput = {
@@ -57454,6 +65598,7 @@ export namespace Prisma {
     description?: string | null
     workspaceId: string
     createdByUserId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
@@ -57463,11 +65608,55 @@ export namespace Prisma {
     projectFiles?: ProjectFileUncheckedCreateNestedManyWithoutProjectInput
     pipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutProjectInput
     productivityMetrics?: ProductivityMetricUncheckedCreateNestedManyWithoutProjectInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutIntegrationsInput = {
     where: ProjectWhereUniqueInput
     create: XOR<ProjectCreateWithoutIntegrationsInput, ProjectUncheckedCreateWithoutIntegrationsInput>
+  }
+
+  export type GitHubAIActionLogCreateWithoutProjectIntegrationInput = {
+    id?: string
+    actionType: $Enums.GitHubAIActionType
+    githubEntityType: $Enums.GitHubEntityType
+    githubEntityId: string
+    githubEntityUrl?: string | null
+    githubCommentId?: string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status: $Enums.ActionStatus
+    errorMessage?: string | null
+    triggeredBy?: string | null
+    performedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutGithubAIActionLogsInput
+    analysis?: AnalysisCreateNestedOneWithoutGithubAIActionLogsInput
+  }
+
+  export type GitHubAIActionLogUncheckedCreateWithoutProjectIntegrationInput = {
+    id?: string
+    projectId: string
+    analysisId?: string | null
+    actionType: $Enums.GitHubAIActionType
+    githubEntityType: $Enums.GitHubEntityType
+    githubEntityId: string
+    githubEntityUrl?: string | null
+    githubCommentId?: string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status: $Enums.ActionStatus
+    errorMessage?: string | null
+    triggeredBy?: string | null
+    performedAt?: Date | string
+  }
+
+  export type GitHubAIActionLogCreateOrConnectWithoutProjectIntegrationInput = {
+    where: GitHubAIActionLogWhereUniqueInput
+    create: XOR<GitHubAIActionLogCreateWithoutProjectIntegrationInput, GitHubAIActionLogUncheckedCreateWithoutProjectIntegrationInput>
+  }
+
+  export type GitHubAIActionLogCreateManyProjectIntegrationInputEnvelope = {
+    data: GitHubAIActionLogCreateManyProjectIntegrationInput | GitHubAIActionLogCreateManyProjectIntegrationInput[]
+    skipDuplicates?: boolean
   }
 
   export type ProjectUpsertWithoutIntegrationsInput = {
@@ -57485,6 +65674,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
@@ -57496,6 +65686,8 @@ export namespace Prisma {
     projectFiles?: ProjectFileUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutIntegrationsInput = {
@@ -57504,6 +65696,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     workspaceId?: StringFieldUpdateOperationsInput | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -57513,6 +65706,340 @@ export namespace Prisma {
     projectFiles?: ProjectFileUncheckedUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUncheckedUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type GitHubAIActionLogUpsertWithWhereUniqueWithoutProjectIntegrationInput = {
+    where: GitHubAIActionLogWhereUniqueInput
+    update: XOR<GitHubAIActionLogUpdateWithoutProjectIntegrationInput, GitHubAIActionLogUncheckedUpdateWithoutProjectIntegrationInput>
+    create: XOR<GitHubAIActionLogCreateWithoutProjectIntegrationInput, GitHubAIActionLogUncheckedCreateWithoutProjectIntegrationInput>
+  }
+
+  export type GitHubAIActionLogUpdateWithWhereUniqueWithoutProjectIntegrationInput = {
+    where: GitHubAIActionLogWhereUniqueInput
+    data: XOR<GitHubAIActionLogUpdateWithoutProjectIntegrationInput, GitHubAIActionLogUncheckedUpdateWithoutProjectIntegrationInput>
+  }
+
+  export type GitHubAIActionLogUpdateManyWithWhereWithoutProjectIntegrationInput = {
+    where: GitHubAIActionLogScalarWhereInput
+    data: XOR<GitHubAIActionLogUpdateManyMutationInput, GitHubAIActionLogUncheckedUpdateManyWithoutProjectIntegrationInput>
+  }
+
+  export type ProjectIntegrationCreateWithoutGithubAIActionLogsInput = {
+    id?: string
+    provider: $Enums.IntegrationProvider
+    externalAccountId?: string | null
+    accessToken?: string | null
+    refreshToken?: string | null
+    tokenExpiresAt?: Date | string | null
+    settings?: NullableJsonNullValueInput | InputJsonValue
+    isEnabled?: boolean
+    lastSyncAt?: Date | string | null
+    syncStatus?: $Enums.IntegrationSyncStatus | null
+    syncErrorMessage?: string | null
+    addedByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutIntegrationsInput
+  }
+
+  export type ProjectIntegrationUncheckedCreateWithoutGithubAIActionLogsInput = {
+    id?: string
+    projectId: string
+    provider: $Enums.IntegrationProvider
+    externalAccountId?: string | null
+    accessToken?: string | null
+    refreshToken?: string | null
+    tokenExpiresAt?: Date | string | null
+    settings?: NullableJsonNullValueInput | InputJsonValue
+    isEnabled?: boolean
+    lastSyncAt?: Date | string | null
+    syncStatus?: $Enums.IntegrationSyncStatus | null
+    syncErrorMessage?: string | null
+    addedByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProjectIntegrationCreateOrConnectWithoutGithubAIActionLogsInput = {
+    where: ProjectIntegrationWhereUniqueInput
+    create: XOR<ProjectIntegrationCreateWithoutGithubAIActionLogsInput, ProjectIntegrationUncheckedCreateWithoutGithubAIActionLogsInput>
+  }
+
+  export type ProjectCreateWithoutGithubAIActionLogsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    projectStatus?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutProjectsInput
+    createdByUser: UserCreateNestedOneWithoutCreatedProjectsInput
+    members?: ProjectMemberCreateNestedManyWithoutProjectInput
+    ideas?: IdeaCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
+    analyses?: AnalysisCreateNestedManyWithoutProjectInput
+    projectFiles?: ProjectFileCreateNestedManyWithoutProjectInput
+    integrations?: ProjectIntegrationCreateNestedManyWithoutProjectInput
+    pipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutProjectInput
+    productivityMetrics?: ProductivityMetricCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutGithubAIActionLogsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    workspaceId: string
+    createdByUserId: string
+    projectStatus?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
+    ideas?: IdeaUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
+    analyses?: AnalysisUncheckedCreateNestedManyWithoutProjectInput
+    projectFiles?: ProjectFileUncheckedCreateNestedManyWithoutProjectInput
+    integrations?: ProjectIntegrationUncheckedCreateNestedManyWithoutProjectInput
+    pipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutProjectInput
+    productivityMetrics?: ProductivityMetricUncheckedCreateNestedManyWithoutProjectInput
+    deliverables?: DeliverableUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutGithubAIActionLogsInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutGithubAIActionLogsInput, ProjectUncheckedCreateWithoutGithubAIActionLogsInput>
+  }
+
+  export type AnalysisCreateWithoutGithubAIActionLogsInput = {
+    id?: string
+    type: $Enums.AnalysisType
+    status?: $Enums.AnalysisStatus
+    parameters?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    summary?: string | null
+    errorMessage?: string | null
+    aiProvider?: string | null
+    modelUsed?: string | null
+    promptTokens?: number | null
+    completionTokens?: number | null
+    totalTokens?: number | null
+    durationMs?: number | null
+    jobId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    project: ProjectCreateNestedOneWithoutAnalysesInput
+    idea?: IdeaCreateNestedOneWithoutAnalysesInput
+    requestedByUser: UserCreateNestedOneWithoutRequestedAnalysesInput
+    attachments?: AnalysisAttachmentCreateNestedManyWithoutAnalysisInput
+    competitors?: CompetitorCreateNestedManyWithoutAnalysisInput
+    nameSuggestions?: NameSuggestionCreateNestedManyWithoutAnalysisInput
+    pipelineRun?: ProjectPipelineRunCreateNestedOneWithoutAnalysesInput
+    generatedDeliverables?: DeliverableCreateNestedManyWithoutGeneratedByAnalysisInput
+  }
+
+  export type AnalysisUncheckedCreateWithoutGithubAIActionLogsInput = {
+    id?: string
+    projectId: string
+    ideaId?: string | null
+    pipelineRunId?: string | null
+    type: $Enums.AnalysisType
+    status?: $Enums.AnalysisStatus
+    requestedByUserId: string
+    parameters?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    summary?: string | null
+    errorMessage?: string | null
+    aiProvider?: string | null
+    modelUsed?: string | null
+    promptTokens?: number | null
+    completionTokens?: number | null
+    totalTokens?: number | null
+    durationMs?: number | null
+    jobId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    attachments?: AnalysisAttachmentUncheckedCreateNestedManyWithoutAnalysisInput
+    competitors?: CompetitorUncheckedCreateNestedManyWithoutAnalysisInput
+    nameSuggestions?: NameSuggestionUncheckedCreateNestedManyWithoutAnalysisInput
+    generatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutGeneratedByAnalysisInput
+  }
+
+  export type AnalysisCreateOrConnectWithoutGithubAIActionLogsInput = {
+    where: AnalysisWhereUniqueInput
+    create: XOR<AnalysisCreateWithoutGithubAIActionLogsInput, AnalysisUncheckedCreateWithoutGithubAIActionLogsInput>
+  }
+
+  export type ProjectIntegrationUpsertWithoutGithubAIActionLogsInput = {
+    update: XOR<ProjectIntegrationUpdateWithoutGithubAIActionLogsInput, ProjectIntegrationUncheckedUpdateWithoutGithubAIActionLogsInput>
+    create: XOR<ProjectIntegrationCreateWithoutGithubAIActionLogsInput, ProjectIntegrationUncheckedCreateWithoutGithubAIActionLogsInput>
+    where?: ProjectIntegrationWhereInput
+  }
+
+  export type ProjectIntegrationUpdateToOneWithWhereWithoutGithubAIActionLogsInput = {
+    where?: ProjectIntegrationWhereInput
+    data: XOR<ProjectIntegrationUpdateWithoutGithubAIActionLogsInput, ProjectIntegrationUncheckedUpdateWithoutGithubAIActionLogsInput>
+  }
+
+  export type ProjectIntegrationUpdateWithoutGithubAIActionLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    externalAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    settings?: NullableJsonNullValueInput | InputJsonValue
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    syncStatus?: NullableEnumIntegrationSyncStatusFieldUpdateOperationsInput | $Enums.IntegrationSyncStatus | null
+    syncErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    addedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutIntegrationsNestedInput
+  }
+
+  export type ProjectIntegrationUncheckedUpdateWithoutGithubAIActionLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    provider?: EnumIntegrationProviderFieldUpdateOperationsInput | $Enums.IntegrationProvider
+    externalAccountId?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    settings?: NullableJsonNullValueInput | InputJsonValue
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    syncStatus?: NullableEnumIntegrationSyncStatusFieldUpdateOperationsInput | $Enums.IntegrationSyncStatus | null
+    syncErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    addedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectUpsertWithoutGithubAIActionLogsInput = {
+    update: XOR<ProjectUpdateWithoutGithubAIActionLogsInput, ProjectUncheckedUpdateWithoutGithubAIActionLogsInput>
+    create: XOR<ProjectCreateWithoutGithubAIActionLogsInput, ProjectUncheckedCreateWithoutGithubAIActionLogsInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutGithubAIActionLogsInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutGithubAIActionLogsInput, ProjectUncheckedUpdateWithoutGithubAIActionLogsInput>
+  }
+
+  export type ProjectUpdateWithoutGithubAIActionLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
+    createdByUser?: UserUpdateOneRequiredWithoutCreatedProjectsNestedInput
+    members?: ProjectMemberUpdateManyWithoutProjectNestedInput
+    ideas?: IdeaUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
+    analyses?: AnalysisUpdateManyWithoutProjectNestedInput
+    projectFiles?: ProjectFileUpdateManyWithoutProjectNestedInput
+    integrations?: ProjectIntegrationUpdateManyWithoutProjectNestedInput
+    pipelineRuns?: ProjectPipelineRunUpdateManyWithoutProjectNestedInput
+    productivityMetrics?: ProductivityMetricUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutGithubAIActionLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+    ideas?: IdeaUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
+    analyses?: AnalysisUncheckedUpdateManyWithoutProjectNestedInput
+    projectFiles?: ProjectFileUncheckedUpdateManyWithoutProjectNestedInput
+    integrations?: ProjectIntegrationUncheckedUpdateManyWithoutProjectNestedInput
+    pipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutProjectNestedInput
+    productivityMetrics?: ProductivityMetricUncheckedUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type AnalysisUpsertWithoutGithubAIActionLogsInput = {
+    update: XOR<AnalysisUpdateWithoutGithubAIActionLogsInput, AnalysisUncheckedUpdateWithoutGithubAIActionLogsInput>
+    create: XOR<AnalysisCreateWithoutGithubAIActionLogsInput, AnalysisUncheckedCreateWithoutGithubAIActionLogsInput>
+    where?: AnalysisWhereInput
+  }
+
+  export type AnalysisUpdateToOneWithWhereWithoutGithubAIActionLogsInput = {
+    where?: AnalysisWhereInput
+    data: XOR<AnalysisUpdateWithoutGithubAIActionLogsInput, AnalysisUncheckedUpdateWithoutGithubAIActionLogsInput>
+  }
+
+  export type AnalysisUpdateWithoutGithubAIActionLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAnalysisTypeFieldUpdateOperationsInput | $Enums.AnalysisType
+    status?: EnumAnalysisStatusFieldUpdateOperationsInput | $Enums.AnalysisStatus
+    parameters?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    modelUsed?: NullableStringFieldUpdateOperationsInput | string | null
+    promptTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    completionTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    totalTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    durationMs?: NullableIntFieldUpdateOperationsInput | number | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    project?: ProjectUpdateOneRequiredWithoutAnalysesNestedInput
+    idea?: IdeaUpdateOneWithoutAnalysesNestedInput
+    requestedByUser?: UserUpdateOneRequiredWithoutRequestedAnalysesNestedInput
+    attachments?: AnalysisAttachmentUpdateManyWithoutAnalysisNestedInput
+    competitors?: CompetitorUpdateManyWithoutAnalysisNestedInput
+    nameSuggestions?: NameSuggestionUpdateManyWithoutAnalysisNestedInput
+    pipelineRun?: ProjectPipelineRunUpdateOneWithoutAnalysesNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByAnalysisNestedInput
+  }
+
+  export type AnalysisUncheckedUpdateWithoutGithubAIActionLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    ideaId?: NullableStringFieldUpdateOperationsInput | string | null
+    pipelineRunId?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAnalysisTypeFieldUpdateOperationsInput | $Enums.AnalysisType
+    status?: EnumAnalysisStatusFieldUpdateOperationsInput | $Enums.AnalysisStatus
+    requestedByUserId?: StringFieldUpdateOperationsInput | string
+    parameters?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    aiProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    modelUsed?: NullableStringFieldUpdateOperationsInput | string | null
+    promptTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    completionTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    totalTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    durationMs?: NullableIntFieldUpdateOperationsInput | number | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    attachments?: AnalysisAttachmentUncheckedUpdateManyWithoutAnalysisNestedInput
+    competitors?: CompetitorUncheckedUpdateManyWithoutAnalysisNestedInput
+    nameSuggestions?: NameSuggestionUncheckedUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -57542,6 +66069,9 @@ export namespace Prisma {
     initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -57571,6 +66101,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    feedbackEntries?: UserFeedbackUncheckedCreateNestedManyWithoutUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -57616,6 +66149,9 @@ export namespace Prisma {
     initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -57645,16 +66181,163 @@ export namespace Prisma {
     initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
     workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
     initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    feedbackEntries?: UserFeedbackUncheckedUpdateManyWithoutUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
+  }
+
+  export type UserCreateWithoutFeedbackEntriesInput = {
+    id?: string
+    email: string
+    hashedPassword?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    avatarUrl?: string | null
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    oauthAccounts?: OAuthAccountCreateNestedManyWithoutUserInput
+    ownedWorkspaces?: WorkspaceCreateNestedManyWithoutOwnerInput
+    workspaceMemberships?: WorkspaceMemberCreateNestedManyWithoutUserInput
+    projectMemberships?: ProjectMemberCreateNestedManyWithoutUserInput
+    assignedTasks?: TaskCreateNestedManyWithoutAssigneeInput
+    reportedTasks?: TaskCreateNestedManyWithoutReporterInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    userSettings?: UserSettingsCreateNestedOneWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectCreateNestedManyWithoutCreatedByUserInput
+    uploadedFiles?: ProjectFileCreateNestedManyWithoutUploaderInput
+    requestedAnalyses?: AnalysisCreateNestedManyWithoutRequestedByUserInput
+    emailVerificationTokens?: EmailVerificationTokenCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    initiatedOrders?: OrderCreateNestedManyWithoutInitiatedByInput
+    workspaceInvitesSent?: WorkspaceInviteCreateNestedManyWithoutInvitedByUserInput
+    initiatedPipelineRuns?: ProjectPipelineRunCreateNestedManyWithoutInitiatedByUserInput
+    createdDeliverables?: DeliverableCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableCreateNestedManyWithoutLastUpdaterInput
+  }
+
+  export type UserUncheckedCreateWithoutFeedbackEntriesInput = {
+    id?: string
+    email: string
+    hashedPassword?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    avatarUrl?: string | null
+    emailVerified?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    oauthAccounts?: OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+    ownedWorkspaces?: WorkspaceUncheckedCreateNestedManyWithoutOwnerInput
+    workspaceMemberships?: WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+    projectMemberships?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    assignedTasks?: TaskUncheckedCreateNestedManyWithoutAssigneeInput
+    reportedTasks?: TaskUncheckedCreateNestedManyWithoutReporterInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    userSettings?: UserSettingsUncheckedCreateNestedOneWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByUserInput
+    uploadedFiles?: ProjectFileUncheckedCreateNestedManyWithoutUploaderInput
+    requestedAnalyses?: AnalysisUncheckedCreateNestedManyWithoutRequestedByUserInput
+    emailVerificationTokens?: EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    initiatedOrders?: OrderUncheckedCreateNestedManyWithoutInitiatedByInput
+    workspaceInvitesSent?: WorkspaceInviteUncheckedCreateNestedManyWithoutInvitedByUserInput
+    initiatedPipelineRuns?: ProjectPipelineRunUncheckedCreateNestedManyWithoutInitiatedByUserInput
+    createdDeliverables?: DeliverableUncheckedCreateNestedManyWithoutCreatorInput
+    lastUpdatedDeliverables?: DeliverableUncheckedCreateNestedManyWithoutLastUpdaterInput
+  }
+
+  export type UserCreateOrConnectWithoutFeedbackEntriesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFeedbackEntriesInput, UserUncheckedCreateWithoutFeedbackEntriesInput>
+  }
+
+  export type UserUpsertWithoutFeedbackEntriesInput = {
+    update: XOR<UserUpdateWithoutFeedbackEntriesInput, UserUncheckedUpdateWithoutFeedbackEntriesInput>
+    create: XOR<UserCreateWithoutFeedbackEntriesInput, UserUncheckedCreateWithoutFeedbackEntriesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFeedbackEntriesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFeedbackEntriesInput, UserUncheckedUpdateWithoutFeedbackEntriesInput>
+  }
+
+  export type UserUpdateWithoutFeedbackEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    oauthAccounts?: OAuthAccountUpdateManyWithoutUserNestedInput
+    ownedWorkspaces?: WorkspaceUpdateManyWithoutOwnerNestedInput
+    workspaceMemberships?: WorkspaceMemberUpdateManyWithoutUserNestedInput
+    projectMemberships?: ProjectMemberUpdateManyWithoutUserNestedInput
+    assignedTasks?: TaskUpdateManyWithoutAssigneeNestedInput
+    reportedTasks?: TaskUpdateManyWithoutReporterNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    userSettings?: UserSettingsUpdateOneWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUpdateManyWithoutCreatedByUserNestedInput
+    uploadedFiles?: ProjectFileUpdateManyWithoutUploaderNestedInput
+    requestedAnalyses?: AnalysisUpdateManyWithoutRequestedByUserNestedInput
+    emailVerificationTokens?: EmailVerificationTokenUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    initiatedOrders?: OrderUpdateManyWithoutInitiatedByNestedInput
+    workspaceInvitesSent?: WorkspaceInviteUpdateManyWithoutInvitedByUserNestedInput
+    initiatedPipelineRuns?: ProjectPipelineRunUpdateManyWithoutInitiatedByUserNestedInput
+    createdDeliverables?: DeliverableUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUpdateManyWithoutLastUpdaterNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFeedbackEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    oauthAccounts?: OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+    ownedWorkspaces?: WorkspaceUncheckedUpdateManyWithoutOwnerNestedInput
+    workspaceMemberships?: WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+    projectMemberships?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    assignedTasks?: TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+    reportedTasks?: TaskUncheckedUpdateManyWithoutReporterNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    userSettings?: UserSettingsUncheckedUpdateOneWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    uploadedFiles?: ProjectFileUncheckedUpdateManyWithoutUploaderNestedInput
+    requestedAnalyses?: AnalysisUncheckedUpdateManyWithoutRequestedByUserNestedInput
+    emailVerificationTokens?: EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    initiatedOrders?: OrderUncheckedUpdateManyWithoutInitiatedByNestedInput
+    workspaceInvitesSent?: WorkspaceInviteUncheckedUpdateManyWithoutInvitedByUserNestedInput
+    initiatedPipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserNestedInput
+    createdDeliverables?: DeliverableUncheckedUpdateManyWithoutCreatorNestedInput
+    lastUpdatedDeliverables?: DeliverableUncheckedUpdateManyWithoutLastUpdaterNestedInput
   }
 
   export type SessionCreateManyUserInput = {
     id: string
+    sessionToken?: string
     expiresAt: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     ipAddress?: string | null
     userAgent?: string | null
-    sessionToken?: string
   }
 
   export type OAuthAccountCreateManyUserInput = {
@@ -57761,6 +66444,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     workspaceId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -57771,10 +66455,12 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status?: $Enums.FileStatus
     storageProvider?: string
     providerFileId: string
     url: string
     description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -57859,34 +66545,84 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type UserFeedbackCreateManyUserInput = {
+    id?: string
+    entityType: $Enums.FeedbackEntityType
+    entityId?: string | null
+    rating?: number | null
+    comment?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isResolved?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliverableCreateManyCreatorInput = {
+    id?: string
+    projectId: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    projectFileId?: string | null
+    externalUrl?: string | null
+    generatedByAnalysisId?: string | null
+    generatedByPipelineRunId?: string | null
+    lastUpdatedByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliverableCreateManyLastUpdaterInput = {
+    id?: string
+    projectId: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    projectFileId?: string | null
+    externalUrl?: string | null
+    generatedByAnalysisId?: string | null
+    generatedByPipelineRunId?: string | null
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type SessionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    sessionToken?: StringFieldUpdateOperationsInput | string
   }
 
   export type SessionUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    sessionToken?: StringFieldUpdateOperationsInput | string
   }
 
   export type SessionUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    sessionToken?: StringFieldUpdateOperationsInput | string
   }
 
   export type OAuthAccountUpdateWithoutUserInput = {
@@ -58208,6 +66944,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
@@ -58219,6 +66956,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutCreatedByUserInput = {
@@ -58226,6 +66965,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     workspaceId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -58236,6 +66976,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUncheckedUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateManyWithoutCreatedByUserInput = {
@@ -58243,6 +66985,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     workspaceId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -58252,15 +66995,18 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutProjectFilesNestedInput
     ideaLinks?: IdeaProjectFileUpdateManyWithoutProjectFileNestedInput
     analysisAttachments?: AnalysisAttachmentUpdateManyWithoutProjectFileNestedInput
+    deliverableLink?: DeliverableUpdateOneWithoutLinkedProjectFileNestedInput
   }
 
   export type ProjectFileUncheckedUpdateWithoutUploaderInput = {
@@ -58269,14 +67015,17 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ideaLinks?: IdeaProjectFileUncheckedUpdateManyWithoutProjectFileNestedInput
     analysisAttachments?: AnalysisAttachmentUncheckedUpdateManyWithoutProjectFileNestedInput
+    deliverableLink?: DeliverableUncheckedUpdateOneWithoutLinkedProjectFileNestedInput
   }
 
   export type ProjectFileUncheckedUpdateManyWithoutUploaderInput = {
@@ -58285,10 +67034,12 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -58318,6 +67069,8 @@ export namespace Prisma {
     competitors?: CompetitorUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUpdateManyWithoutAnalysisNestedInput
     pipelineRun?: ProjectPipelineRunUpdateOneWithoutAnalysesNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisUncheckedUpdateWithoutRequestedByUserInput = {
@@ -58345,6 +67098,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentUncheckedUpdateManyWithoutAnalysisNestedInput
     competitors?: CompetitorUncheckedUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUncheckedUpdateManyWithoutAnalysisNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisUncheckedUpdateManyWithoutRequestedByUserInput = {
@@ -58512,6 +67267,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneRequiredWithoutPipelineRunsNestedInput
     pipelineTemplate?: PipelineTemplateUpdateOneRequiredWithoutPipelineRunsNestedInput
     analyses?: AnalysisUpdateManyWithoutPipelineRunNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByPipelineRunNestedInput
   }
 
   export type ProjectPipelineRunUncheckedUpdateWithoutInitiatedByUserInput = {
@@ -58526,6 +67282,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     analyses?: AnalysisUncheckedUpdateManyWithoutPipelineRunNestedInput
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByPipelineRunNestedInput
   }
 
   export type ProjectPipelineRunUncheckedUpdateManyWithoutInitiatedByUserInput = {
@@ -58537,6 +67294,156 @@ export namespace Prisma {
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserFeedbackUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    entityType?: EnumFeedbackEntityTypeFieldUpdateOperationsInput | $Enums.FeedbackEntityType
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserFeedbackUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    entityType?: EnumFeedbackEntityTypeFieldUpdateOperationsInput | $Enums.FeedbackEntityType
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserFeedbackUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    entityType?: EnumFeedbackEntityTypeFieldUpdateOperationsInput | $Enums.FeedbackEntityType
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliverableUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutDeliverablesNestedInput
+    linkedProjectFile?: ProjectFileUpdateOneWithoutDeliverableLinkNestedInput
+    generatedByAnalysis?: AnalysisUpdateOneWithoutGeneratedDeliverablesNestedInput
+    generatedByPipelineRun?: ProjectPipelineRunUpdateOneWithoutGeneratedDeliverablesNestedInput
+    lastUpdater?: UserUpdateOneWithoutLastUpdatedDeliverablesNestedInput
+  }
+
+  export type DeliverableUncheckedUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    projectFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByAnalysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByPipelineRunId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastUpdatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliverableUncheckedUpdateManyWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    projectFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByAnalysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByPipelineRunId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastUpdatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliverableUpdateWithoutLastUpdaterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutDeliverablesNestedInput
+    linkedProjectFile?: ProjectFileUpdateOneWithoutDeliverableLinkNestedInput
+    generatedByAnalysis?: AnalysisUpdateOneWithoutGeneratedDeliverablesNestedInput
+    generatedByPipelineRun?: ProjectPipelineRunUpdateOneWithoutGeneratedDeliverablesNestedInput
+    creator?: UserUpdateOneRequiredWithoutCreatedDeliverablesNestedInput
+  }
+
+  export type DeliverableUncheckedUpdateWithoutLastUpdaterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    projectFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByAnalysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByPipelineRunId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliverableUncheckedUpdateManyWithoutLastUpdaterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    projectFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByAnalysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByPipelineRunId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -58553,6 +67460,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     createdByUserId: string
+    projectStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -58622,6 +67530,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUser?: UserUpdateOneRequiredWithoutCreatedProjectsNestedInput
@@ -58633,6 +67542,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutWorkspaceInput = {
@@ -58640,6 +67551,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
@@ -58650,6 +67562,8 @@ export namespace Prisma {
     integrations?: ProjectIntegrationUncheckedUpdateManyWithoutProjectNestedInput
     pipelineRuns?: ProjectPipelineRunUncheckedUpdateManyWithoutProjectNestedInput
     productivityMetrics?: ProductivityMetricUncheckedUpdateManyWithoutProjectNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectNestedInput
+    deliverables?: DeliverableUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -58657,6 +67571,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    projectStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -58974,10 +67889,12 @@ export namespace Prisma {
     fileName: string
     fileType: string
     sizeBytes: number
+    status?: $Enums.FileStatus
     storageProvider?: string
     providerFileId: string
     url: string
     description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -59022,6 +67939,41 @@ export namespace Prisma {
     calculationSource?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
+  }
+
+  export type GitHubAIActionLogCreateManyProjectInput = {
+    id?: string
+    projectIntegrationId: string
+    analysisId?: string | null
+    actionType: $Enums.GitHubAIActionType
+    githubEntityType: $Enums.GitHubEntityType
+    githubEntityId: string
+    githubEntityUrl?: string | null
+    githubCommentId?: string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status: $Enums.ActionStatus
+    errorMessage?: string | null
+    triggeredBy?: string | null
+    performedAt?: Date | string
+  }
+
+  export type DeliverableCreateManyProjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    projectFileId?: string | null
+    externalUrl?: string | null
+    generatedByAnalysisId?: string | null
+    generatedByPipelineRunId?: string | null
+    createdByUserId: string
+    lastUpdatedByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ProjectMemberUpdateWithoutProjectInput = {
@@ -59166,6 +68118,8 @@ export namespace Prisma {
     competitors?: CompetitorUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUpdateManyWithoutAnalysisNestedInput
     pipelineRun?: ProjectPipelineRunUpdateOneWithoutAnalysesNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisUncheckedUpdateWithoutProjectInput = {
@@ -59193,6 +68147,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentUncheckedUpdateManyWithoutAnalysisNestedInput
     competitors?: CompetitorUncheckedUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUncheckedUpdateManyWithoutAnalysisNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisUncheckedUpdateManyWithoutProjectInput = {
@@ -59224,15 +68180,18 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     uploader?: UserUpdateOneRequiredWithoutUploadedFilesNestedInput
     ideaLinks?: IdeaProjectFileUpdateManyWithoutProjectFileNestedInput
     analysisAttachments?: AnalysisAttachmentUpdateManyWithoutProjectFileNestedInput
+    deliverableLink?: DeliverableUpdateOneWithoutLinkedProjectFileNestedInput
   }
 
   export type ProjectFileUncheckedUpdateWithoutProjectInput = {
@@ -59241,14 +68200,17 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ideaLinks?: IdeaProjectFileUncheckedUpdateManyWithoutProjectFileNestedInput
     analysisAttachments?: AnalysisAttachmentUncheckedUpdateManyWithoutProjectFileNestedInput
+    deliverableLink?: DeliverableUncheckedUpdateOneWithoutLinkedProjectFileNestedInput
   }
 
   export type ProjectFileUncheckedUpdateManyWithoutProjectInput = {
@@ -59257,10 +68219,12 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     fileType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
+    status?: EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
     storageProvider?: StringFieldUpdateOperationsInput | string
     providerFileId?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -59280,6 +68244,7 @@ export namespace Prisma {
     addedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutProjectIntegrationNestedInput
   }
 
   export type ProjectIntegrationUncheckedUpdateWithoutProjectInput = {
@@ -59297,6 +68262,7 @@ export namespace Prisma {
     addedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutProjectIntegrationNestedInput
   }
 
   export type ProjectIntegrationUncheckedUpdateManyWithoutProjectInput = {
@@ -59328,6 +68294,7 @@ export namespace Prisma {
     pipelineTemplate?: PipelineTemplateUpdateOneRequiredWithoutPipelineRunsNestedInput
     initiatedByUser?: UserUpdateOneRequiredWithoutInitiatedPipelineRunsNestedInput
     analyses?: AnalysisUpdateManyWithoutPipelineRunNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByPipelineRunNestedInput
   }
 
   export type ProjectPipelineRunUncheckedUpdateWithoutProjectInput = {
@@ -59342,6 +68309,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     analyses?: AnalysisUncheckedUpdateManyWithoutPipelineRunNestedInput
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByPipelineRunNestedInput
   }
 
   export type ProjectPipelineRunUncheckedUpdateManyWithoutProjectInput = {
@@ -59391,6 +68359,111 @@ export namespace Prisma {
     calculationSource?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GitHubAIActionLogUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actionType?: EnumGitHubAIActionTypeFieldUpdateOperationsInput | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFieldUpdateOperationsInput | $Enums.GitHubEntityType
+    githubEntityId?: StringFieldUpdateOperationsInput | string
+    githubEntityUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    githubCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumActionStatusFieldUpdateOperationsInput | $Enums.ActionStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    triggeredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    performedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectIntegration?: ProjectIntegrationUpdateOneRequiredWithoutGithubAIActionLogsNestedInput
+    analysis?: AnalysisUpdateOneWithoutGithubAIActionLogsNestedInput
+  }
+
+  export type GitHubAIActionLogUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectIntegrationId?: StringFieldUpdateOperationsInput | string
+    analysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    actionType?: EnumGitHubAIActionTypeFieldUpdateOperationsInput | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFieldUpdateOperationsInput | $Enums.GitHubEntityType
+    githubEntityId?: StringFieldUpdateOperationsInput | string
+    githubEntityUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    githubCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumActionStatusFieldUpdateOperationsInput | $Enums.ActionStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    triggeredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    performedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GitHubAIActionLogUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectIntegrationId?: StringFieldUpdateOperationsInput | string
+    analysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    actionType?: EnumGitHubAIActionTypeFieldUpdateOperationsInput | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFieldUpdateOperationsInput | $Enums.GitHubEntityType
+    githubEntityId?: StringFieldUpdateOperationsInput | string
+    githubEntityUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    githubCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumActionStatusFieldUpdateOperationsInput | $Enums.ActionStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    triggeredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    performedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliverableUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedProjectFile?: ProjectFileUpdateOneWithoutDeliverableLinkNestedInput
+    generatedByAnalysis?: AnalysisUpdateOneWithoutGeneratedDeliverablesNestedInput
+    generatedByPipelineRun?: ProjectPipelineRunUpdateOneWithoutGeneratedDeliverablesNestedInput
+    creator?: UserUpdateOneRequiredWithoutCreatedDeliverablesNestedInput
+    lastUpdater?: UserUpdateOneWithoutLastUpdatedDeliverablesNestedInput
+  }
+
+  export type DeliverableUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    projectFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByAnalysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByPipelineRunId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    lastUpdatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliverableUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    projectFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByAnalysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByPipelineRunId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    lastUpdatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IdeaProjectFileCreateManyIdeaInput = {
@@ -59470,6 +68543,8 @@ export namespace Prisma {
     competitors?: CompetitorUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUpdateManyWithoutAnalysisNestedInput
     pipelineRun?: ProjectPipelineRunUpdateOneWithoutAnalysesNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisUncheckedUpdateWithoutIdeaInput = {
@@ -59497,6 +68572,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentUncheckedUpdateManyWithoutAnalysisNestedInput
     competitors?: CompetitorUncheckedUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUncheckedUpdateManyWithoutAnalysisNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisUncheckedUpdateManyWithoutIdeaInput = {
@@ -59617,6 +68694,41 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type GitHubAIActionLogCreateManyAnalysisInput = {
+    id?: string
+    projectIntegrationId: string
+    projectId: string
+    actionType: $Enums.GitHubAIActionType
+    githubEntityType: $Enums.GitHubEntityType
+    githubEntityId: string
+    githubEntityUrl?: string | null
+    githubCommentId?: string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status: $Enums.ActionStatus
+    errorMessage?: string | null
+    triggeredBy?: string | null
+    performedAt?: Date | string
+  }
+
+  export type DeliverableCreateManyGeneratedByAnalysisInput = {
+    id?: string
+    projectId: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    projectFileId?: string | null
+    externalUrl?: string | null
+    generatedByPipelineRunId?: string | null
+    createdByUserId: string
+    lastUpdatedByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type AnalysisAttachmentUpdateWithoutAnalysisInput = {
     id?: StringFieldUpdateOperationsInput | string
     roleInAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
@@ -59731,6 +68843,111 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type GitHubAIActionLogUpdateWithoutAnalysisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actionType?: EnumGitHubAIActionTypeFieldUpdateOperationsInput | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFieldUpdateOperationsInput | $Enums.GitHubEntityType
+    githubEntityId?: StringFieldUpdateOperationsInput | string
+    githubEntityUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    githubCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumActionStatusFieldUpdateOperationsInput | $Enums.ActionStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    triggeredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    performedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectIntegration?: ProjectIntegrationUpdateOneRequiredWithoutGithubAIActionLogsNestedInput
+    project?: ProjectUpdateOneRequiredWithoutGithubAIActionLogsNestedInput
+  }
+
+  export type GitHubAIActionLogUncheckedUpdateWithoutAnalysisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectIntegrationId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    actionType?: EnumGitHubAIActionTypeFieldUpdateOperationsInput | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFieldUpdateOperationsInput | $Enums.GitHubEntityType
+    githubEntityId?: StringFieldUpdateOperationsInput | string
+    githubEntityUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    githubCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumActionStatusFieldUpdateOperationsInput | $Enums.ActionStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    triggeredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    performedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GitHubAIActionLogUncheckedUpdateManyWithoutAnalysisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectIntegrationId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    actionType?: EnumGitHubAIActionTypeFieldUpdateOperationsInput | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFieldUpdateOperationsInput | $Enums.GitHubEntityType
+    githubEntityId?: StringFieldUpdateOperationsInput | string
+    githubEntityUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    githubCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumActionStatusFieldUpdateOperationsInput | $Enums.ActionStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    triggeredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    performedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliverableUpdateWithoutGeneratedByAnalysisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutDeliverablesNestedInput
+    linkedProjectFile?: ProjectFileUpdateOneWithoutDeliverableLinkNestedInput
+    generatedByPipelineRun?: ProjectPipelineRunUpdateOneWithoutGeneratedDeliverablesNestedInput
+    creator?: UserUpdateOneRequiredWithoutCreatedDeliverablesNestedInput
+    lastUpdater?: UserUpdateOneWithoutLastUpdatedDeliverablesNestedInput
+  }
+
+  export type DeliverableUncheckedUpdateWithoutGeneratedByAnalysisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    projectFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByPipelineRunId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    lastUpdatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliverableUncheckedUpdateManyWithoutGeneratedByAnalysisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    projectFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByPipelineRunId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    lastUpdatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TaskCreateManyParentTaskInput = {
     id?: string
     projectId: string
@@ -59838,6 +69055,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneRequiredWithoutPipelineRunsNestedInput
     initiatedByUser?: UserUpdateOneRequiredWithoutInitiatedPipelineRunsNestedInput
     analyses?: AnalysisUpdateManyWithoutPipelineRunNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByPipelineRunNestedInput
   }
 
   export type ProjectPipelineRunUncheckedUpdateWithoutPipelineTemplateInput = {
@@ -59852,6 +69070,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     analyses?: AnalysisUncheckedUpdateManyWithoutPipelineRunNestedInput
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByPipelineRunNestedInput
   }
 
   export type ProjectPipelineRunUncheckedUpdateManyWithoutPipelineTemplateInput = {
@@ -59891,6 +69110,25 @@ export namespace Prisma {
     completedAt?: Date | string | null
   }
 
+  export type DeliverableCreateManyGeneratedByPipelineRunInput = {
+    id?: string
+    projectId: string
+    title: string
+    description?: string | null
+    content?: string | null
+    format: string
+    type: string
+    status?: $Enums.DeliverableStatus
+    version?: number
+    projectFileId?: string | null
+    externalUrl?: string | null
+    generatedByAnalysisId?: string | null
+    createdByUserId: string
+    lastUpdatedByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type AnalysisUpdateWithoutPipelineRunInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumAnalysisTypeFieldUpdateOperationsInput | $Enums.AnalysisType
@@ -59916,6 +69154,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentUpdateManyWithoutAnalysisNestedInput
     competitors?: CompetitorUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUpdateManyWithoutAnalysisNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisUncheckedUpdateWithoutPipelineRunInput = {
@@ -59943,6 +69183,8 @@ export namespace Prisma {
     attachments?: AnalysisAttachmentUncheckedUpdateManyWithoutAnalysisNestedInput
     competitors?: CompetitorUncheckedUpdateManyWithoutAnalysisNestedInput
     nameSuggestions?: NameSuggestionUncheckedUpdateManyWithoutAnalysisNestedInput
+    githubAIActionLogs?: GitHubAIActionLogUncheckedUpdateManyWithoutAnalysisNestedInput
+    generatedDeliverables?: DeliverableUncheckedUpdateManyWithoutGeneratedByAnalysisNestedInput
   }
 
   export type AnalysisUncheckedUpdateManyWithoutPipelineRunInput = {
@@ -59967,6 +69209,127 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type DeliverableUpdateWithoutGeneratedByPipelineRunInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutDeliverablesNestedInput
+    linkedProjectFile?: ProjectFileUpdateOneWithoutDeliverableLinkNestedInput
+    generatedByAnalysis?: AnalysisUpdateOneWithoutGeneratedDeliverablesNestedInput
+    creator?: UserUpdateOneRequiredWithoutCreatedDeliverablesNestedInput
+    lastUpdater?: UserUpdateOneWithoutLastUpdatedDeliverablesNestedInput
+  }
+
+  export type DeliverableUncheckedUpdateWithoutGeneratedByPipelineRunInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    projectFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByAnalysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    lastUpdatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliverableUncheckedUpdateManyWithoutGeneratedByPipelineRunInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    format?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: EnumDeliverableStatusFieldUpdateOperationsInput | $Enums.DeliverableStatus
+    version?: IntFieldUpdateOperationsInput | number
+    projectFileId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    generatedByAnalysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    lastUpdatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GitHubAIActionLogCreateManyProjectIntegrationInput = {
+    id?: string
+    projectId: string
+    analysisId?: string | null
+    actionType: $Enums.GitHubAIActionType
+    githubEntityType: $Enums.GitHubEntityType
+    githubEntityId: string
+    githubEntityUrl?: string | null
+    githubCommentId?: string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status: $Enums.ActionStatus
+    errorMessage?: string | null
+    triggeredBy?: string | null
+    performedAt?: Date | string
+  }
+
+  export type GitHubAIActionLogUpdateWithoutProjectIntegrationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actionType?: EnumGitHubAIActionTypeFieldUpdateOperationsInput | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFieldUpdateOperationsInput | $Enums.GitHubEntityType
+    githubEntityId?: StringFieldUpdateOperationsInput | string
+    githubEntityUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    githubCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumActionStatusFieldUpdateOperationsInput | $Enums.ActionStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    triggeredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    performedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutGithubAIActionLogsNestedInput
+    analysis?: AnalysisUpdateOneWithoutGithubAIActionLogsNestedInput
+  }
+
+  export type GitHubAIActionLogUncheckedUpdateWithoutProjectIntegrationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    analysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    actionType?: EnumGitHubAIActionTypeFieldUpdateOperationsInput | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFieldUpdateOperationsInput | $Enums.GitHubEntityType
+    githubEntityId?: StringFieldUpdateOperationsInput | string
+    githubEntityUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    githubCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumActionStatusFieldUpdateOperationsInput | $Enums.ActionStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    triggeredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    performedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GitHubAIActionLogUncheckedUpdateManyWithoutProjectIntegrationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    analysisId?: NullableStringFieldUpdateOperationsInput | string | null
+    actionType?: EnumGitHubAIActionTypeFieldUpdateOperationsInput | $Enums.GitHubAIActionType
+    githubEntityType?: EnumGitHubEntityTypeFieldUpdateOperationsInput | $Enums.GitHubEntityType
+    githubEntityId?: StringFieldUpdateOperationsInput | string
+    githubEntityUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    githubCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumActionStatusFieldUpdateOperationsInput | $Enums.ActionStatus
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    triggeredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    performedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 
