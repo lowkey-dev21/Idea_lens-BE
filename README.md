@@ -17,7 +17,7 @@ ___  ____  _____    _    _     _____  _   _  ____
 
 The **IdeaLens Backend** is the robust core powering our AI-driven Software Development Assistant. Built with **SvelteKit** for exceptional performance and developer experience, it orchestrates the entire development lifecycle. From validating raw ideas (documents, images, text) and conducting deep market research, to AI-assisted project management, progress tracking, and even generating pitch decks, IdeaLens integrates cutting-edge AI to redefine how software is envisioned and built.
 
-This backend manages authentication, multi-tenant workspaces, complex AI workflows, third-party integrations (GitHub, Jira, SlideSpeak, BrandFetch, DomainR), billing (via Flutterwave), asynchronous task processing (BullMQ), and secure file storage (Cloudinary).
+This backend manages authentication, multi-tenant workspaces, complex AI workflows, third-party integrations (including a dedicated **[IdeaLens GitHub App](https://github.com/apps/idealens-idea-to-reality)**, Jira, SlideSpeak, BrandFetch, DomainR), billing (via Flutterwave), asynchronous task processing (BullMQ), and secure file storage (Cloudinary).
 
 ---
 
@@ -291,10 +291,10 @@ mindmap
       Project & Task Management
         AI-Assisted Task Breakdown
         Internal Task Board
-        GitHub Projects/Issues Sync
+        GitHub Integration (Projects/Issues Sync via **[IdeaLens GitHub App](https://github.com/apps/idealens-idea-to-reality)**)
         Jira Sync
       Code Assistance
-        AI Code Review Summaries (Gemini on GitHub PRs)
+        AI Code Review Summaries (Gemini on GitHub PRs, powered by the **IdeaLens GitHub App**)
       Progress & Productivity
         Automated Tracking (via GitHub/Jira)
         AI-Generated Productivity Insights
@@ -460,7 +460,7 @@ graph TD
         *   `BRAVE_SEARCH_API_KEY`
         *   `DOMAINR_API_KEY` (if applicable)
         *   `BRANDFETCH_API_KEY` (if applicable)
-        *   `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (for OAuth)
+        *   `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (for OAuth & GitHub App interactions if needed beyond app installation token)
         *   `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` (for OAuth)
         *   `SLIDESPEAK_API_KEY` (if applicable)
         *   `SESSION_SECRET` (a long, random string for session signing)
