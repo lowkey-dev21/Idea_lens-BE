@@ -291,10 +291,10 @@ mindmap
       Project & Task Management
         AI-Assisted Task Breakdown
         Internal Task Board
-        GitHub Integration (Projects/Issues Sync via **[IdeaLens GitHub App](https://github.com/apps/idealens-idea-to-reality)**)
+        GitHub Integration (IdeaLens GitHub App)
         Jira Sync
       Code Assistance
-        AI Code Review Summaries (Gemini on GitHub PRs, powered by the **IdeaLens GitHub App**)
+        AI Code Review Summaries (Gemini on GitHub PRs, powered by the IdeaLens GitHub App)
       Progress & Productivity
         Automated Tracking (via GitHub/Jira)
         AI-Generated Productivity Insights
