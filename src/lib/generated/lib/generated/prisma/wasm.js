@@ -120,9 +120,433 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.ExampleScalarFieldEnum = {
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  hashedPassword: 'hashedPassword',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  avatarUrl: 'avatarUrl',
+  emailVerified: 'emailVerified',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OAuthAccountScalarFieldEnum = {
+  id: 'id',
+  provider: 'provider',
+  providerUserId: 'providerUserId',
+  userId: 'userId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SessionScalarFieldEnum = {
+  id: 'id',
+  sessionToken: 'sessionToken',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent'
+};
+
+exports.Prisma.EmailVerificationTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  email: 'email',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PasswordResetTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ApiKeyScalarFieldEnum = {
+  id: 'id',
+  hashedKey: 'hashedKey',
+  prefix: 'prefix',
+  userId: 'userId',
+  description: 'description',
+  scopes: 'scopes',
+  expiresAt: 'expiresAt',
+  lastUsedAt: 'lastUsedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserSettingsScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  receiveEmailNotifications: 'receiveEmailNotifications',
+  receiveInAppNotifications: 'receiveInAppNotifications',
+  theme: 'theme',
+  language: 'language',
+  timezone: 'timezone',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WorkspaceScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  ownerId: 'ownerId',
+  billingCustomerId: 'billingCustomerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WorkspaceMemberScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  userId: 'userId',
+  role: 'role',
+  joinedAt: 'joinedAt'
+};
+
+exports.Prisma.WorkspaceInviteScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  workspaceId: 'workspaceId',
+  invitedByUserId: 'invitedByUserId',
+  role: 'role',
+  token: 'token',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WorkspaceSettingsScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  defaultProjectVisibility: 'defaultProjectVisibility',
+  memberInvitePolicy: 'memberInvitePolicy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PlanScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  flutterwavePlanId: 'flutterwavePlanId',
+  price: 'price',
+  currency: 'currency',
+  interval: 'interval',
+  description: 'description',
+  features: 'features',
+  projectLimit: 'projectLimit',
+  memberLimit: 'memberLimit',
+  aiCreditLimit: 'aiCreditLimit',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SubscriptionScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  planId: 'planId',
+  flutterwaveSubscriptionId: 'flutterwaveSubscriptionId',
+  status: 'status',
+  currentPeriodStart: 'currentPeriodStart',
+  currentPeriodEnd: 'currentPeriodEnd',
+  trialEndsAt: 'trialEndsAt',
+  cancelAtPeriodEnd: 'cancelAtPeriodEnd',
+  canceledAt: 'canceledAt',
+  endedAt: 'endedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OrderScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  initiatedByUserId: 'initiatedByUserId',
+  planId: 'planId',
+  flutterwaveTransactionId: 'flutterwaveTransactionId',
+  flutterwaveReference: 'flutterwaveReference',
+  amount: 'amount',
+  currency: 'currency',
+  status: 'status',
+  paymentMethod: 'paymentMethod',
+  description: 'description',
+  invoiceUrl: 'invoiceUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProjectScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  workspaceId: 'workspaceId',
+  createdByUserId: 'createdByUserId',
+  projectStatus: 'projectStatus',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProjectMemberScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  userId: 'userId',
+  role: 'role',
+  addedAt: 'addedAt'
+};
+
+exports.Prisma.IdeaScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  title: 'title',
+  rawText: 'rawText',
+  sourceUrls: 'sourceUrls',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProjectFileScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  uploaderUserId: 'uploaderUserId',
+  fileName: 'fileName',
+  fileType: 'fileType',
+  sizeBytes: 'sizeBytes',
+  status: 'status',
+  storageProvider: 'storageProvider',
+  providerFileId: 'providerFileId',
+  url: 'url',
+  description: 'description',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.IdeaProjectFileScalarFieldEnum = {
+  id: 'id',
+  ideaId: 'ideaId',
+  projectFileId: 'projectFileId',
+  purpose: 'purpose',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AnalysisScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  ideaId: 'ideaId',
+  pipelineRunId: 'pipelineRunId',
+  type: 'type',
+  status: 'status',
+  requestedByUserId: 'requestedByUserId',
+  parameters: 'parameters',
+  result: 'result',
+  summary: 'summary',
+  errorMessage: 'errorMessage',
+  aiProvider: 'aiProvider',
+  modelUsed: 'modelUsed',
+  promptTokens: 'promptTokens',
+  completionTokens: 'completionTokens',
+  totalTokens: 'totalTokens',
+  durationMs: 'durationMs',
+  jobId: 'jobId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt'
+};
+
+exports.Prisma.AnalysisAttachmentScalarFieldEnum = {
+  id: 'id',
+  analysisId: 'analysisId',
+  projectFileId: 'projectFileId',
+  roleInAnalysis: 'roleInAnalysis',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.CompetitorScalarFieldEnum = {
+  id: 'id',
+  analysisId: 'analysisId',
+  name: 'name',
+  websiteUrl: 'websiteUrl',
+  logoUrl: 'logoUrl',
+  description: 'description',
+  strengths: 'strengths',
+  weaknesses: 'weaknesses',
+  opportunities: 'opportunities',
+  threats: 'threats',
+  marketSegment: 'marketSegment',
+  fundingStage: 'fundingStage',
+  rawSourceData: 'rawSourceData',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NameSuggestionScalarFieldEnum = {
+  id: 'id',
+  analysisId: 'analysisId',
+  suggestedName: 'suggestedName',
+  reasoning: 'reasoning',
+  domainAvailability: 'domainAvailability',
+  domainCheckedAt: 'domainCheckedAt',
+  domainCheckProvider: 'domainCheckProvider',
+  socialHandlesAvailable: 'socialHandlesAvailable',
+  trademarkRisk: 'trademarkRisk',
+  brandIdentitySuggestions: 'brandIdentitySuggestions',
+  isFavorited: 'isFavorited',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.TaskScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  priority: 'priority',
+  dueDate: 'dueDate',
+  assigneeId: 'assigneeId',
+  reporterId: 'reporterId',
+  parentTaskId: 'parentTaskId',
+  externalId: 'externalId',
+  externalSource: 'externalSource',
+  externalUrl: 'externalUrl',
+  estimatedHours: 'estimatedHours',
+  actualHoursSpent: 'actualHoursSpent',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  completedAt: 'completedAt'
+};
+
+exports.Prisma.ProductivityMetricScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  metricType: 'metricType',
+  value: 'value',
+  unit: 'unit',
+  periodStartDate: 'periodStartDate',
+  periodEndDate: 'periodEndDate',
+  calculationSource: 'calculationSource',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PipelineTemplateScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  name: 'name',
+  description: 'description',
+  analysisSequence: 'analysisSequence',
+  defaultParameters: 'defaultParameters',
+  isGlobal: 'isGlobal',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProjectPipelineRunScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  pipelineTemplateId: 'pipelineTemplateId',
+  initiatedByUserId: 'initiatedByUserId',
+  status: 'status',
+  parametersOverrides: 'parametersOverrides',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DeliverableScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  title: 'title',
+  description: 'description',
+  content: 'content',
+  format: 'format',
+  type: 'type',
+  status: 'status',
+  version: 'version',
+  projectFileId: 'projectFileId',
+  externalUrl: 'externalUrl',
+  generatedByAnalysisId: 'generatedByAnalysisId',
+  generatedByPipelineRunId: 'generatedByPipelineRunId',
+  createdByUserId: 'createdByUserId',
+  lastUpdatedByUserId: 'lastUpdatedByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProjectIntegrationScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  provider: 'provider',
+  externalAccountId: 'externalAccountId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  tokenExpiresAt: 'tokenExpiresAt',
+  settings: 'settings',
+  isEnabled: 'isEnabled',
+  lastSyncAt: 'lastSyncAt',
+  syncStatus: 'syncStatus',
+  syncErrorMessage: 'syncErrorMessage',
+  addedByUserId: 'addedByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.GitHubAIActionLogScalarFieldEnum = {
+  id: 'id',
+  projectIntegrationId: 'projectIntegrationId',
+  projectId: 'projectId',
+  analysisId: 'analysisId',
+  actionType: 'actionType',
+  githubEntityType: 'githubEntityType',
+  githubEntityId: 'githubEntityId',
+  githubEntityUrl: 'githubEntityUrl',
+  githubCommentId: 'githubCommentId',
+  content: 'content',
+  status: 'status',
+  errorMessage: 'errorMessage',
+  triggeredBy: 'triggeredBy',
+  performedAt: 'performedAt'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  link: 'link',
+  isRead: 'isRead',
+  isEmailed: 'isEmailed',
+  entityId: 'entityId',
+  entityType: 'entityType',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserFeedbackScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  rating: 'rating',
+  comment: 'comment',
+  metadata: 'metadata',
+  isResolved: 'isResolved',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -132,14 +556,281 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+exports.OAuthProvider = exports.$Enums.OAuthProvider = {
+  GOOGLE: 'GOOGLE',
+  GITHUB: 'GITHUB'
+};
+
+exports.UserTheme = exports.$Enums.UserTheme = {
+  LIGHT: 'LIGHT',
+  DARK: 'DARK',
+  SYSTEM: 'SYSTEM'
+};
+
+exports.UserRole = exports.$Enums.UserRole = {
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER',
+  VIEWER: 'VIEWER'
+};
+
+exports.InviteStatus = exports.$Enums.InviteStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  EXPIRED: 'EXPIRED',
+  CANCELED: 'CANCELED'
+};
+
+exports.WorkspaceVisibility = exports.$Enums.WorkspaceVisibility = {
+  PRIVATE: 'PRIVATE',
+  WORKSPACE_VISIBLE: 'WORKSPACE_VISIBLE'
+};
+
+exports.MemberInvitePolicy = exports.$Enums.MemberInvitePolicy = {
+  ADMINS_ONLY: 'ADMINS_ONLY',
+  ADMINS_AND_MEMBERS: 'ADMINS_AND_MEMBERS'
+};
+
+exports.PlanInterval = exports.$Enums.PlanInterval = {
+  ONE_TIME: 'ONE_TIME',
+  MONTHLY: 'MONTHLY',
+  YEARLY: 'YEARLY'
+};
+
+exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
+  ACTIVE: 'ACTIVE',
+  CANCELED: 'CANCELED',
+  PAST_DUE: 'PAST_DUE',
+  INCOMPLETE: 'INCOMPLETE',
+  INCOMPLETE_EXPIRED: 'INCOMPLETE_EXPIRED',
+  TRIALING: 'TRIALING',
+  UNPAID: 'UNPAID'
+};
+
+exports.OrderStatus = exports.$Enums.OrderStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  SUCCESSFUL: 'SUCCESSFUL',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+};
+
+exports.ProjectRole = exports.$Enums.ProjectRole = {
+  MANAGER: 'MANAGER',
+  EDITOR: 'EDITOR',
+  VIEWER: 'VIEWER'
+};
+
+exports.IdeaStatus = exports.$Enums.IdeaStatus = {
+  DRAFT: 'DRAFT',
+  SUBMITTED: 'SUBMITTED',
+  VALIDATING: 'VALIDATING',
+  VALIDATED: 'VALIDATED',
+  REFINING: 'REFINING',
+  REFINED: 'REFINED',
+  ARCHIVED: 'ARCHIVED'
+};
+
+exports.FileStatus = exports.$Enums.FileStatus = {
+  UPLOADING: 'UPLOADING',
+  ACTIVE: 'ACTIVE',
+  ARCHIVED: 'ARCHIVED',
+  DELETION_PENDING: 'DELETION_PENDING',
+  DELETED: 'DELETED',
+  ERROR: 'ERROR'
+};
+
+exports.AnalysisType = exports.$Enums.AnalysisType = {
+  IDEA_VALIDATION: 'IDEA_VALIDATION',
+  IDEA_REFINEMENT: 'IDEA_REFINEMENT',
+  PROJECT_SCOPE_EVALUATION: 'PROJECT_SCOPE_EVALUATION',
+  MARKET_RESEARCH: 'MARKET_RESEARCH',
+  COMPETITOR_ANALYSIS: 'COMPETITOR_ANALYSIS',
+  SWOT_ANALYSIS: 'SWOT_ANALYSIS',
+  NAMING_BRANDING: 'NAMING_BRANDING',
+  TASK_SUGGESTION: 'TASK_SUGGESTION',
+  CODE_REVIEW_SUMMARY: 'CODE_REVIEW_SUMMARY',
+  PERFORMANCE_OPTIMIZATION_SUGGESTION: 'PERFORMANCE_OPTIMIZATION_SUGGESTION',
+  PRODUCTIVITY_INSIGHTS: 'PRODUCTIVITY_INSIGHTS',
+  PITCH_DECK_CONTENT_GENERATION: 'PITCH_DECK_CONTENT_GENERATION',
+  DOCUMENT_ANALYSIS: 'DOCUMENT_ANALYSIS'
+};
+
+exports.AnalysisStatus = exports.$Enums.AnalysisStatus = {
+  PENDING: 'PENDING',
+  QUEUED: 'QUEUED',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELED: 'CANCELED'
+};
+
+exports.TaskStatus = exports.$Enums.TaskStatus = {
+  BACKLOG: 'BACKLOG',
+  TODO: 'TODO',
+  IN_PROGRESS: 'IN_PROGRESS',
+  IN_REVIEW: 'IN_REVIEW',
+  DONE: 'DONE',
+  ARCHIVED: 'ARCHIVED'
+};
+
+exports.TaskPriority = exports.$Enums.TaskPriority = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
+exports.DeliverableStatus = exports.$Enums.DeliverableStatus = {
+  DRAFT: 'DRAFT',
+  QUEUED: 'QUEUED',
+  GENERATING: 'GENERATING',
+  UPDATING: 'UPDATING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  ARCHIVED: 'ARCHIVED'
+};
+
+exports.IntegrationProvider = exports.$Enums.IntegrationProvider = {
+  GITHUB: 'GITHUB',
+  JIRA: 'JIRA'
+};
+
+exports.IntegrationSyncStatus = exports.$Enums.IntegrationSyncStatus = {
+  IDLE: 'IDLE',
+  SYNCING: 'SYNCING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+  NEEDS_REAUTH: 'NEEDS_REAUTH'
+};
+
+exports.GitHubAIActionType = exports.$Enums.GitHubAIActionType = {
+  PR_REVIEW_COMMENT: 'PR_REVIEW_COMMENT',
+  PR_SUMMARY_COMMENT: 'PR_SUMMARY_COMMENT',
+  ISSUE_COMMENT: 'ISSUE_COMMENT',
+  ISSUE_AUTO_CLOSE: 'ISSUE_AUTO_CLOSE',
+  ISSUE_AUTO_TAG: 'ISSUE_AUTO_TAG',
+  PR_AUTO_TAG: 'PR_AUTO_TAG'
+};
+
+exports.GitHubEntityType = exports.$Enums.GitHubEntityType = {
+  PULL_REQUEST: 'PULL_REQUEST',
+  ISSUE: 'ISSUE',
+  COMMIT: 'COMMIT'
+};
+
+exports.ActionStatus = exports.$Enums.ActionStatus = {
+  PENDING: 'PENDING',
+  EXECUTED: 'EXECUTED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED'
+};
+
+exports.NotificationType = exports.$Enums.NotificationType = {
+  WORKSPACE_INVITE_RECEIVED: 'WORKSPACE_INVITE_RECEIVED',
+  WORKSPACE_INVITE_ACCEPTED: 'WORKSPACE_INVITE_ACCEPTED',
+  USER_ADDED_TO_WORKSPACE: 'USER_ADDED_TO_WORKSPACE',
+  USER_REMOVED_FROM_WORKSPACE: 'USER_REMOVED_FROM_WORKSPACE',
+  WORKSPACE_ROLE_CHANGED: 'WORKSPACE_ROLE_CHANGED',
+  PROJECT_CREATED: 'PROJECT_CREATED',
+  USER_ADDED_TO_PROJECT: 'USER_ADDED_TO_PROJECT',
+  USER_REMOVED_FROM_PROJECT: 'USER_REMOVED_FROM_PROJECT',
+  PROJECT_ROLE_CHANGED: 'PROJECT_ROLE_CHANGED',
+  IDEA_SUBMITTED: 'IDEA_SUBMITTED',
+  IDEA_STATUS_CHANGED: 'IDEA_STATUS_CHANGED',
+  ANALYSIS_STARTED: 'ANALYSIS_STARTED',
+  ANALYSIS_COMPLETED: 'ANALYSIS_COMPLETED',
+  ANALYSIS_FAILED: 'ANALYSIS_FAILED',
+  PIPELINE_RUN_STARTED: 'PIPELINE_RUN_STARTED',
+  PIPELINE_RUN_COMPLETED: 'PIPELINE_RUN_COMPLETED',
+  PIPELINE_RUN_FAILED: 'PIPELINE_RUN_FAILED',
+  DELIVERABLE_GENERATED: 'DELIVERABLE_GENERATED',
+  DELIVERABLE_UPDATED: 'DELIVERABLE_UPDATED',
+  DELIVERABLE_GENERATION_FAILED: 'DELIVERABLE_GENERATION_FAILED',
+  TASK_CREATED: 'TASK_CREATED',
+  TASK_ASSIGNED: 'TASK_ASSIGNED',
+  TASK_STATUS_CHANGED: 'TASK_STATUS_CHANGED',
+  TASK_DUE_SOON: 'TASK_DUE_SOON',
+  TASK_MENTION: 'TASK_MENTION',
+  INTEGRATION_CONNECTED: 'INTEGRATION_CONNECTED',
+  INTEGRATION_DISCONNECTED: 'INTEGRATION_DISCONNECTED',
+  INTEGRATION_SYNC_COMPLETE: 'INTEGRATION_SYNC_COMPLETE',
+  INTEGRATION_SYNC_FAILED: 'INTEGRATION_SYNC_FAILED',
+  GITHUB_AI_ACTION_SUCCESS: 'GITHUB_AI_ACTION_SUCCESS',
+  GITHUB_AI_ACTION_FAILED: 'GITHUB_AI_ACTION_FAILED',
+  SUBSCRIPTION_STARTED: 'SUBSCRIPTION_STARTED',
+  SUBSCRIPTION_CANCELED: 'SUBSCRIPTION_CANCELED',
+  SUBSCRIPTION_ENDING_SOON: 'SUBSCRIPTION_ENDING_SOON',
+  PAYMENT_SUCCESSFUL: 'PAYMENT_SUCCESSFUL',
+  PAYMENT_FAILED: 'PAYMENT_FAILED',
+  INVOICE_READY: 'INVOICE_READY',
+  GENERAL_ANNOUNCEMENT: 'GENERAL_ANNOUNCEMENT'
+};
+
+exports.FeedbackEntityType = exports.$Enums.FeedbackEntityType = {
+  ANALYSIS_RESULT: 'ANALYSIS_RESULT',
+  NAME_SUGGESTION: 'NAME_SUGGESTION',
+  TASK_SUGGESTION: 'TASK_SUGGESTION',
+  GITHUB_AI_ACTION: 'GITHUB_AI_ACTION',
+  DELIVERABLE: 'DELIVERABLE',
+  PITCH_DECK_CONTENT: 'PITCH_DECK_CONTENT',
+  PLATFORM_FEATURE: 'PLATFORM_FEATURE',
+  GENERAL: 'GENERAL'
+};
 
 exports.Prisma.ModelName = {
-  Example: 'Example'
+  User: 'User',
+  OAuthAccount: 'OAuthAccount',
+  Session: 'Session',
+  EmailVerificationToken: 'EmailVerificationToken',
+  PasswordResetToken: 'PasswordResetToken',
+  ApiKey: 'ApiKey',
+  UserSettings: 'UserSettings',
+  Workspace: 'Workspace',
+  WorkspaceMember: 'WorkspaceMember',
+  WorkspaceInvite: 'WorkspaceInvite',
+  WorkspaceSettings: 'WorkspaceSettings',
+  Plan: 'Plan',
+  Subscription: 'Subscription',
+  Order: 'Order',
+  Project: 'Project',
+  ProjectMember: 'ProjectMember',
+  Idea: 'Idea',
+  ProjectFile: 'ProjectFile',
+  IdeaProjectFile: 'IdeaProjectFile',
+  Analysis: 'Analysis',
+  AnalysisAttachment: 'AnalysisAttachment',
+  Competitor: 'Competitor',
+  NameSuggestion: 'NameSuggestion',
+  Task: 'Task',
+  ProductivityMetric: 'ProductivityMetric',
+  PipelineTemplate: 'PipelineTemplate',
+  ProjectPipelineRun: 'ProjectPipelineRun',
+  Deliverable: 'Deliverable',
+  ProjectIntegration: 'ProjectIntegration',
+  GitHubAIActionLog: 'GitHubAIActionLog',
+  Notification: 'Notification',
+  UserFeedback: 'UserFeedback'
 };
 
 /**
