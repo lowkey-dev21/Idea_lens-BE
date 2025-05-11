@@ -14,36 +14,36 @@ Idea_lens is built around a flow, allowing users to pick and choose the help the
 
 **Core Goal:** To take a raw idea 💡 and transform it into a well-defined, market-aware, and planned software project 🚀.
 
-Here’s a visual representation of the typical user journey:
+Here's a visual representation of the typical user journey:
 
 ```mermaid
 graph LR
-    A[💡 New Idea] --> B{Idea Validation?};
-    B -- Yes --> C[🤖 AI Validates & Refines];
+    A["New Idea"] --> B{Idea Validation?};
+    B -- Yes --> C["AI Validates & Refines"];
     C --> D{Market Research?};
     B -- No --> D;
-    D -- Yes --> E[📊 AI Researches Market & Competitors];
+    D -- Yes --> E["AI Researches Market & Competitors"];
     E --> F{Naming & Branding?};
     D -- No --> F;
-    F -- Yes --> G[🏷️ AI Suggests Names (Domain Check via DomainR)];
+    F -- Yes --> G["AI Suggests Names (Domain Check via DomainR)"];
     G --> H{Project Planning?};
     F -- No --> H;
-    H -- Yes --> I[📋 AI Helps Plan Tasks (Optional Sync w/ Jira/GitHub)];
+    H -- Yes --> I["AI Helps Plan Tasks (Optional Sync w/ Jira/GitHub)"];
     I --> J{Track Progress?};
     H -- No --> J;
-    J -- Yes --> K[📈 AI Tracks Progress & Productivity];
+    J -- Yes --> K["AI Tracks Progress & Productivity"];
     K --> L{Strategic Review?};
     J -- No --> L;
-    L -- Yes --> M[♟️ AI Generates SWOT Analysis];
-    M --> N[🚀 Ready for Next Steps (e.g., Pitch Deck via Slidespeak)];
+    L -- Yes --> M["AI Generates SWOT Analysis"];
+    M --> N["Ready for Next Steps (e.g., Pitch Deck via Slidespeak)"];
     L -- No --> N;
 
-    subgraph "External Services Integrated"
+    subgraph External_Services_Integrated ["External Services Integrated"]
         direction LR
         DomainR
         BrandFetch
         Slidespeak
-        GitHubAPI[GitHub/Jira]
+        GitHubAPI["GitHub/Jira"]
     end
 
     E --> BrandFetch;
@@ -108,23 +108,23 @@ To keep things neat, Idea_lens uses a clear structure:
 
 ```mermaid
 graph TD
-    U[👤 User Account] --> W1[🏢 Workspace A];
-    U --> W2[🏢 Workspace B (Invited)];
+    U["User Account"] --> W1["Workspace_A"];
+    U --> W2["Workspace_B_Invited"];
 
-    W1 --> P1A[📁 Project Alpha (in Workspace A)];
-    W1 --> P1B[📁 Project Beta (in Workspace A)];
-    W2 --> P2A[📁 Project Gamma (in Workspace B)];
+    W1 --> P1A["Project Alpha (in Workspace A)"];
+    W1 --> P1B["Project Beta (in Workspace A)"];
+    W2 --> P2A["Project Gamma (in Workspace B)"];
 
-    W1 -- Manages Billing & Members --> W1;
-    P1A -- Contains --> Ideas1[💡 Ideas];
-    P1A -- Contains --> Analyses1[📊 Analyses];
-    P1A -- Contains --> Tasks1[📋 Tasks];
-    P1A -- Contains --> Files1[📄 Files];
+    W1 -- "Manages Billing & Members" --> W1;
+    P1A -- "Contains" --> Ideas1["Ideas"];
+    P1A -- "Contains" --> Analyses1["Analyses"];
+    P1A -- "Contains" --> Tasks1["Tasks"];
+    P1A -- "Contains" --> Files1["Files"];
 
-    subgraph "Workspace A Members"
-        M1[🧑‍💻 Admin (Creator)]
-        M2[🧑‍💼 Member]
-        M3[🧐 Viewer]
+    subgraph Workspace_A_Members ["Workspace A Members"]
+        M1["Admin (Creator)"]
+        M2["Member"]
+        M3["Viewer"]
     end
 
     U -.-> M1;
@@ -132,10 +132,9 @@ graph TD
     W1 -.-> M2;
     W1 -.-> M3;
 
-    M1 -- Can Access --> P1A;
-    M1 -- Can Access --> P1B;
-    M2 -- Can Access (scoped) --> P1A;
-
+    M1 -- "Can Access" --> P1A;
+    M1 -- "Can Access" --> P1B;
+    M2 -- "Can Access (scoped)" --> P1A;
 ```
 
 *   **Users:** Individuals sign up.
@@ -180,30 +179,30 @@ The backend's "AI Orchestrators" 🧑‍🏫 act like conductors, choosing the r
 
 ```mermaid
 graph TD
-    Client[📱/💻 User Interface] <-->|API Calls| Backend[Idea_lens Backend (SvelteKit)];
+    Client["User Interface"] <-->|"API Calls"| Backend["Idea_lens Backend (SvelteKit)"];
 
-    Backend --> AuthNAuthZ[🔑 Authentication & Authorization];
-    Backend --> UserMgmt[👤 User & Profile Management];
-    Backend --> WorkspaceMgmt[🏢 Workspace & Member Management];
-    Backend --> ProjectMgmt[📁 Project & Idea Management];
-    Backend --> FileMgmt[📄 File Handling (via Cloudinary)];
-    Backend --> TaskMgmt[📋 Task Management & PM Integrations];
-    Backend --> AIOrchestration[🤖 AI Orchestration];
-    Backend --> BackgroundQueues[⏳ Background Task Queues (BullMQ)];
-    Backend --> BillingMgmt[💳 Billing & Subscriptions (Flutterwave)];
-    Backend --> NotificationSys[🔔 Notification System];
-    Backend --> ExternalServices[🔗 External Service Integration (DomainR, BrandFetch, Slidespeak)];
+    Backend --> AuthNAuthZ["Authentication & Authorization"];
+    Backend --> UserMgmt["User & Profile Management"];
+    Backend --> WorkspaceMgmt["Workspace & Member Management"];
+    Backend --> ProjectMgmt["Project & Idea Management"];
+    Backend --> FileMgmt["File Handling (via Cloudinary)"];
+    Backend --> TaskMgmt["Task Management & PM Integrations"];
+    Backend --> AIOrchestration["AI Orchestration"];
+    Backend --> BackgroundQueues["Background Task Queues (BullMQ)"];
+    Backend --> BillingMgmt["Billing & Subscriptions (Flutterwave)"];
+    Backend --> NotificationSys["Notification System"];
+    Backend --> ExternalServices["External Service Integration (DomainR, BrandFetch, Slidespeak)"];
 
-    AIOrchestration --> Perplexity[Perplexity API];
-    AIOrchestration --> Gemini[Gemini API];
-    AIOrchestration --> Mistral[Mistral API];
-    AIOrchestration --> Brave[Brave Search API];
+    AIOrchestration --> Perplexity["Perplexity API"];
+    AIOrchestration --> Gemini["Gemini API"];
+    AIOrchestration --> Mistral["Mistral API"];
+    AIOrchestration --> Brave["Brave Search API"];
 
-    ProjectMgmt --> Database[(🐘 PostgreSQL DB)];
+    ProjectMgmt --> Database["PostgreSQL DB"];
     WorkspaceMgmt --> Database;
     UserMgmt --> Database;
-    BackgroundQueues -- Uses --> RedisBullMQ[(⚙️ Redis for BullMQ)];
-    Backend -- Uses for Caching --> RedisCache[(⚡ Redis for Cache)];
+    BackgroundQueues -- "Uses" --> RedisBullMQ["Redis for BullMQ"];
+    Backend -- "Uses for Caching" --> RedisCache["Redis for Cache"];
 ```
 *   User accounts, profiles, settings.
 *   Workspaces, members, roles.
