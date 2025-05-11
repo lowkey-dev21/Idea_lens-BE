@@ -19,6 +19,8 @@ The **IdeaLens Backend** is the robust core powering our AI-driven Software Deve
 
 This backend manages authentication, multi-tenant workspaces, complex AI workflows, third-party integrations (including a dedicated **[IdeaLens GitHub App](https://github.com/apps/idealens-idea-to-reality)**, Jira, SlideSpeak, BrandFetch, DomainR), billing (via Flutterwave), asynchronous task processing (BullMQ), and secure file storage (Cloudinary).
 
+Docs: https://www.idea-lens-be.goremote.africa
+
 ---
 
 ## 🏗️ System Architecture
