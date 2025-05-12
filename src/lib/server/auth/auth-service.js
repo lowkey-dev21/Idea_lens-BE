@@ -560,4 +560,13 @@ async function refreshSessionToken(sessionToken) {
   }
 }
 
-export { registerUserWithEmailAndPassword, doesUserExist, loginUserWithEmailAndPassword, logoutUser, validateSessionById, refreshSessionToken };
+export { 
+  registerUserWithEmailAndPassword, 
+  doesUserExist, 
+  loginUserWithEmailAndPassword, 
+  logoutUser, 
+  validateSessionById, 
+  refreshSessionToken,
+  create_user,
+  login_user
+};
