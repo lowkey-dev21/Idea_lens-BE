@@ -1,0 +1,172 @@
+// lib/server/auth/permissions/rolePermissionsMap.js
+
+/**
+ * Role to Atomic Permissions Mapping for IdeaLens
+ * Defines the specific permissions granted by UserRole (Workspace) and ProjectRole.
+ * Also defines constants for all atomic permissions.
+ */
+
+// --- Atomic Permission Constants ---
+
+// USER - Own actions
+export const P_USER_VIEW_OWN_PROFILE = 'USER_VIEW_OWN_PROFILE';
+export const P_USER_UPDATE_OWN_PROFILE = 'USER_UPDATE_OWN_PROFILE'; // Assumed for PUT /api/user/profile
+export const P_USER_LOGOUT_OWN = 'USER_LOGOUT_OWN';
+export const P_USER_MANAGE_OWN_API_KEYS = 'USER_MANAGE_OWN_API_KEYS'; // If you have API key management
+export const P_USER_VIEW_OWN_NOTIFICATIONS = 'USER_VIEW_OWN_NOTIFICATIONS';
+export const P_USER_UPDATE_OWN_NOTIFICATIONS = 'USER_UPDATE_OWN_NOTIFICATIONS'; // e.g. mark as read, delete own
+export const P_USER_MANAGE_OWN_NOTIFICATION_SETTINGS = 'USER_MANAGE_OWN_NOTIFICATION_SETTINGS';
+export const P_USER_REQUEST_EMAIL_CHANGE_OWN = 'USER_REQUEST_EMAIL_CHANGE_OWN';
+export const P_USER_CONFIRM_EMAIL_CHANGE_OWN = 'USER_CONFIRM_EMAIL_CHANGE_OWN';
+export const P_USER_MANAGE_OWN_OAUTH_ACCOUNTS = 'USER_MANAGE_OWN_OAUTH_ACCOUNTS'; // For /api/auth/accounts
+
+// WORKSPACE - General
+export const P_WORKSPACE_CREATE_NEW = 'WORKSPACE_CREATE_NEW';
+
+// WORKSPACE - Contextual
+export const P_WORKSPACE_VIEW_DETAILS = 'WORKSPACE_VIEW_DETAILS';
+export const P_WORKSPACE_UPDATE_DETAILS = 'WORKSPACE_UPDATE_DETAILS';
+export const P_WORKSPACE_DELETE = 'WORKSPACE_DELETE';
+export const P_WORKSPACE_VIEW_SETTINGS = 'WORKSPACE_VIEW_SETTINGS'; // Assumed for GET /api/workspaces/[id]/settings
+export const P_WORKSPACE_UPDATE_SETTINGS = 'WORKSPACE_UPDATE_SETTINGS'; // Assumed for PUT /api/workspaces/[id]/settings
+export const P_WORKSPACE_MANAGE_MEMBERS = 'WORKSPACE_MANAGE_MEMBERS';
+export const P_WORKSPACE_VIEW_MEMBERS = 'WORKSPACE_VIEW_MEMBERS';
+export const P_WORKSPACE_INVITE_MEMBERS = 'WORKSPACE_INVITE_MEMBERS';
+
+// WORKSPACE - Billing (Contextual)
+export const P_WORKSPACE_MANAGE_BILLING = 'WORKSPACE_MANAGE_BILLING';
+export const P_WORKSPACE_VIEW_BILLING_INFO = 'WORKSPACE_VIEW_BILLING_INFO';
+export const P_WORKSPACE_INITIATE_PAYMENT = 'WORKSPACE_INITIATE_PAYMENT'; // For checkout routes
+export const P_WORKSPACE_MANAGE_SUBSCRIPTION = 'WORKSPACE_MANAGE_SUBSCRIPTION'; // Create, Update, Cancel subs
+
+// PROJECT - General (within a workspace context)
+export const P_PROJECT_CREATE = 'PROJECT_CREATE';
+
+// PROJECT - Contextual
+export const P_PROJECT_VIEW_DETAILS = 'PROJECT_VIEW_DETAILS';
+export const P_PROJECT_UPDATE_DETAILS = 'PROJECT_UPDATE_DETAILS';
+export const P_PROJECT_DELETE = 'PROJECT_DELETE';
+export const P_PROJECT_MANAGE_MEMBERS = 'PROJECT_MANAGE_MEMBERS';
+export const P_PROJECT_VIEW_MEMBERS = 'PROJECT_VIEW_MEMBERS';
+
+// PROJECT CONTENT - Contextual
+export const P_IDEA_CREATE = 'IDEA_CREATE';
+export const P_IDEA_VIEW = 'IDEA_VIEW';
+export const P_IDEA_UPDATE = 'IDEA_UPDATE';
+export const P_IDEA_DELETE = 'IDEA_DELETE';
+export const P_IDEA_RUN_ANALYSIS = 'IDEA_RUN_ANALYSIS'; // For /ideas/[id]/analyze
+
+export const P_TASK_CREATE = 'TASK_CREATE';
+export const P_TASK_VIEW = 'TASK_VIEW';
+export const P_TASK_UPDATE = 'TASK_UPDATE';
+export const P_TASK_DELETE = 'TASK_DELETE';
+export const P_TASK_ASSIGN = 'TASK_ASSIGN';
+
+export const P_FILE_UPLOAD = 'FILE_UPLOAD';
+export const P_FILE_VIEW = 'FILE_VIEW';
+export const P_FILE_DELETE = 'FILE_DELETE';
+
+export const P_ANALYSIS_CREATE = 'ANALYSIS_CREATE'; // Generic for running project-specific analyses
+export const P_ANALYSIS_VIEW = 'ANALYSIS_VIEW';
+export const P_ANALYSIS_DELETE = 'ANALYSIS_DELETE';
+
+export const P_DELIVERABLE_CREATE = 'DELIVERABLE_CREATE'; // e.g., for pitchdeck
+export const P_DELIVERABLE_VIEW = 'DELIVERABLE_VIEW';
+export const P_DELIVERABLE_UPDATE = 'DELIVERABLE_UPDATE';
+export const P_DELIVERABLE_DELETE = 'DELIVERABLE_DELETE';
+
+// PROJECT INTEGRATIONS & PIPELINES - Contextual
+export const P_PROJECT_MANAGE_INTEGRATIONS = 'PROJECT_MANAGE_INTEGRATIONS';
+export const P_PROJECT_VIEW_INTEGRATIONS = 'PROJECT_VIEW_INTEGRATIONS'; // For viewing status/repos
+export const P_PROJECT_SYNC_INTEGRATION_DATA = 'PROJECT_SYNC_INTEGRATION_DATA';
+export const P_PROJECT_RUN_PIPELINE = 'PROJECT_RUN_PIPELINE';
+export const P_WORKSPACE_MANAGE_PIPELINE_TEMPLATES = 'WORKSPACE_MANAGE_PIPELINE_TEMPLATES';
+
+// AI - General (might be project-scoped or workspace-scoped depending on your logic)
+export const P_AI_ANALYZE_DOCUMENT = 'AI_ANALYZE_DOCUMENT';
+export const P_AI_ANALYZE_IMAGE = 'AI_ANALYZE_IMAGE';
+export const P_AI_ANALYZE_TEXT = 'AI_ANALYZE_TEXT';
+
+// INTEGRATIONS - General (User-level connection, not project-specific yet)
+export const P_INTEGRATION_CONNECT_OWN = 'INTEGRATION_CONNECT_OWN'; // e.g., GitHub/Jira initial connect
+export const P_INTEGRATION_VIEW_REPOSITORIES_OWN = 'INTEGRATION_VIEW_REPOSITORIES_OWN'; // e.g. list GitHub repos
+
+// WEBHOOKS - Specific for registering custom webhooks by a user/workspace
+export const P_WEBHOOK_REGISTER_CUSTOM = 'WEBHOOK_REGISTER_CUSTOM';
+
+// Generic "Authenticated User" marker
+export const P_AUTHENTICATED_USER = 'AUTHENTICATED_USER';
+
+
+// --- Baseline Authenticated User Permissions ---
+export const baselineAuthenticatedUserPermissions = [
+	P_USER_VIEW_OWN_PROFILE,
+	P_USER_UPDATE_OWN_PROFILE,
+	P_USER_LOGOUT_OWN,
+	P_USER_VIEW_OWN_NOTIFICATIONS,
+    P_USER_UPDATE_OWN_NOTIFICATIONS,
+	P_USER_MANAGE_OWN_NOTIFICATION_SETTINGS,
+    P_USER_REQUEST_EMAIL_CHANGE_OWN,
+    P_USER_CONFIRM_EMAIL_CHANGE_OWN,
+    P_WORKSPACE_CREATE_NEW,
+    P_INTEGRATION_CONNECT_OWN, // User can initiate connection of their GitHub/Jira
+    P_INTEGRATION_VIEW_REPOSITORIES_OWN, // After connecting, can list their repos
+    P_WEBHOOK_REGISTER_CUSTOM, // If authenticated users can register webhooks for their events
+    P_AUTHENTICATED_USER, // Generic marker
+];
+
+// --- Workspace Role Permissions (enum UserRole: ADMIN, MEMBER, VIEWER from Prisma) ---
+export const workspaceRolePermissions = {
+	ADMIN: [
+		P_WORKSPACE_VIEW_DETAILS, P_WORKSPACE_UPDATE_DETAILS, P_WORKSPACE_DELETE,
+		P_WORKSPACE_VIEW_SETTINGS, P_WORKSPACE_UPDATE_SETTINGS,
+		P_WORKSPACE_MANAGE_MEMBERS, P_WORKSPACE_VIEW_MEMBERS, P_WORKSPACE_INVITE_MEMBERS,
+		P_WORKSPACE_MANAGE_BILLING, P_WORKSPACE_VIEW_BILLING_INFO, P_WORKSPACE_INITIATE_PAYMENT, P_WORKSPACE_MANAGE_SUBSCRIPTION,
+		P_PROJECT_CREATE,
+        P_WORKSPACE_MANAGE_PIPELINE_TEMPLATES,
+        // A Workspace Admin can often perform any action a Project Manager can on projects within their workspace.
+        // This can be handled by adding all Project MANAGER permissions or in permission-checker.js
+	],
+	MEMBER: [
+		P_WORKSPACE_VIEW_DETAILS, P_WORKSPACE_VIEW_MEMBERS,
+		P_PROJECT_CREATE,
+        P_WORKSPACE_VIEW_BILLING_INFO, // View own workspace's billing status
+		P_WORKSPACE_INITIATE_PAYMENT, // If members can trigger billable actions (e.g. pipeline runs)
+	],
+	VIEWER: [
+		P_WORKSPACE_VIEW_DETAILS, P_WORKSPACE_VIEW_MEMBERS,
+        P_WORKSPACE_VIEW_BILLING_INFO,
+	]
+};
+
+// --- Project Role Permissions (enum ProjectRole: MANAGER, EDITOR, VIEWER from Prisma) ---
+export const projectRolePermissions = {
+	MANAGER: [
+		P_PROJECT_VIEW_DETAILS, P_PROJECT_UPDATE_DETAILS, P_PROJECT_DELETE,
+		P_PROJECT_MANAGE_MEMBERS, P_PROJECT_VIEW_MEMBERS,
+		P_IDEA_CREATE, P_IDEA_VIEW, P_IDEA_UPDATE, P_IDEA_DELETE, P_IDEA_RUN_ANALYSIS,
+		P_TASK_CREATE, P_TASK_VIEW, P_TASK_UPDATE, P_TASK_DELETE, P_TASK_ASSIGN,
+		P_FILE_UPLOAD, P_FILE_VIEW, P_FILE_DELETE,
+		P_ANALYSIS_CREATE, P_ANALYSIS_VIEW, P_ANALYSIS_DELETE,
+		P_DELIVERABLE_CREATE, P_DELIVERABLE_VIEW, P_DELIVERABLE_UPDATE, P_DELIVERABLE_DELETE,
+		P_PROJECT_MANAGE_INTEGRATIONS, P_PROJECT_VIEW_INTEGRATIONS, P_PROJECT_SYNC_INTEGRATION_DATA,
+		P_PROJECT_RUN_PIPELINE,
+        P_AI_ANALYZE_DOCUMENT, P_AI_ANALYZE_IMAGE, P_AI_ANALYZE_TEXT, // If AI actions are project-scoped
+	],
+	EDITOR: [
+		P_PROJECT_VIEW_DETAILS, P_PROJECT_VIEW_MEMBERS,
+		P_IDEA_CREATE, P_IDEA_VIEW, P_IDEA_UPDATE, P_IDEA_RUN_ANALYSIS,
+		P_TASK_CREATE, P_TASK_VIEW, P_TASK_UPDATE, P_TASK_ASSIGN,
+		P_FILE_UPLOAD, P_FILE_VIEW,
+		P_ANALYSIS_CREATE, P_ANALYSIS_VIEW,
+		P_DELIVERABLE_CREATE, P_DELIVERABLE_VIEW, P_DELIVERABLE_UPDATE,
+		P_PROJECT_VIEW_INTEGRATIONS,
+		P_PROJECT_RUN_PIPELINE,
+        P_AI_ANALYZE_DOCUMENT, P_AI_ANALYZE_IMAGE, P_AI_ANALYZE_TEXT,
+	],
+	VIEWER: [
+		P_PROJECT_VIEW_DETAILS, P_PROJECT_VIEW_MEMBERS,
+		P_IDEA_VIEW, P_TASK_VIEW, P_FILE_VIEW, P_ANALYSIS_VIEW, P_DELIVERABLE_VIEW,
+		P_PROJECT_VIEW_INTEGRATIONS,
+	]
+};
