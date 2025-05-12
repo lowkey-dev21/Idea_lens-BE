@@ -230,6 +230,8 @@ async function login_user({ email, password, googleId, githubId, ipAddress, user
         select: {
           id: true,
           emailVerified: true,
+          email: true,
+          firstName: true,
           oauthAccounts: {
             where: {
               provider: 'GOOGLE',
@@ -283,6 +285,8 @@ async function login_user({ email, password, googleId, githubId, ipAddress, user
         select: {
           id: true,
           emailVerified: true,
+          email: true,
+          firstName: true,
           oauthAccounts: {
             where: {
               provider: 'GITHUB',
@@ -337,6 +341,8 @@ async function login_user({ email, password, googleId, githubId, ipAddress, user
           id: true,
           emailVerified: true,
           hashedPassword: true,
+          email: true,
+          firstName: true,
         },
       });
 
@@ -502,4 +508,56 @@ async function create_session_and_respond(userId, ipAddress, userAgent) {
 }
 
 
-export { registerUserWithEmailAndPassword, doesUserExist, loginUserWithEmailAndPassword, logoutUser, validateSessionById };
+/**
+ * Refreshes a session token.
+ * @param {string} sessionToken - The session token of the user
+ * @returns {Promise<Response>} Response object with success status, code, message and data
+ */
+async function refreshSessionToken(sessionToken) {
+  if (!sessionToken) {
+    return endpointResponse(false, 400, 'Session token is required');
+  }
+
+  try {
+    // Find and validate existing session
+    const existingSession = await prisma.session.findUnique({
+      where: { sessionToken },
+      include: { user: true }
+    });
+
+    if (!existingSession) {
+      return endpointResponse(false, 401, 'Invalid session');
+    }
+
+    if (existingSession.expiresAt < new Date()) {
+      // Check if expired less than 3 days ago
+      const threeDaysAgo = adjustDate([{ unit: 'day', value: -3 }]);
+      if (existingSession.expiresAt < threeDaysAgo) {
+        await prisma.session.delete({ where: { id: existingSession.id } });
+        return endpointResponse(false, 401, 'Session expired');
+      }
+      // else: allow refresh
+    }
+
+    // Update session with new expiry
+    const updatedSession = await prisma.session.update({
+      where: { id: existingSession.id },
+      data: {
+        expiresAt: adjustDate([{ unit: 'day', value: 30 }]) // Extend session by 30 days
+      },
+      include: { user: true }
+    });
+
+    return endpointResponse(true, 200, 'Session refreshed successfully', {
+      sessionToken: updatedSession.sessionToken,
+      expiresAt: updatedSession.expiresAt,
+      user: updatedSession.user
+    });
+
+  } catch (error) {
+    console.error('Session refresh error:', error);
+    return endpointResponse(false, 500, 'Error refreshing session');
+  }
+}
+
+export { registerUserWithEmailAndPassword, doesUserExist, loginUserWithEmailAndPassword, logoutUser, validateSessionById, refreshSessionToken };

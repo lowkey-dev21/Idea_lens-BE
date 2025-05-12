@@ -281,29 +281,21 @@ function replacePlaceholders(template, dataArr) {
  * @returns {Promise<{ status: boolean, message: string, code: number, data: any }>} - Email sending result
  */
 async function sendEmailVerificationEmail({ email, firstName, verificationCode, verificationLink }) {
-    const html = replacePlaceholders(EmailVerification.html, [
-        {
-            UserFirstName: firstName,
-            VerificationCode: verificationCode,
-            VerificationLink: verificationLink,
-        }
-    ])
-
-    const text = replacePlaceholders(EmailVerification.text, [
-        {
-            UserFirstName: firstName,
-            VerificationCode: verificationCode,
-            VerificationLink: verificationLink,
-        }
-    ])
-
+    const placeholderData = {
+        UserFirstName: firstName || 'User',
+        VerificationCode: verificationCode || 'N/A',
+        VerificationLink: verificationLink || VERIFY_EMAIL_URL,
+        SupportEmail: SUPPORT_EMAIL
+    };
+    const html = replacePlaceholders(EmailVerification.html, [placeholderData]);
+    const text = replacePlaceholders(EmailVerification.text, [placeholderData]);
+    const subject = replacePlaceholders(EmailVerification.subject, [placeholderData]);
     const info = await sendEmail({
         to: email,
-        subject: EmailVerification.subject,
+        subject,
         html,
         text,
     })
-
     return {
         status: (info.accepted && info.accepted.length > 0) && (!info.rejected || info.rejected.length === 0),
         message: info.response || info.message || '',
@@ -316,26 +308,20 @@ async function sendEmailVerificationEmail({ email, firstName, verificationCode, 
  * @param {{ email: string, firstName: string }} param0
  */
 async function sendWelcomeEmail({ email, firstName }) {
-  const html = replacePlaceholders(WelcomeEmail.html, [
-    {
-      UserFirstName: firstName,
-      DashboardLink: DASHBOARD_URL
-    }
-  ])
-
-  const text = replacePlaceholders(WelcomeEmail.text, [
-    {
-      UserFirstName: firstName,
-    }
-  ])
-
+  const placeholderData = {
+    UserFirstName: firstName || 'User',
+    DashboardLink: DASHBOARD_URL || 'https://app.idealens.dev',
+    SupportEmail: SUPPORT_EMAIL
+  };
+  const html = replacePlaceholders(WelcomeEmail.html, [placeholderData]);
+  const text = replacePlaceholders(WelcomeEmail.text, [placeholderData]);
+  const subject = replacePlaceholders(WelcomeEmail.subject, [placeholderData]);
   const info = await sendEmail({
     to: email,
-    subject: WelcomeEmail.subject,
+    subject,
     html,
     text,
   })
-
   return {
     status: (info.accepted && info.accepted.length > 0) && (!info.rejected || info.rejected.length === 0),
     message: info.response || info.message || '',
@@ -348,32 +334,30 @@ async function sendWelcomeEmail({ email, firstName }) {
  * @param {{ email: string, firstName: string, uaString: string, location: string, loginDateTime: string, ipAddress: string }} param0
  */
 async function sendLoginAlertEmail({ email, firstName, uaString, location, loginDateTime, ipAddress }) {
-  const deviceInfo = getDeviceInfo(uaString);
-  const html = replacePlaceholders(LoginAlert.html, [
-    {
-      UserFirstName: firstName,
-      DeviceType: deviceInfo?.os?.name + ' ' + deviceInfo?.os?.version + ' ' + deviceInfo?.device?.type + ` (${deviceInfo?.device?.vendor} ${deviceInfo?.device?.model})`,
-      Browser: deviceInfo?.browser?.name + ' ' + deviceInfo?.browser?.version,
-      Location: location,
-      LoginDateTime: loginDateTime,
-      IPAddress: ipAddress,
-      SecureAccountLink: `${USER_PROFILE_URL}`,
-    }
-  ])
-
-  const text = replacePlaceholders(LoginAlert.text, [
-    {
-      UserFirstName: firstName,
-    }
-  ])
-
+  const deviceInfo = getDeviceInfo(uaString) || {};
+  const placeholderData = {
+    UserFirstName: firstName || 'User',
+    DeviceType: deviceInfo?.os?.name 
+      ? `${deviceInfo.os.name} ${deviceInfo.os.version || ''} ${deviceInfo.device?.type || ''} (${deviceInfo.device?.vendor || ''} ${deviceInfo.device?.model || ''})`
+      : 'Unknown Device',
+    Browser: deviceInfo?.browser?.name 
+      ? `${deviceInfo.browser.name} ${deviceInfo.browser.version || ''}`
+      : 'Unknown Browser',
+    Location: location || 'Unknown Location',
+    LoginDateTime: loginDateTime || new Date().toISOString(),
+    IPAddress: ipAddress || 'Unknown',
+    SecureAccountLink: USER_PROFILE_URL || 'https://app.idealens.dev/profile',
+    SupportEmail: SUPPORT_EMAIL
+  };
+  const html = replacePlaceholders(LoginAlert.html, [placeholderData]);
+  const text = replacePlaceholders(LoginAlert.text, [placeholderData]);
+  const subject = replacePlaceholders(LoginAlert.subject, [placeholderData]);
   const info = await sendEmail({
     to: email,
-    subject: LoginAlert.subject,
+    subject,
     html,
     text,
   })
-
   return {
     status: (info.accepted && info.accepted.length > 0) && (!info.rejected || info.rejected.length === 0),
     message: info.response || info.message || '',
@@ -386,27 +370,20 @@ async function sendLoginAlertEmail({ email, firstName, uaString, location, login
  * @param {{ email: string, firstName: string, resetLink: string }} param0
  */
 async function sendPasswordResetEmail({ email, firstName, resetLink }) {
-  const html = replacePlaceholders(PasswordResetRequest.html, [
-    {
-      UserFirstName: firstName,
-      PasswordResetLink: resetLink,
-    }
-  ])
-
-  const text = replacePlaceholders(PasswordResetRequest.text, [
-    {
-      UserFirstName: firstName,
-      PasswordResetLink: resetLink,
-    }
-  ])
-
+  const placeholderData = {
+    UserFirstName: firstName || 'User',
+    PasswordResetLink: resetLink || `${DASHBOARD_URL}/reset-password`,
+    SupportEmail: SUPPORT_EMAIL
+  };
+  const html = replacePlaceholders(PasswordResetRequest.html, [placeholderData]);
+  const text = replacePlaceholders(PasswordResetRequest.text, [placeholderData]);
+  const subject = replacePlaceholders(PasswordResetRequest.subject, [placeholderData]);
   const info = await sendEmail({
     to: email,
-    subject: PasswordResetRequest.subject,
+    subject,
     html,
     text,
   })
-
   return {
     status: (info.accepted && info.accepted.length > 0) && (!info.rejected || info.rejected.length === 0),
     message: info.response || info.message || '',
@@ -419,26 +396,20 @@ async function sendPasswordResetEmail({ email, firstName, resetLink }) {
  * @param {{ email: string, firstName: string }} param0
  */
 async function sendPasswordResetSuccessEmail({ email, firstName }) {
-  const html = replacePlaceholders(PasswordResetSuccess.html, [
-    {
-      UserFirstName: firstName,
-      SupportEmail: SUPPORT_EMAIL
-    }
-  ])
-
-  const text = replacePlaceholders(PasswordResetSuccess.text, [
-    {
-      UserFirstName: firstName,
-    }
-  ])
-
+  const placeholderData = {
+    UserFirstName: firstName || 'User',
+    SupportEmail: SUPPORT_EMAIL,
+    DashboardLink: DASHBOARD_URL || 'https://app.idealens.dev'
+  };
+  const html = replacePlaceholders(PasswordResetSuccess.html, [placeholderData]);
+  const text = replacePlaceholders(PasswordResetSuccess.text, [placeholderData]);
+  const subject = replacePlaceholders(PasswordResetSuccess.subject, [placeholderData]);
   const info = await sendEmail({
     to: email,
-    subject: PasswordResetSuccess.subject,
+    subject,
     html,
     text,
   })
-
   return {
     status: (info.accepted && info.accepted.length > 0) && (!info.rejected || info.rejected.length === 0),
     message: info.response || info.message || '',
@@ -458,33 +429,23 @@ async function sendPasswordResetSuccessEmail({ email, firstName }) {
  * @returns {Promise<Object>} - Email sending result
  */
 async function sendEmailChangeVerificationEmail({ email, firstName, verificationCode, currentEmail, newEmail }) {
-  const text = replacePlaceholders(EmailChangeVerification.text, [
-    {
-      UserFirstName: firstName,
-      VerificationCode: verificationCode,
-      OldEmail: currentEmail,
-      NewEmail: newEmail,
-      SupportEmail: SUPPORT_EMAIL
-    }
-  ])
-
-  const html = replacePlaceholders(EmailChangeVerification.html, [
-    {
-      UserFirstName: firstName,
-      VerificationCode: verificationCode,
-      OldEmail: currentEmail,
-      NewEmail: newEmail,
-      SupportEmail: SUPPORT_EMAIL
-    }
-  ])
-
+  const placeholderData = {
+    UserFirstName: firstName || 'User',
+    VerificationCode: verificationCode || 'N/A',
+    OldEmail: currentEmail || 'Previous Email',
+    NewEmail: newEmail || 'New Email',
+    SupportEmail: SUPPORT_EMAIL,
+    VerificationLink: VERIFY_EMAIL_URL || 'https://app.idealens.dev/verify-email'
+  };
+  const html = replacePlaceholders(EmailChangeVerification.html, [placeholderData]);
+  const text = replacePlaceholders(EmailChangeVerification.text, [placeholderData]);
+  const subject = replacePlaceholders(EmailChangeVerification.subject, [placeholderData]);
   const info = await sendEmail({
     to: email,
-    subject: EmailChangeVerification.subject,
+    subject,
     html,
     text,
   })
-
   return {
       status: info.status,
       message: info.message,
@@ -505,46 +466,29 @@ async function sendEmailChangeVerificationEmail({ email, firstName, verification
  * @returns {Promise<{status: number, message: string, code: string, data: Object}>} Email sending result
  */
 async function sendEmailChangeAlertEmail({ firstName, oldEmail, newEmail, uaString, location, createdAt }) {
-  const deviceInfo = await getDeviceInfo(uaString);
-
-
-  const html = replacePlaceholders(EmailChangeNoticeToOldEmail.html, [
-    {
-      UserFirstName: firstName,
-      OldEmail: oldEmail,
-      NewEmail: newEmail,
-      SupportEmail: SUPPORT_EMAIL,
-      DeviceInfo: `${deviceInfo.browser} on ${deviceInfo.os}`,
-      Location: location,
-      RequestDateTime: formatDate(createdAt, {
-        includeTime: true,
-        locale: 'en-NG'
-      })
-    }
-  ])
-
-  const text = replacePlaceholders(EmailChangeNoticeToOldEmail.text, [
-    {
-      UserFirstName: firstName,
-      OldEmail: oldEmail,
-      NewEmail: newEmail,
-      SupportEmail: SUPPORT_EMAIL,
-      DeviceInfo: `${deviceInfo.browser} on ${deviceInfo.os}`,
-      Location: location,
-      RequestDateTime: formatDate(createdAt, {
-        includeTime: true,
-        locale: 'en-NG'
-      })
-    }
-  ])
-
+  const deviceInfo = await getDeviceInfo(uaString) || {};
+  const placeholderData = {
+    UserFirstName: firstName || 'User',
+    OldEmail: oldEmail || 'Previous Email',
+    NewEmail: newEmail || 'New Email',
+    SupportEmail: SUPPORT_EMAIL,
+    DeviceInfo: deviceInfo?.browser && deviceInfo?.os 
+      ? `${deviceInfo.browser} on ${deviceInfo.os}`
+      : 'Unknown Device',
+    Location: location || 'Unknown Location',
+    RequestDateTime: createdAt 
+      ? formatDate(createdAt, { includeTime: true, locale: 'en-NG' })
+      : formatDate(new Date(), { includeTime: true, locale: 'en-NG' })
+  };
+  const html = replacePlaceholders(EmailChangeNoticeToOldEmail.html, [placeholderData]);
+  const text = replacePlaceholders(EmailChangeNoticeToOldEmail.text, [placeholderData]);
+  const subject = replacePlaceholders(EmailChangeNoticeToOldEmail.subject, [placeholderData]);
   const info = await sendEmail({
     to: oldEmail,
-    subject: EmailChangeNoticeToOldEmail.subject,
+    subject,
     html,
     text,
   })
-
   return {
       status: info.status,
       message: info.message,
