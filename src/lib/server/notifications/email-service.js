@@ -5,8 +5,9 @@
 
 import { HAS_VERIFIED_PLUNK, SMTP_HOSTNAME, SMTP_PASSWORD, SMTP_PORT, SMTP_USERNAME, PLUNK_SECRET_KEY } from '$env/static/private';
 import nodemailer from 'nodemailer';
-import { EMAIL_PLACEHOLDER_KEYS, EmailVerification, LoginAlert, WelcomeEmail } from '../../utils/emails.js';
-
+import { EMAIL_PLACEHOLDER_KEYS, EmailVerification, LoginAlert, PasswordResetRequest, WelcomeEmail } from '../../utils/emails.js';
+import { USER_PROFILE_URL } from '$lib/shared/constants.js';
+import { getDeviceInfo } from '$lib/utils/ua-parser.js';
 // Constants
 const COMPANY_NAME = 'IdeaLens';
 const COMPANY_TAGLINE = 'Your Idea to Reality Pipeline';
@@ -240,6 +241,12 @@ async function sendEmail({ from, to, subject = '', html, text, replyTo }) {
  * @property {string} [AnnouncementTitle]
  * @property {string} [AnnouncementBody]
  * @property {string} [OptionalLink]
+ * @property {string} [DeviceType]
+ * @property {string} [Browser]
+ * @property {string} [Location]
+ * @property {string} [LoginDateTime]
+ * @property {string} [IPAddress]
+ * @property {string} [SecureAccountLink]
  */
 
 /**
@@ -341,16 +348,23 @@ async function sendWelcomeEmail({ email, firstName }) {
  * @param {Object} options - Email options
  * @param {string} options.email - The email address of the user to send the email to.
  * @param {string} options.firstName - The first name of the user.
- * @param {string} options.deviceInfo - The device information of the user.
+ * @param {string} options.uaString - The user agent string of the user.
  * @param {string} options.location - The location of the user.
  * @param {string} options.loginDateTime - The date and time of the login.
  * @param {string} options.ipAddress - The IP address of the user.
  * @returns {Promise<{ status: boolean, message: string, code: number, data: Object }>} - Email sending result
  */
-async function sendLoginAlertEmail({ email, firstName, deviceInfo, location, loginDateTime, ipAddress }) {
+async function sendLoginAlertEmail({ email, firstName, uaString, location, loginDateTime, ipAddress }) {
+  const deviceInfo = getDeviceInfo(uaString);
   const html = replacePlaceholders(LoginAlert.html, [
     {
       UserFirstName: firstName,
+      DeviceType: deviceInfo?.os?.name + ' ' + deviceInfo?.os?.version + ' ' + deviceInfo?.device?.type + ` (${deviceInfo?.device?.vendor} ${deviceInfo?.device?.model})`,
+      Browser: deviceInfo?.browser?.name + ' ' + deviceInfo?.browser?.version,
+      Location: location,
+      LoginDateTime: loginDateTime,
+      IPAddress: ipAddress,
+      SecureAccountLink: `${USER_PROFILE_URL}`,
     }
   ])
 
@@ -374,4 +388,45 @@ async function sendLoginAlertEmail({ email, firstName, deviceInfo, location, log
     data: info
   }
 }
-export { sendEmailVerificationEmail, sendWelcomeEmail, sendLoginAlertEmail };
+
+/**
+ * Sends a password reset request email to the user.
+ * 
+ * @param {Object} options - Email options
+ * @param {string} options.email - The email address of the user to send the email to.
+ * @param {string} options.firstName - The first name of the user.
+ * @param {string} options.resetLink - The link to reset the user's password.
+ */
+async function sendPasswordResetEmail({ email, firstName, resetLink }) {
+  const html = replacePlaceholders(PasswordResetRequest.html, [
+    {
+      UserFirstName: firstName,
+      PasswordResetLink: resetLink,
+    }
+  ])
+
+  const text = replacePlaceholders(PasswordResetRequest.text, [
+    {
+      UserFirstName: firstName,
+      PasswordResetLink: resetLink,
+    }
+  ])
+
+  const info = await sendEmail({
+    to: email,
+    subject: PasswordResetRequest.subject,
+    html,
+    text,
+  })
+
+  return {
+    status: (info?.accepted?.length > 0) && (info?.rejected?.length === 0),
+    message: info?.response,
+    code: Number(info?.response?.split(' ')?.[0]),
+    data: info
+  }
+}
+
+
+
+export { sendEmailVerificationEmail, sendWelcomeEmail, sendLoginAlertEmail, sendPasswordResetEmail };

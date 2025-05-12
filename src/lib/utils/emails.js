@@ -330,7 +330,7 @@ const PasswordResetRequest = {
   Click the link below to set a new password:
   [PasswordResetLink]
   
-  This link is valid for 1 hour.
+  This link is valid for 30 minutes.
   
   If you didn't request a password reset, please ignore this email.
   
@@ -416,7 +416,7 @@ const PasswordResetRequest = {
               <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;">
                 <p style="margin: 0;">Hi <strong>[UserFirstName]</strong>,</p>
                 <p style="margin: 20px 0 0 0;">We received a request to reset your password for your IdeaLens account.</p>
-                <p style="margin: 20px 0 0 0;">Click the button below to set a new password. This link is valid for 1 hour.</p>
+                <p style="margin: 20px 0 0 0;">Click the button below to set a new password. This link is valid for 30 minutes.</p>
               </td>
             </tr>
             
@@ -7552,7 +7552,13 @@ const EMAIL_PLACEHOLDER_KEYS = [
 	'DueDate',
 	'AnnouncementTitle',
 	'AnnouncementBody',
-	'OptionalLink'
+	'OptionalLink',
+	'DeviceType',
+	'Browser',
+	'Location',
+	'LoginDateTime',
+	'IPAddress',
+	'SecureAccountLink'
 ];
 
 export {
