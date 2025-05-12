@@ -5,9 +5,10 @@
 
 import { HAS_VERIFIED_PLUNK, SMTP_HOSTNAME, SMTP_PASSWORD, SMTP_PORT, SMTP_USERNAME, PLUNK_SECRET_KEY } from '$env/static/private';
 import nodemailer from 'nodemailer';
-import { EMAIL_PLACEHOLDER_KEYS, EmailVerification, LoginAlert, PasswordResetRequest, WelcomeEmail } from '../../utils/emails.js';
-import { USER_PROFILE_URL } from '$lib/shared/constants.js';
+import { EMAIL_PLACEHOLDER_KEYS, EmailVerification, LoginAlert, PasswordResetSuccess, PasswordResetRequest, WelcomeEmail, EmailChangeVerification, EmailChangeNoticeToOldEmail } from '../../utils/emails.js';
+import { DASHBOARD_URL, SUPPORT_EMAIL, USER_PROFILE_URL, VERIFY_EMAIL_URL } from '$lib/shared/constants.js';
 import { getDeviceInfo } from '$lib/utils/ua-parser.js';
+import { formatDate } from '$lib/utils/date.js';
 // Constants
 const COMPANY_NAME = 'IdeaLens';
 const COMPANY_TAGLINE = 'Your Idea to Reality Pipeline';
@@ -15,7 +16,7 @@ const DOMAIN = 'idealens.dev';
 
 /**
  * Singleton transporter instance
- * @type {nodemailer.Transporter|null}
+ * @type {nodemailer.Transporter | null}
  */
 let transporter = null;
 
@@ -25,9 +26,9 @@ let transporter = null;
  */
 const getTransporter = () => {
   if (!transporter) {
-    transporter = nodemailer.createTransport({
+    const smtpOptions = {
       host: SMTP_HOSTNAME,
-      port: SMTP_PORT,
+      port: Number(SMTP_PORT),
       secure: Number(SMTP_PORT) === 465,
       auth: {
         user: SMTP_USERNAME,
@@ -36,7 +37,8 @@ const getTransporter = () => {
       tls: {
         rejectUnauthorized: true, // important for secure connections
       },
-    });
+    };
+    transporter = nodemailer.createTransport(smtpOptions);
   }
   return transporter;
 };
@@ -104,7 +106,7 @@ const formatSubject = (subject, from) => {
  * @param {string} [options.html] - HTML content
  * @param {string} [options.text] - Plain text content
  * @param {string} [options.replyTo] - Reply-to address
- * @returns {Promise<Object>} - Email sending result
+ * @returns {Promise<import('nodemailer').SentMessageInfo|Object>} - Email sending result
  */
 async function sendEmail({ from, to, subject = '', html, text, replyTo }) {
   if (!to) {
@@ -254,7 +256,7 @@ async function sendEmail({ from, to, subject = '', html, text, replyTo }) {
  * Only replaces placeholders that match EMAIL_PLACEHOLDER_KEYS.
  * For each placeholder, uses the first value found in the array.
  * @param {string} template - Template string containing placeholders in [placeholder] format
- * @param {EmailPlaceholderData[]} dataArr - Array of objects for replacement (see typedef for allowed keys)
+ * @param {Array<Record<string, string>>} dataArr - Array of objects for replacement
  * @returns {string} Template with placeholders replaced by values from data objects
  */
 function replacePlaceholders(template, dataArr) {
@@ -271,13 +273,12 @@ function replacePlaceholders(template, dataArr) {
 
 /**
  * Sends an email verification email to the user.
- * 
- * @param {Object} options - Email options
- * @param {string} options.email - The email address of the user to send the email to.
- * @param {string} options.firstName - The first name of the user.
- * @param {string} options.verificationCode - The verification code to send to the user.
- * @param {string} options.verificationLink - The link to verify the user's email.
- * @returns {Promise<{ status: boolean, message: string, code: number, data: Object }>} - Email sending result
+ * @param {Object} options
+ * @param {string} options.email
+ * @param {string} options.firstName
+ * @param {string} options.verificationCode
+ * @param {string} options.verificationLink
+ * @returns {Promise<{ status: boolean, message: string, code: number, data: any }>} - Email sending result
  */
 async function sendEmailVerificationEmail({ email, firstName, verificationCode, verificationLink }) {
     const html = replacePlaceholders(EmailVerification.html, [
@@ -296,8 +297,6 @@ async function sendEmailVerificationEmail({ email, firstName, verificationCode, 
         }
     ])
 
-    
-
     const info = await sendEmail({
         to: email,
         subject: EmailVerification.subject,
@@ -306,17 +305,21 @@ async function sendEmailVerificationEmail({ email, firstName, verificationCode, 
     })
 
     return {
-        status: (info?.accepted?.length > 0) && (info?.rejected?.length === 0),
-        message: info?.response,
-        code: Number(info?.response?.split(' ')?.[0]),
+        status: (info.accepted && info.accepted.length > 0) && (!info.rejected || info.rejected.length === 0),
+        message: info.response || info.message || '',
+        code: Number((info.response || '').split(' ')[0]) || 200,
         data: info
     };
 }
 
+/**
+ * @param {{ email: string, firstName: string }} param0
+ */
 async function sendWelcomeEmail({ email, firstName }) {
   const html = replacePlaceholders(WelcomeEmail.html, [
     {
       UserFirstName: firstName,
+      DashboardLink: DASHBOARD_URL
     }
   ])
 
@@ -334,25 +337,15 @@ async function sendWelcomeEmail({ email, firstName }) {
   })
 
   return {
-    status: (info?.accepted?.length > 0) && (info?.rejected?.length === 0),
-    message: info?.response,
-    code: Number(info?.response?.split(' ')?.[0]),
+    status: (info.accepted && info.accepted.length > 0) && (!info.rejected || info.rejected.length === 0),
+    message: info.response || info.message || '',
+    code: Number((info.response || '').split(' ')[0]) || 200,
     data: info
   }
-  
 }
 
 /**
- * Sends a login alert email to the user.
- * 
- * @param {Object} options - Email options
- * @param {string} options.email - The email address of the user to send the email to.
- * @param {string} options.firstName - The first name of the user.
- * @param {string} options.uaString - The user agent string of the user.
- * @param {string} options.location - The location of the user.
- * @param {string} options.loginDateTime - The date and time of the login.
- * @param {string} options.ipAddress - The IP address of the user.
- * @returns {Promise<{ status: boolean, message: string, code: number, data: Object }>} - Email sending result
+ * @param {{ email: string, firstName: string, uaString: string, location: string, loginDateTime: string, ipAddress: string }} param0
  */
 async function sendLoginAlertEmail({ email, firstName, uaString, location, loginDateTime, ipAddress }) {
   const deviceInfo = getDeviceInfo(uaString);
@@ -382,20 +375,15 @@ async function sendLoginAlertEmail({ email, firstName, uaString, location, login
   })
 
   return {
-    status: (info?.accepted?.length > 0) && (info?.rejected?.length === 0),
-    message: info?.response,
-    code: Number(info?.response?.split(' ')?.[0]),
+    status: (info.accepted && info.accepted.length > 0) && (!info.rejected || info.rejected.length === 0),
+    message: info.response || info.message || '',
+    code: Number((info.response || '').split(' ')[0]) || 200,
     data: info
   }
 }
 
 /**
- * Sends a password reset request email to the user.
- * 
- * @param {Object} options - Email options
- * @param {string} options.email - The email address of the user to send the email to.
- * @param {string} options.firstName - The first name of the user.
- * @param {string} options.resetLink - The link to reset the user's password.
+ * @param {{ email: string, firstName: string, resetLink: string }} param0
  */
 async function sendPasswordResetEmail({ email, firstName, resetLink }) {
   const html = replacePlaceholders(PasswordResetRequest.html, [
@@ -420,13 +408,157 @@ async function sendPasswordResetEmail({ email, firstName, resetLink }) {
   })
 
   return {
-    status: (info?.accepted?.length > 0) && (info?.rejected?.length === 0),
-    message: info?.response,
-    code: Number(info?.response?.split(' ')?.[0]),
+    status: (info.accepted && info.accepted.length > 0) && (!info.rejected || info.rejected.length === 0),
+    message: info.response || info.message || '',
+    code: Number((info.response || '').split(' ')[0]) || 200,
     data: info
   }
 }
 
+/**
+ * @param {{ email: string, firstName: string }} param0
+ */
+async function sendPasswordResetSuccessEmail({ email, firstName }) {
+  const html = replacePlaceholders(PasswordResetSuccess.html, [
+    {
+      UserFirstName: firstName,
+      SupportEmail: SUPPORT_EMAIL
+    }
+  ])
+
+  const text = replacePlaceholders(PasswordResetSuccess.text, [
+    {
+      UserFirstName: firstName,
+    }
+  ])
+
+  const info = await sendEmail({
+    to: email,
+    subject: PasswordResetSuccess.subject,
+    html,
+    text,
+  })
+
+  return {
+    status: (info.accepted && info.accepted.length > 0) && (!info.rejected || info.rejected.length === 0),
+    message: info.response || info.message || '',
+    code: Number((info.response || '').split(' ')[0]) || 200,
+    data: info
+  }
+}
+
+/**
+ * Sends an email change verification email to the user.
+ * @param {Object} options - Email options
+ * @param {string} options.email - The new email address to send the verification to
+ * @param {string} options.firstName - The user's first name
+ * @param {string} options.verificationCode - The verification code
+ * @param {string} options.currentEmail - The user's current email address
+ * @param {string} options.newEmail - The user's new email address
+ * @returns {Promise<Object>} - Email sending result
+ */
+async function sendEmailChangeVerificationEmail({ email, firstName, verificationCode, currentEmail, newEmail }) {
+  const text = replacePlaceholders(EmailChangeVerification.text, [
+    {
+      UserFirstName: firstName,
+      VerificationCode: verificationCode,
+      OldEmail: currentEmail,
+      NewEmail: newEmail,
+      SupportEmail: SUPPORT_EMAIL
+    }
+  ])
+
+  const html = replacePlaceholders(EmailChangeVerification.html, [
+    {
+      UserFirstName: firstName,
+      VerificationCode: verificationCode,
+      OldEmail: currentEmail,
+      NewEmail: newEmail,
+      SupportEmail: SUPPORT_EMAIL
+    }
+  ])
+
+  const info = await sendEmail({
+    to: email,
+    subject: EmailChangeVerification.subject,
+    html,
+    text,
+  })
+
+  return {
+      status: info.status,
+      message: info.message,
+      code: info.code,
+      data: info.data
+  };
+}
+
+/**
+ * Sends an email alert to the old email address when email is changed
+ * @param {Object} options - The options for sending the email change alert
+ * @param {string} options.firstName - User's first name
+ * @param {string} options.oldEmail - User's previous email address
+ * @param {string} options.newEmail - User's new email address 
+ * @param {string} options.uaString - User agent string of the device making the change
+ * @param {string} options.location - Geographic location where change was made
+ * @param {Date} options.createdAt - Timestamp when the email change was initiated
+ * @returns {Promise<{status: number, message: string, code: string, data: Object}>} Email sending result
+ */
+async function sendEmailChangeAlertEmail({ firstName, oldEmail, newEmail, uaString, location, createdAt }) {
+  const deviceInfo = await getDeviceInfo(uaString);
 
 
-export { sendEmailVerificationEmail, sendWelcomeEmail, sendLoginAlertEmail, sendPasswordResetEmail };
+  const html = replacePlaceholders(EmailChangeNoticeToOldEmail.html, [
+    {
+      UserFirstName: firstName,
+      OldEmail: oldEmail,
+      NewEmail: newEmail,
+      SupportEmail: SUPPORT_EMAIL,
+      DeviceInfo: `${deviceInfo.browser} on ${deviceInfo.os}`,
+      Location: location,
+      RequestDateTime: formatDate(createdAt, {
+        includeTime: true,
+        locale: 'en-NG'
+      })
+    }
+  ])
+
+  const text = replacePlaceholders(EmailChangeNoticeToOldEmail.text, [
+    {
+      UserFirstName: firstName,
+      OldEmail: oldEmail,
+      NewEmail: newEmail,
+      SupportEmail: SUPPORT_EMAIL,
+      DeviceInfo: `${deviceInfo.browser} on ${deviceInfo.os}`,
+      Location: location,
+      RequestDateTime: formatDate(createdAt, {
+        includeTime: true,
+        locale: 'en-NG'
+      })
+    }
+  ])
+
+  const info = await sendEmail({
+    to: oldEmail,
+    subject: EmailChangeNoticeToOldEmail.subject,
+    html,
+    text,
+  })
+
+  return {
+      status: info.status,
+      message: info.message,
+      code: info.code,
+      data: info.data
+  };
+}
+
+export {
+  sendEmailVerificationEmail,
+  sendWelcomeEmail,
+  sendLoginAlertEmail,
+  sendPasswordResetEmail,
+  sendPasswordResetSuccessEmail,
+  sendEmailChangeVerificationEmail,
+  sendEmailChangeAlertEmail
+ };
