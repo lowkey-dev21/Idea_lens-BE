@@ -44,6 +44,7 @@
 		"gemini-ai": "^2.2.1",
 		"multiform-validator": "^2.6.1",
 		"nodemailer": "^7.0.3",
-		"perplexityai": "^1.0.1"
+		"perplexityai": "^1.0.1",
+		"ua-parser-js": "^2.0.3"
 	}
 }
