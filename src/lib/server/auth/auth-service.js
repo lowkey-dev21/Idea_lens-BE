@@ -6,7 +6,7 @@ import { validatePassword } from "$lib/utils/server/validators";
 import { isEmail } from "multiform-validator";
 import { sendVerificationEmail } from "./email-verification-service";
 import { getUserCountryCodeAndLanguage } from "$lib/utils/geolocation";
-
+import { sendLoginAlertEmail } from "$lib/server/notifications/email-service";
 /**
  * Registers a user with email and password.
  * 
@@ -106,6 +106,7 @@ async function create_user({
     }
   
     // 3. Prepare user data for creation
+    /** @type {{ email: string, firstName: string|null, lastName: string|null, avatarUrl: string|null, hashedPassword: string|null, emailVerified: Date|null, oauthAccounts?: any }} */
     const userData = {
       email,
       firstName: firstName || null,
@@ -165,9 +166,20 @@ async function create_user({
   
       // Handle Prisma-specific unique constraint violation error more gracefully
       // (though prior checks should catch most of these)
-      if (error.code === 'P2002' && error.meta && error.meta.target) {
-          const targetFields = Array.isArray(error.meta.target) ? error.meta.target.join(', ') : error.meta.target;
-          throw new Error(`A user with conflicting details already exists (field: ${targetFields}). This might be an email or OAuth ID conflict not caught by initial checks.`);
+      if (
+        typeof error === 'object' &&
+        error &&
+        'code' in error &&
+        error.code === 'P2002' &&
+        'meta' in error &&
+        error.meta &&
+        typeof error.meta === 'object' &&
+        'target' in error.meta
+      ) {
+        const targetFields = Array.isArray(error.meta.target)
+          ? error.meta.target.join(', ')
+          : error.meta.target;
+        throw new Error(`A user with conflicting details already exists (field: ${targetFields}). This might be an email or OAuth ID conflict not caught by initial checks.`);
       }
       // General error
       throw new Error('Could not create user due to a database error.');
@@ -232,9 +244,9 @@ async function login_user({ email, password, googleId, githubId, ipAddress, user
       }
 
       // Verify the OAuth account is connected
-      const selectedOauthAccount = user.oauthAccounts.find(
-        account => account.provider === 'GOOGLE' && account.providerUserId === googleId
-      );
+      /** @type {(account: any) => boolean} */
+      const googleAccountMatch = account => account.provider === 'GOOGLE' && account.providerUserId === googleId;
+      const selectedOauthAccount = user.oauthAccounts.find(googleAccountMatch);
       
       if (!selectedOauthAccount) {
         return methodResponse(false, 401, 'Google account not linked to this user.');
@@ -248,7 +260,20 @@ async function login_user({ email, password, googleId, githubId, ipAddress, user
         });
       }
 
-      return await create_session_and_respond(user.id, ipAddress, userAgent);
+      const sessionResponse = await create_session_and_respond(user.id, ipAddress || '', userAgent || '');
+      
+
+      await sendLoginAlertEmail({
+        email: user.email || '',
+        firstName: user.firstName || '',
+        uaString: userAgent || '',
+        location: sessionResponse?.data?.location || '',
+        loginDateTime: new Date().toISOString(),
+        ipAddress: ipAddress || ''
+      });
+
+
+      return { status: sessionResponse.status, message: sessionResponse.message, code: sessionResponse.code, data: { sessionToken: sessionResponse?.data?.sessionToken || '' } };
     }
 
     // GitHub OAuth login
@@ -272,9 +297,9 @@ async function login_user({ email, password, googleId, githubId, ipAddress, user
       }
 
       // Verify the OAuth account is connected
-      const selectedOauthAccount = user.oauthAccounts.find(
-        account => account.provider === 'GITHUB' && account.providerUserId === githubId
-      );
+      /** @type {(account: any) => boolean} */
+      const githubAccountMatch = account => account.provider === 'GITHUB' && account.providerUserId === githubId;
+      const selectedOauthAccount = user.oauthAccounts.find(githubAccountMatch);
       
       if (!selectedOauthAccount) {
         return methodResponse(false, 401, 'GitHub account not linked to this user.');
@@ -288,8 +313,21 @@ async function login_user({ email, password, googleId, githubId, ipAddress, user
         });
       }
 
-      return await create_session_and_respond(user.id, ipAddress, userAgent);
-    }
+      const sessionResponse = await create_session_and_respond(user.id, ipAddress || '', userAgent || '');
+      
+
+      await sendLoginAlertEmail({
+        email: user.email || '',
+        firstName: user.firstName || '',
+        uaString: userAgent || '',
+        location: sessionResponse?.data?.location || '',
+        loginDateTime: new Date().toISOString(),
+        ipAddress: ipAddress || ''
+      });
+
+
+      return { status: sessionResponse.status, message: sessionResponse.message, code: sessionResponse.code, data: { sessionToken: sessionResponse?.data?.sessionToken || '' } };
+        }
 
     // Email/password login
     if (email && password) {
@@ -315,8 +353,21 @@ async function login_user({ email, password, googleId, githubId, ipAddress, user
         return methodResponse(false, 401, 'Invalid credentials.');
       }
 
-      return await create_session_and_respond(user.id, ipAddress, userAgent);
-    }
+      const sessionResponse = await create_session_and_respond(user.id, ipAddress || '', userAgent || '');
+      
+
+      await sendLoginAlertEmail({
+        email: user.email || '',
+        firstName: user.firstName || '',
+        uaString: userAgent || '',
+        location: sessionResponse?.data?.location || '',
+        loginDateTime: new Date().toISOString(),
+        ipAddress: ipAddress || ''
+      });
+
+
+      return { status: sessionResponse.status, message: sessionResponse.message, code: sessionResponse.code, data: { sessionToken: sessionResponse?.data?.sessionToken || '' } };
+        }
 
     // If we reach here, the provided combination of credentials is invalid
     return methodResponse(false, 400, 'Invalid authentication method combination.');
@@ -332,7 +383,7 @@ async function login_user({ email, password, googleId, githubId, ipAddress, user
  * @param {string} userId - The user ID to create a session for
  * @param {string} ipAddress - The IP address of the user
  * @param {string} userAgent - The user agent of the user
- * @returns {Promise<{ status: boolean, message: string, code: number, data?: Object }>} Response object with session token
+ * @returns {Promise<{ status: boolean, message: string, code: number, data?: { sessionToken: string, location: string } }>} Response object with session token
  */
 async function create_session_and_respond(userId, ipAddress, userAgent) {
   let location = null;
@@ -356,6 +407,7 @@ async function create_session_and_respond(userId, ipAddress, userAgent) {
 
   return methodResponse(true, 200, 'User logged in successfully.', {
     sessionToken: session.sessionToken,
+    location,
   });
 }
 
@@ -410,4 +462,44 @@ async function create_session_and_respond(userId, ipAddress, userAgent) {
     
   }
 
-export { registerUserWithEmailAndPassword, doesUserExist, loginUserWithEmailAndPassword };
+  /**
+   * Logout a user.
+   * @param {string} sessionToken - The session token of the user
+   * @returns {Promise<Response>} Response object with success status, code, message and data
+   */
+  async function logoutUser(sessionToken) {
+    await prisma.session.delete({
+      where: { sessionToken },
+    });
+    return endpointResponse(true, 200, 'User logged out successfully.');
+  }
+
+  /**
+   * Validate a session by ID.
+   * @param {string} sessionToken - The session token of the user
+   * @returns {Promise<{ id: string, expiresAt: Date, user: { id: string } } | null>} The session object including the user
+   */
+  async function validateSessionById(sessionToken) {
+    if (!sessionToken) return null;
+    const session = await prisma.session.findUnique({
+    where: { sessionToken },
+    select: {
+      id: true,
+      expiresAt: true,
+      user: {
+        select: {
+          id: true
+        },
+      }, // Ensure user data is included
+    },
+  });
+
+  if (!session || !session.user || session.expiresAt < new Date()) {
+    if (session) await prisma.session.delete({ where: { id: session.id } });
+    return null;
+  }
+  return session; // Returns the session object including the user
+}
+
+
+export { registerUserWithEmailAndPassword, doesUserExist, loginUserWithEmailAndPassword, logoutUser, validateSessionById };
