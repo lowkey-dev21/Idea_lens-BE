@@ -170,7 +170,7 @@ const EmailVerification = {
   Please use the following code to verify your email address for IdeaLens:
   **[VerificationCode]**
   
-  This code is valid for 10 minutes.
+  This code is valid for 24 hour.
 
   You can verify your email address by clicking the link below:
   [VerificationLink]
@@ -555,37 +555,6 @@ const PasswordResetSuccess = {
             </td>
           </tr>
           
-          <!-- SECURITY INFO -->
-          <tr>
-            <td bgcolor="#ffffff" align="left" style="padding: 0 30px 20px 30px;">
-              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f9f9f9; border-radius: 4px;">
-                <tr>
-                  <td style="padding: 20px; color: #666666; font-family: Arial, sans-serif; font-size: 16px; line-height: 25px;">
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                      <tr>
-                        <td width="24" valign="top">
-                          <img src="/placeholder.svg?height=24&width=24" width="24" height="24" alt="Security Icon" style="display: block; margin: 0;" />
-                        </td>
-                        <td style="padding-left: 15px;">
-                          <p style="margin: 0; font-size: 14px;">For security reasons, this change was made from:</p>
-                          <p style="margin: 5px 0 0 0; font-weight: 600;">[DeviceInfo] in [Location]</p>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td width="24" valign="top" style="padding-top: 15px;">
-                          <img src="/placeholder.svg?height=24&width=24" width="24" height="24" alt="Time Icon" style="display: block; margin: 0;" />
-                        </td>
-                        <td style="padding-left: 15px; padding-top: 15px;">
-                          <p style="margin: 0; font-size: 14px;">Date and time:</p>
-                          <p style="margin: 5px 0 0 0; font-weight: 600;">[ChangeDateTime]</p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
           
           <!-- BUTTON -->
           <tr>
@@ -731,7 +700,7 @@ const EmailChangeVerification = {
                 </tr>
               </table>
               
-              <p style="margin: 0;">This code is valid for 10 minutes.</p>
+              <p style="margin: 0;">This code is valid for 24 hours.</p>
               <p style="margin: 20px 0 0 0;">You're changing your email from <strong>[OldEmail]</strong> to <strong>[NewEmail]</strong>.</p>
             </td>
           </tr>
@@ -7558,7 +7527,10 @@ const EMAIL_PLACEHOLDER_KEYS = [
 	'Location',
 	'LoginDateTime',
 	'IPAddress',
-	'SecureAccountLink'
+	'SecureAccountLink',
+  'ChangeDateTime',
+  'RequestDateTime',
+  'DeviceInfo'
 ];
 
 export {
@@ -7604,5 +7576,6 @@ export {
 	WelcomeEmail,
 	WorkspaceInvite,
 	WorkspaceInviteAccepted,
-	WorkspaceRoleChanged
+	WorkspaceRoleChanged,
+  
 };

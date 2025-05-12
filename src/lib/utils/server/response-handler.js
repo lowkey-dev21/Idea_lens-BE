@@ -36,4 +36,15 @@ const endpointResponse = (status, code, message, ...data) => {
   });
 };
 
-export { methodResponse, endpointResponse };
+/**
+ * Default unauthorized response object
+ * @type {{status: boolean, code: number, message: string}}
+ */
+const UNAUTHORIZED = {
+    status: false,
+    code: 401,
+    message: 'Unauthorized access'
+};
+
+
+export { methodResponse, endpointResponse, UNAUTHORIZED };
